@@ -1,0 +1,28 @@
+{
+  "name": "deftonescodemonkey",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/easierbycode/easierbycode.github.io.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/easierbycode/easierbycode.github.io/issues"
+  },
+  "homepage": "https://github.com/easierbycode/easierbycode.github.io",
+  "devDependencies": {
+    "connect-livereload": "^0.5.3",
+    "express": "^4.13.3",
+    "gulp": "^3.9.0",
+    "tiny-lr": "^0.2.0"
+  },
+  "dependencies": {
+    "livereload-js": "^2.2.2"
+  }
+}
