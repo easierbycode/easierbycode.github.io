@@ -32,6 +32,45 @@ body {
     font-family: Consolas, Monaco, 'Andale Mono', monospace;
     margin-bottom: 0;
 }
+.placeholders {
+    text-align: center;
+}
+.placeholders h4 {
+    margin-bottom: 0;
+}
+.placeholder img {
+    display: inline-block;
+    border-radius: 50%;
+}
+.section-header {
+    margin: -20px 0 40px 0;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.2);
+    text-align: center;
+    overflow: hidden;
+    width: 100%;
+}
+.section-header span {
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase;
+    position: relative;
+}
+.section-header span:before {
+    left: -1010px;
+}
+.section-header span:after {
+    right: -1010px;
+}
+.section-header span:after, .section-header span:before {
+    content: " ";
+    display: block;
+    height: 1px;
+    width: 1000px;
+    background: rgba(0, 0, 0, 0.15);
+    position: absolute;
+    top: 50%;
+}
 .text-center {
     text-align: center;
 }
