@@ -12,7 +12,7 @@ html, body {
 }
 body {
     color: #616161;
-    font-family: -apple-system,".SFNSText-Regular","Helvetica Neue","Roboto","Segoe UI",sans-serif;
+    /* font-family: -apple-system,".SFNSText-Regular","Helvetica Neue","Roboto","Segoe UI",sans-serif; */
 }
 .blog-header h1 {
     font-weight: 300;
@@ -84,9 +84,13 @@ body {
     text-align: center;
 }
     </style>
-  </head>
+
+    <link rel="stylesheet" href="style.css">
+</head>
   
   <body>
+    <blink></blink>
+
     <div class="blog-masthead">
       <div class="container">
         <nav class="nav blog-nav">
@@ -129,13 +133,17 @@ body {
           <h4>Label</h4>
           <span class="text-muted">Something else</span>
         </div>
-        <div class="col-xs-6 col-sm-3 placeholder">
+        <div class="col-xs-6 col-sm-3 placeholder lab" data-iframe='hellophaser/v3' style="cursor: pointer;">
           <img src="//img1.ak.crunchyroll.com/i/spire4/d16983e1b53d44288b0757e0ce8ca90b1310737785_large.png" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
           <h4>RonaGun</h4>
           <span class="text-muted">Something else</span>
         </div>
       </div>
     </div>
+
+    <footer>
+      <a href="#" class="nav-link trig">Go Back</a>
+    </footer>
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!--     <script src='http://tether.io/dist/js/tether.js'></script> -->
@@ -1945,5 +1953,7 @@ return Tether;
           window.tumblrPosts  = json;
       });
     </script>
+
+    <script src="./script.js"></script>
   </body>
 </html>
