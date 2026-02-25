@@ -212,6 +212,7 @@
         let rocktos = [];
 
         function triggerHaptic(type = 'land') {
+            // Gamepad rumble (desktop + gamepad)
             const pads = navigator.getGamepads ? navigator.getGamepads() : [];
             for (let gp of pads) {
                 if (!gp) continue;
@@ -221,6 +222,13 @@
                         else if (type === 'left') gp.vibrationActuator.playEffect("dual-rumble", { duration: 80, strongMagnitude: 0.2, weakMagnitude: 1.0 });
                         else if (type === 'right') gp.vibrationActuator.playEffect("dual-rumble", { duration: 80, strongMagnitude: 1.0, weakMagnitude: 0.2 });
                     }
+                } catch (e) {}
+            }
+            // Mobile browser + Cordova vibration
+            if (navigator.vibrate) {
+                try {
+                    if (type === 'land') navigator.vibrate(60);
+                    else if (type === 'left' || type === 'right') navigator.vibrate(25);
                 } catch (e) {}
             }
         }
@@ -639,6 +647,7 @@
                 touchState[stateKey] = true;
                 el.classList.add('pressed');
                 onTouchInput();
+                if (navigator.vibrate) { try { navigator.vibrate(12); } catch (e) {} }
             }, { passive: false });
 
             el.addEventListener('touchend', e => {
@@ -659,6 +668,7 @@
         bindTouchButton('touch-boost', 'boost');
 
         window.onload = () => {
+            loaded = true;
             startTime = Date.now();
             initLevel();
             detectTouch();
