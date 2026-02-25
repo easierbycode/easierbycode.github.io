@@ -17,7 +17,7 @@
     </div>
     <div id="instructions">
         ← → / A D = Move  SPACE / ↑ = Jump  SHIFT / X = BOOST<br>
-        Right Analog = Camera  L3 = Fullscreen  A/X or START = Restart
+        Right Analog = Camera  L3 = Fullscreen  A/X or START/OPTIONS = Restart
     </div>
     <canvas id="c" width="800" height="600"></canvas>
 
@@ -27,129 +27,81 @@
         const SCREEN_W = 800;
         const SCREEN_H = 600;
 
-        let WORLD_W = 8240;
+        let TILE_SIZE = 16;
+        let WORLD_W = 8448;
+        let numCols = 528;
+        let numRows = 128;
+        let map = [];
 
-        const player = {
-            x: 120, y: 400, vx: 0, vy: 0,
-            w: 38, h: 48,
-            facing: 1,
-            onGround: false
-        };
+        const player = { x: 120, y: 400, vx: 0, vy: 0, w: 38, h: 48, facing: 1, onGround: false };
 
-        let ringsCollected = 0;
-        let time = 0;
-        let gameWon = false;
-        let gameOver = false;
-        let showDebug = false;
-        let usedGamepad = false;
-
-        let camX = 0;
-        let camOffset = 0;
+        let ringsCollected = 0, time = 0, gameWon = false, gameOver = false, showDebug = false, usedGamepad = false;
+        let camX = 0, camOffset = 0;
 
         const keys = {};
-        let particles = []; // general
-        let exhaustParticles = []; // new for boost flames
-        let ringsList = [];
-        let enemies = [];
-        let platforms = [];
-        let spikes = [];
-        let slopes = [];
+        let particles = [], exhaustParticles = [], ringsList = [], enemies = [], platforms = [];
 
-        let coyoteTime = 0;
-        let jumpBuffer = 0;
+        let coyoteTime = 0, jumpBuffer = 0, isBoosting = false, boostKick = 0;
 
         const playerSprite = new Image();
         playerSprite.src = 'http://easierbycode.com/assets/spritesheets/motorcycle.png';
 
-        let currentFrame = 0;
-        let lastAnimTime = Date.now();
-        const FRAME_WIDTH = 86;
-        const FRAME_HEIGHT = 46;
-        const TOTAL_FRAMES = 10;
-
-        let isBoosting = false;
-        let boostKick = 0;
+        let currentFrame = 0, lastAnimTime = Date.now();
+        const FRAME_WIDTH = 86, FRAME_HEIGHT = 46, TOTAL_FRAMES = 10;
 
         const fg = new Image();
         fg.src = 'http://easierbycode.com/assets/spritesheets/tiles.png';
 
-        let loaded = false;
-        fg.onload = () => {
-            WORLD_W = fg.width || 8240;
-            loaded = true;
-            initLevel();
-        };
+        let loaded = false, levelLoaded = false;
+
+        // Gamepad restart edge detection
+        let prevRestartPressed = false;
+
+        fg.onload = () => loaded = true;
+
+        // Load real level data
+        fetch('https://easierbycode.com/assets/spritesheets/level_data.json')
+            .then(r => r.json())
+            .then(data => {
+                map = data.map;
+                numCols = data.numCols || 528;
+                numRows = data.numRows || 128;
+                TILE_SIZE = 16;
+                WORLD_W = numCols * TILE_SIZE;
+                generateCollisionFromMap();
+                levelLoaded = true;
+                console.log('%c✅ Real level loaded — ' + numCols + '×' + numRows + ' tiles', 'color:#0f0;font-size:16px');
+            });
+
+        function generateCollisionFromMap() {
+            platforms = [];
+            for (let y = 0; y < numRows; y++) {
+                let start = -1;
+                for (let x = 0; x <= numCols; x++) {
+                    const tile = map[y * numCols + x];
+                    const solid = tile !== 2 && tile !== 0 && tile !== undefined;
+                    if (solid && start === -1) start = x;
+                    else if (!solid && start !== -1) {
+                        platforms.push({ x: start * TILE_SIZE, y: y * TILE_SIZE, w: (x - start) * TILE_SIZE, h: TILE_SIZE });
+                        start = -1;
+                    }
+                }
+                if (start !== -1) platforms.push({ x: start * TILE_SIZE, y: y * TILE_SIZE, w: (numCols - start) * TILE_SIZE, h: TILE_SIZE });
+            }
+        }
 
         function createRing(x, y) { ringsList.push({x, y, collected: false, bob: 0}); }
         function createEnemy(x, y) { enemies.push({x, y, vx: -1.8, w: 36, h: 36}); }
         function createParticle(x, y, count = 8) {
-            for (let i = 0; i < count; i++) {
-                particles.push({
-                    x: x + Math.random()*25-12,
-                    y: y + Math.random()*4,
-                    vx: Math.random()*7-3.5,
-                    vy: Math.random()*-4-1,
-                    life: 22 + Math.random()*14,
-                    size: 3.5 + Math.random()*3
-                });
-            }
+            for (let i = 0; i < count; i++) particles.push({x: x + Math.random()*25-12, y: y + Math.random()*4, vx: Math.random()*7-3.5, vy: Math.random()*-4-1, life: 22 + Math.random()*14, size: 3.5 + Math.random()*3});
         }
         function createExhaust(x, y) {
-            for (let i = 0; i < 5; i++) {
-                exhaustParticles.push({
-                    x: x - player.facing * 28,
-                    y: y + 18,
-                    vx: player.facing * - (4 + Math.random()*5),
-                    vy: Math.random()*3 - 1.5,
-                    life: 18 + Math.random()*12,
-                    size: 5 + Math.random()*4,
-                    color: Math.random() > 0.5 ? '#ff8800' : '#ffff00'
-                });
-            }
+            for (let i = 0; i < 5; i++) exhaustParticles.push({x: x - player.facing * 28, y: y + 18, vx: player.facing * -(4 + Math.random()*5), vy: Math.random()*3 - 1.5, life: 18 + Math.random()*12, size: 5 + Math.random()*4, color: Math.random() > 0.5 ? '#ff8800' : '#ffff00'});
         }
 
         function initLevel() {
-            platforms = [
-                {x:0, y:528, w:WORLD_W, h:160},
-                {x:128, y:448, w:480, h:32}, {x:704, y:384, w:288, h:32},
-                {x:1056, y:480, w:416, h:32}, {x:1536, y:352, w:352, h:32},
-                {x:1984, y:448, w:320, h:32}, {x:2336, y:288, w:480, h:32},
-                {x:2912, y:416, w:288, h:32}, {x:3232, y:256, w:576, h:32},
-                {x:3904, y:384, w:384, h:32}, {x:4352, y:320, w:320, h:32},
-                {x:4736, y:448, w:416, h:32}, {x:5248, y:288, w:480, h:32},
-                {x:5792, y:384, w:736, h:32}, {x:6144, y:320, w:256, h:32},
-                {x:6496, y:448, w:352, h:32}, {x:7200, y:320, w:448, h:32},
-                {x:480, y:480, w:160, h:32}, {x:1184, y:320, w:160, h:32},
-                {x:2688, y:352, w:192, h:32}, {x:3776, y:288, w:160, h:32},
-                {x:4480, y:352, w:96, h:32}, {x:4960, y:384, w:160, h:32},
-                {x:5600, y:256, w:128, h:32}, {x:6816, y:352, w:192, h:32},
-                {x:800, y:416, w:96, h:32}, {x:1408, y:384, w:128, h:32},
-                {x:1824, y:288, w:128, h:32}, {x:2144, y:416, w:96, h:32},
-                {x:3104, y:320, w:160, h:32}, {x:3552, y:256, w:96, h:32},
-                {x:4000, y:320, w:128, h:32}, {x:4608, y:384, w:96, h:32},
-                {x:5088, y:224, w:160, h:32}, {x:5952, y:352, w:96, h:32},
-                {x:6272, y:288, w:160, h:32}, {x:6944, y:384, w:128, h:32},
-                {x:7392, y:288, w:192, h:32}
-            ];
-
-            spikes = [
-                {x:608, y:512, w:96, h:32}, {x:1472, y:512, w:64, h:32},
-                {x:2624, y:512, w:96, h:32}, {x:4128, y:512, w:64, h:32},
-                {x:5440, y:512, w:96, h:32}, {x:6176, y:512, w:64, h:32}
-            ];
-
-            slopes = [
-                {x:640, y:512, width:256, rise:-128},
-                {x:1920, y:448, width:192, rise:128},
-                {x:3232, y:352, width:256, rise:-160},
-                {x:4736, y:416, width:192, rise:96},
-                {x:5792, y:384, width:224, rise:-128},
-                {x:6784, y:352, width:256, rise:144}
-            ];
-
             ringsList = [];
             for (let i = 0; i < 18; i++) createRing(288 + i*384, 272 + (i%5)*40);
-
             enemies = [];
             createEnemy(960, 512); createEnemy(2656, 352); createEnemy(4160, 432);
             createEnemy(5472, 256); createEnemy(6208, 384); createEnemy(7104, 320);
@@ -160,8 +112,7 @@
 
         function collideHorizontal() {
             for (let p of platforms) {
-                if (player.x + player.w > p.x && player.x < p.x + p.w &&
-                    player.y + player.h > p.y && player.y < p.y + p.h) {
+                if (player.x + player.w > p.x && player.x < p.x + p.w && player.y + player.h > p.y && player.y < p.y + p.h) {
                     if (player.vx > 0) player.x = p.x - player.w;
                     else if (player.vx < 0) player.x = p.x + p.w;
                     player.vx = 0;
@@ -172,8 +123,7 @@
         function collideVertical() {
             player.onGround = false;
             for (let p of platforms) {
-                if (player.x + player.w > p.x && player.x < p.x + p.w &&
-                    player.y + player.h > p.y && player.y < p.y + p.h) {
+                if (player.x + player.w > p.x && player.x < p.x + p.w && player.y + player.h > p.y && player.y < p.y + p.h) {
                     if (player.vy >= 0 && player.y + player.h - player.vy <= p.y + 14) {
                         player.y = p.y - player.h;
                         player.vy = 0;
@@ -186,35 +136,10 @@
                     }
                 }
             }
-            for (let s of spikes) {
-                if (player.x + player.w > s.x && player.x < s.x + s.w &&
-                    player.y + player.h > s.y && player.y < s.y + s.h) gameOver = true;
-            }
-        }
-
-        function resolveSlopes() {
-            for (let s of slopes) {
-                const left = player.x;
-                const right = player.x + player.w;
-                if (right < s.x || left > s.x + s.width) continue;
-                const frac = Math.max(0, Math.min(1, (player.x + player.w*0.5 - s.x) / s.width));
-                const slopeY = s.y + frac * s.rise;
-                if (player.y + player.h > slopeY - 28 && player.y + player.h < slopeY + 22 && player.vy >= -2) {
-                    player.y = slopeY - player.h;
-                    player.vy = 0;
-                    player.onGround = true;
-                    coyoteTime = 8;
-                    const slopeFactor = s.rise / s.width * 5;
-                    player.vx += slopeFactor;
-                    if (s.rise < 0) player.vx *= 1.04;
-                    createParticle(player.x + 15, player.y + player.h - 6, 5);
-                    return;
-                }
-            }
         }
 
         function update() {
-            if (!loaded || gameWon || gameOver) return;
+            if (!loaded || !levelLoaded || gameWon || gameOver) return;
 
             time = Math.floor((Date.now() - startTime) / 1000);
 
@@ -236,15 +161,20 @@
                 if (gp.buttons[12].pressed) targetVx = -8.4;
                 if (gp.buttons[13].pressed) targetVx = 8.4;
 
-                if ((gp.buttons[0].pressed || gp.buttons[2].pressed)) {
-                    if (gameWon || gameOver) restartPressed = true;
-                    else if (player.onGround || coyoteTime > 0) {
-                        player.vy = -17.8;
+                // Restart buttons (A/X + Start/Options)
+                const currentRestart = (gp.buttons[0].pressed || gp.buttons[2].pressed || gp.buttons[9].pressed || gp.buttons[8].pressed);
+                if (currentRestart && !prevRestartPressed) restartPressed = true;
+
+                // Jump (only when alive)
+                if ((gp.buttons[0].pressed || gp.buttons[2].pressed) && !(gameWon || gameOver)) {
+                    if (player.onGround || coyoteTime > 0) {
+                        player.vy = -18.2;
                         player.onGround = false;
                         coyoteTime = 0;
                     }
                 }
 
+                // Right analog camera
                 const rightStickX = gp.axes[2] || 0;
                 if (Math.abs(rightStickX) > 0.15) camOffset += rightStickX * 22;
                 else camOffset *= 0.82;
@@ -255,9 +185,8 @@
                     usedGamepad = true;
                     if (!document.fullscreenElement) canvas.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
                 }
-
-                if (gp.buttons[9].pressed || gp.buttons[8].pressed) restartPressed = true;
             }
+            prevRestartPressed = (pads.length > 0 && (pads[0] && (pads[0].buttons[0].pressed || pads[0].buttons[2].pressed || pads[0].buttons[9].pressed || pads[0].buttons[8].pressed)));
 
             if (targetVx) player.facing = targetVx > 0 ? 1 : -1;
 
@@ -265,10 +194,7 @@
             const accel = (player.onGround || coyoteTime > 0) ? (isBoosting ? 0.52 : 0.34) : 0.19;
 
             if (isBoosting && boostKick < 1) boostKick = 1;
-            if (boostKick > 0) {
-                player.vx += player.facing * 2.5;
-                boostKick -= 0.08;
-            }
+            if (boostKick > 0) { player.vx += player.facing * 2.5; boostKick -= 0.08; }
 
             player.vx += (targetVx * (isBoosting ? 1.6 : 1) - player.vx) * accel;
             if (Math.abs(player.vx) > maxSpeed) player.vx = Math.sign(player.vx) * maxSpeed;
@@ -290,7 +216,6 @@
 
             player.y += player.vy;
             collideVertical();
-            resolveSlopes();
 
             if (player.onGround) coyoteTime = 8;
             if (coyoteTime > 0) coyoteTime--;
@@ -299,43 +224,42 @@
             if (player.y > 950) gameOver = true;
             if (player.x > WORLD_W - 280 && !gameWon) gameWon = true;
 
-            if ((gameWon || gameOver) && restartPressed) {
+            // Restart (gamepad or R key)
+            if ((gameWon || gameOver) && (restartPressed || keys['r'] || keys['R'])) {
                 player.x = 120; player.y = 400; player.vx = player.vy = 0;
                 ringsCollected = 0; time = 0; gameWon = false; gameOver = false;
                 startTime = Date.now();
                 usedGamepad = false;
                 document.getElementById('rings').textContent = 'RINGS 00';
                 camOffset = 0;
+                prevRestartPressed = true; // prevent double-trigger
             }
 
-            // Camera
-            const lookAhead = player.vx * (isBoosting ? 14 : 9);
-            let targetCam = player.x - SCREEN_W * 0.42 + lookAhead + camOffset;
-            camX += (targetCam - camX) * (isBoosting ? 0.28 : 0.24);
+            // FIXED CAMERA - much more responsive (Sonic CD style)
+            const lookAhead = player.vx * (isBoosting ? 18 : 12);
+            const targetCam = player.x - SCREEN_W * 0.42 + lookAhead + camOffset;
+            camX += (targetCam - camX) * (isBoosting ? 0.38 : 0.32);   // stronger lerp
             camX = Math.max(0, Math.min(camX, WORLD_W - SCREEN_W));
 
-            // Exhaust + dust
+            // Particles
             if (isBoosting && Math.random() < 0.65) createExhaust(player.x + player.w/2, player.y + 28);
             if (player.onGround && Math.abs(player.vx) > 5.5 && Math.random() < (isBoosting ? 0.8 : 0.45)) {
                 createParticle(player.x + (player.facing * 12), player.y + player.h - 4, isBoosting ? 8 : 4);
             }
 
-            // Animation FPS now scales with speed (feels like real engine)
             const now = Date.now();
-            const speedFactor = Math.min(32, Math.abs(player.vx) * 2.2);
-            const fps = Math.max(8, speedFactor);
+            const fps = Math.max(8, Math.min(32, Math.abs(player.vx) * 2.2));
             if (now - lastAnimTime > 1000 / fps) {
                 currentFrame = (currentFrame + 1) % TOTAL_FRAMES;
                 lastAnimTime = now;
             }
 
-            // Particle updates
-            for (let i = particles.length - 1; i >= 0; i--) {
+            for (let i = particles.length-1; i >= 0; i--) {
                 let p = particles[i];
                 p.x += p.vx; p.y += p.vy; p.vy += 0.25; p.life--;
                 if (p.life <= 0) particles.splice(i, 1);
             }
-            for (let i = exhaustParticles.length - 1; i >= 0; i--) {
+            for (let i = exhaustParticles.length-1; i >= 0; i--) {
                 let p = exhaustParticles[i];
                 p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.life--;
                 if (p.life <= 0) exhaustParticles.splice(i, 1);
@@ -364,11 +288,10 @@
             let px = player.x - camX;
             let py = player.y;
             ctx.save();
-            ctx.translate(px + player.w/2, py + 32); // FIXED: wheels now perfectly touch ground
+            ctx.translate(px + player.w/2, py + 32);
             ctx.scale(player.facing, 1);
             const sx = currentFrame * FRAME_WIDTH;
-            ctx.drawImage(playerSprite, sx, 0, FRAME_WIDTH, FRAME_HEIGHT,
-                          -FRAME_WIDTH/2, -FRAME_HEIGHT/2 + 18, FRAME_WIDTH, FRAME_HEIGHT);
+            ctx.drawImage(playerSprite, sx, 0, FRAME_WIDTH, FRAME_HEIGHT, -FRAME_WIDTH/2, -FRAME_HEIGHT/2 + 18, FRAME_WIDTH, FRAME_HEIGHT);
             ctx.restore();
         }
 
@@ -401,25 +324,14 @@
                 ctx.fillStyle = '#2c3e50';
                 ctx.fillRect(ex + 6, e.y + 8, 24, 14);
             }
-            ctx.fillStyle = '#e74c3c';
-            for (let s of spikes) {
-                let sx = s.x - camX;
-                ctx.fillRect(sx, s.y, s.w, s.h);
-                ctx.fillStyle = '#fff';
-                for (let i = 0; i < s.w; i += 12) ctx.fillRect(sx + i + 4, s.y - 8, 4, 10);
-                ctx.fillStyle = '#e74c3c';
-            }
 
             drawPlayer();
 
-            // Dust
             ctx.fillStyle = '#f1c40f';
             for (let p of particles) {
                 ctx.globalAlpha = p.life / 35;
                 ctx.fillRect(p.x - camX, p.y, p.size, p.size);
             }
-
-            // Exhaust flames (new)
             for (let p of exhaustParticles) {
                 ctx.globalAlpha = p.life / 25;
                 ctx.fillStyle = p.color;
@@ -431,13 +343,6 @@
                 ctx.strokeStyle = '#f38630';
                 ctx.lineWidth = 2;
                 for (let p of platforms) ctx.strokeRect(p.x - camX, p.y, p.w, p.h);
-                ctx.strokeStyle = '#e74c3c';
-                for (let s of spikes) ctx.strokeRect(s.x - camX, s.y, s.w, s.h);
-                ctx.strokeStyle = '#0ff';
-                for (let s of slopes) {
-                    ctx.beginPath(); ctx.moveTo(s.x - camX, s.y);
-                    ctx.lineTo(s.x + s.width - camX, s.y + s.rise); ctx.stroke();
-                }
                 ctx.strokeStyle = '#0f0';
                 ctx.strokeRect(player.x - camX, player.y, player.w, player.h);
             }
@@ -464,18 +369,13 @@
             requestAnimationFrame(loop);
         }
 
-        window.addEventListener('keydown', e => {
-            keys[e.key] = true;
-            if (e.key.toLowerCase() === 'f') {
-                if (!document.fullscreenElement) canvas.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
-                else document.exitFullscreen();
-            }
-            if (e.key === 'd' || e.key === 'D') showDebug = !showDebug;
-        });
+        window.addEventListener('keydown', e => { keys[e.key] = true; if (e.key.toLowerCase() === 'f') { if (!document.fullscreenElement) canvas.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
+            else document.exitFullscreen(); } if (e.key === 'd' || e.key === 'D') showDebug = !showDebug; });
         window.addEventListener('keyup', e => keys[e.key] = false);
 
         window.onload = () => {
             startTime = Date.now();
+            initLevel();
             loop();
         };
     </script>
