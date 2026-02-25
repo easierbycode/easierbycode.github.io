@@ -16,9 +16,8 @@
         <span id="rings">RINGS 00</span>  TIME <span id="time">000</span>
     </div>
     <div id="instructions">
-        ← → / A D = Move  SPACE / ↑ = Jump  SHIFT / X (left face) = BOOST<br>
-        Right Analog = Camera X  L3 (left stick click) = Fullscreen<br>
-        A/X or START/OPTIONS = Restart (when dead or won)
+        ← → / A D = Move  SPACE / ↑ = Jump  SHIFT / X = BOOST<br>
+        Right Analog = Camera  L3 = Fullscreen  A/X or START = Restart
     </div>
     <canvas id="c" width="800" height="600"></canvas>
 
@@ -45,10 +44,11 @@
         let usedGamepad = false;
 
         let camX = 0;
-        let camOffset = 0;   // ← controlled by right analog stick
+        let camOffset = 0;
 
         const keys = {};
-        let particles = [];
+        let particles = []; // general
+        let exhaustParticles = []; // new for boost flames
         let ringsList = [];
         let enemies = [];
         let platforms = [];
@@ -58,7 +58,6 @@
         let coyoteTime = 0;
         let jumpBuffer = 0;
 
-        // Motorcycle spritesheet (10 frames)
         const playerSprite = new Image();
         playerSprite.src = 'http://easierbycode.com/assets/spritesheets/motorcycle.png';
 
@@ -69,6 +68,7 @@
         const TOTAL_FRAMES = 10;
 
         let isBoosting = false;
+        let boostKick = 0;
 
         const fg = new Image();
         fg.src = 'http://easierbycode.com/assets/spritesheets/tiles.png';
@@ -91,6 +91,19 @@
                     vy: Math.random()*-4-1,
                     life: 22 + Math.random()*14,
                     size: 3.5 + Math.random()*3
+                });
+            }
+        }
+        function createExhaust(x, y) {
+            for (let i = 0; i < 5; i++) {
+                exhaustParticles.push({
+                    x: x - player.facing * 28,
+                    y: y + 18,
+                    vx: player.facing * - (4 + Math.random()*5),
+                    vy: Math.random()*3 - 1.5,
+                    life: 18 + Math.random()*12,
+                    size: 5 + Math.random()*4,
+                    color: Math.random() > 0.5 ? '#ff8800' : '#ffff00'
                 });
             }
         }
@@ -219,51 +232,43 @@
             for (let gp of pads) {
                 if (!gp) continue;
 
-                // Left stick movement
                 if (Math.abs(gp.axes[0]) > 0.2) targetVx = gp.axes[0] * 8.4;
                 if (gp.buttons[12].pressed) targetVx = -8.4;
                 if (gp.buttons[13].pressed) targetVx = 8.4;
 
-                // Bottom face (A/X) = Jump (unless game over/won)
                 if ((gp.buttons[0].pressed || gp.buttons[2].pressed)) {
-                    if (gameWon || gameOver) {
-                        restartPressed = true;
-                    } else if (player.onGround || coyoteTime > 0) {
+                    if (gameWon || gameOver) restartPressed = true;
+                    else if (player.onGround || coyoteTime > 0) {
                         player.vy = -17.8;
                         player.onGround = false;
                         coyoteTime = 0;
                     }
                 }
 
-                // Right analog → camera X control
                 const rightStickX = gp.axes[2] || 0;
-                if (Math.abs(rightStickX) > 0.15) {
-                    camOffset += rightStickX * 22;   // smooth manual camera panning
-                } else {
-                    camOffset *= 0.82;               // gentle dampening
-                }
+                if (Math.abs(rightStickX) > 0.15) camOffset += rightStickX * 22;
+                else camOffset *= 0.82;
 
-                // Boost (left face X)
                 if (gp.buttons[2].pressed) isBoosting = true;
 
-                // L3 (left stick click) = Fullscreen
                 if (gp.buttons[10].pressed && !usedGamepad) {
                     usedGamepad = true;
-                    if (!document.fullscreenElement) {
-                        canvas.requestFullscreen({ navigationUI: "hide" }).catch(() => {});
-                    }
+                    if (!document.fullscreenElement) canvas.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
                 }
 
-                // Start / Options = restart
-                if (gp.buttons[9].pressed || gp.buttons[8].pressed) {
-                    restartPressed = true;
-                }
+                if (gp.buttons[9].pressed || gp.buttons[8].pressed) restartPressed = true;
             }
 
             if (targetVx) player.facing = targetVx > 0 ? 1 : -1;
 
-            const maxSpeed = isBoosting ? 13.5 : 8.4;
-            const accel = (player.onGround || coyoteTime > 0) ? (isBoosting ? 0.45 : 0.34) : 0.19;
+            const maxSpeed = isBoosting ? 15.5 : 8.4;
+            const accel = (player.onGround || coyoteTime > 0) ? (isBoosting ? 0.52 : 0.34) : 0.19;
+
+            if (isBoosting && boostKick < 1) boostKick = 1;
+            if (boostKick > 0) {
+                player.vx += player.facing * 2.5;
+                boostKick -= 0.08;
+            }
 
             player.vx += (targetVx * (isBoosting ? 1.6 : 1) - player.vx) * accel;
             if (Math.abs(player.vx) > maxSpeed) player.vx = Math.sign(player.vx) * maxSpeed;
@@ -272,7 +277,7 @@
             if (jumpBuffer > 0) jumpBuffer--;
 
             if ((player.onGround || coyoteTime > 0) && jumpBuffer > 0) {
-                player.vy = -17.8;
+                player.vy = -18.2;
                 player.onGround = false;
                 jumpBuffer = 0;
                 coyoteTime = 0;
@@ -294,8 +299,7 @@
             if (player.y > 950) gameOver = true;
             if (player.x > WORLD_W - 280 && !gameWon) gameWon = true;
 
-            // Restart logic
-            if ((gameWon || gameOver) && (restartPressed || (keys['r'] || keys['R']))) {
+            if ((gameWon || gameOver) && restartPressed) {
                 player.x = 120; player.y = 400; player.vx = player.vy = 0;
                 ringsCollected = 0; time = 0; gameWon = false; gameOver = false;
                 startTime = Date.now();
@@ -304,29 +308,37 @@
                 camOffset = 0;
             }
 
-            // Camera with right-stick offset
-            const lookAhead = player.vx * 9;
+            // Camera
+            const lookAhead = player.vx * (isBoosting ? 14 : 9);
             let targetCam = player.x - SCREEN_W * 0.42 + lookAhead + camOffset;
-            camX += (targetCam - camX) * 0.24;
+            camX += (targetCam - camX) * (isBoosting ? 0.28 : 0.24);
             camX = Math.max(0, Math.min(camX, WORLD_W - SCREEN_W));
 
-            // Dust
-            if (player.onGround && Math.abs(player.vx) > 5.5 && Math.random() < (isBoosting ? 0.7 : 0.4)) {
-                createParticle(player.x + (player.facing * 12), player.y + player.h - 4, isBoosting ? 7 : 4);
+            // Exhaust + dust
+            if (isBoosting && Math.random() < 0.65) createExhaust(player.x + player.w/2, player.y + 28);
+            if (player.onGround && Math.abs(player.vx) > 5.5 && Math.random() < (isBoosting ? 0.8 : 0.45)) {
+                createParticle(player.x + (player.facing * 12), player.y + player.h - 4, isBoosting ? 8 : 4);
             }
 
-            // Animation (12 → 24 fps on boost)
+            // Animation FPS now scales with speed (feels like real engine)
             const now = Date.now();
-            const fps = isBoosting ? 24 : 12;
+            const speedFactor = Math.min(32, Math.abs(player.vx) * 2.2);
+            const fps = Math.max(8, speedFactor);
             if (now - lastAnimTime > 1000 / fps) {
                 currentFrame = (currentFrame + 1) % TOTAL_FRAMES;
                 lastAnimTime = now;
             }
 
+            // Particle updates
             for (let i = particles.length - 1; i >= 0; i--) {
                 let p = particles[i];
                 p.x += p.vx; p.y += p.vy; p.vy += 0.25; p.life--;
                 if (p.life <= 0) particles.splice(i, 1);
+            }
+            for (let i = exhaustParticles.length - 1; i >= 0; i--) {
+                let p = exhaustParticles[i];
+                p.x += p.vx; p.y += p.vy; p.vy += 0.12; p.life--;
+                if (p.life <= 0) exhaustParticles.splice(i, 1);
             }
 
             for (let r of ringsList) {
@@ -352,11 +364,11 @@
             let px = player.x - camX;
             let py = player.y;
             ctx.save();
-            ctx.translate(px + player.w/2, py + 28);
+            ctx.translate(px + player.w/2, py + 32); // FIXED: wheels now perfectly touch ground
             ctx.scale(player.facing, 1);
             const sx = currentFrame * FRAME_WIDTH;
             ctx.drawImage(playerSprite, sx, 0, FRAME_WIDTH, FRAME_HEIGHT,
-                          -FRAME_WIDTH/2, -FRAME_HEIGHT/2 + 6, FRAME_WIDTH, FRAME_HEIGHT);
+                          -FRAME_WIDTH/2, -FRAME_HEIGHT/2 + 18, FRAME_WIDTH, FRAME_HEIGHT);
             ctx.restore();
         }
 
@@ -400,9 +412,17 @@
 
             drawPlayer();
 
+            // Dust
             ctx.fillStyle = '#f1c40f';
             for (let p of particles) {
                 ctx.globalAlpha = p.life / 35;
+                ctx.fillRect(p.x - camX, p.y, p.size, p.size);
+            }
+
+            // Exhaust flames (new)
+            for (let p of exhaustParticles) {
+                ctx.globalAlpha = p.life / 25;
+                ctx.fillStyle = p.color;
                 ctx.fillRect(p.x - camX, p.y, p.size, p.size);
             }
             ctx.globalAlpha = 1;
@@ -451,14 +471,6 @@
                 else document.exitFullscreen();
             }
             if (e.key === 'd' || e.key === 'D') showDebug = !showDebug;
-            if ((e.key === 'r' || e.key === 'R') && (gameWon || gameOver)) {
-                player.x = 120; player.y = 400; player.vx = player.vy = 0;
-                ringsCollected = 0; time = 0; gameWon = false; gameOver = false;
-                startTime = Date.now();
-                usedGamepad = false;
-                document.getElementById('rings').textContent = 'RINGS 00';
-                camOffset = 0;
-            }
         });
         window.addEventListener('keyup', e => keys[e.key] = false);
 
