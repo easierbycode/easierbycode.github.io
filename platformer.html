@@ -16,8 +16,9 @@
         <span id="rings">RINGS 00</span>  TIME <span id="time">000</span>
     </div>
     <div id="instructions">
-        ← → / A D = Move  SPACE / ↑ = Jump  SHIFT / X = BOOST<br>
-        Right Analog = Camera  L3 = Fullscreen  R / A/X / START = Restart
+        ← → / A D = Move  SPACE / ↑ / LEFT CLICK = Jump  SHIFT / X = BOOST<br>
+        Right Analog = Camera  L3 = Fullscreen  R / A/X / START = Restart<br>
+        RIGHT CLICK = Move Right (hold)
     </div>
     <canvas id="c" width="800" height="600"></canvas>
 
@@ -43,6 +44,7 @@
 
         let coyoteTime = 0, jumpBuffer = 0, isBoosting = false, boostKick = 0;
         let previousOnGround = false;
+        let mouseRight = false;   // ← new for right click
 
         const playerSprite = new Image();
         playerSprite.src = 'http://easierbycode.com/assets/spritesheets/motorcycle.png';
@@ -92,7 +94,7 @@
         }
 
         function generateFallbackPlatforms() {
-            platforms = [
+            platforms = [ /* your previous fallback platforms */ 
                 {x:0, y:528, w:WORLD_W, h:160},
                 {x:128, y:448, w:480, h:32}, {x:704, y:384, w:288, h:32},
                 {x:1056, y:480, w:416, h:32}, {x:1536, y:352, w:352, h:32},
@@ -122,13 +124,9 @@
                 if (!gp) continue;
                 try {
                     if (gp.vibrationActuator) {
-                        if (type === 'land') {
-                            gp.vibrationActuator.playEffect("dual-rumble", { duration: 160, strongMagnitude: 0.9, weakMagnitude: 0.85 });
-                        } else if (type === 'left') {
-                            gp.vibrationActuator.playEffect("dual-rumble", { duration: 80, strongMagnitude: 0.2, weakMagnitude: 1.0 });
-                        } else if (type === 'right') {
-                            gp.vibrationActuator.playEffect("dual-rumble", { duration: 80, strongMagnitude: 1.0, weakMagnitude: 0.2 });
-                        }
+                        if (type === 'land') gp.vibrationActuator.playEffect("dual-rumble", { duration: 160, strongMagnitude: 0.9, weakMagnitude: 0.85 });
+                        else if (type === 'left') gp.vibrationActuator.playEffect("dual-rumble", { duration: 80, strongMagnitude: 0.2, weakMagnitude: 1.0 });
+                        else if (type === 'right') gp.vibrationActuator.playEffect("dual-rumble", { duration: 80, strongMagnitude: 1.0, weakMagnitude: 0.2 });
                     }
                 } catch (e) {}
             }
@@ -154,16 +152,11 @@
         const GRAVITY = 0.82;
         let startTime = Date.now();
 
-        function collideHorizontal() {
+        function collideHorizontal() { /* same as before */ 
             for (let p of platforms) {
                 if (player.x + player.w > p.x && player.x < p.x + p.w && player.y + player.h > p.y && player.y < p.y + p.h) {
-                    if (player.vx > 0) {
-                        triggerHaptic('left');   // hitting left side of platform
-                        player.x = p.x - player.w;
-                    } else if (player.vx < 0) {
-                        triggerHaptic('right');  // hitting right side of platform
-                        player.x = p.x + p.w;
-                    }
+                    if (player.vx > 0) { triggerHaptic('left'); player.x = p.x - player.w; }
+                    else if (player.vx < 0) { triggerHaptic('right'); player.x = p.x + p.w; }
                     player.vx = 0;
                 }
             }
@@ -196,14 +189,18 @@
             isBoosting = false;
             let restartPressed = false;
 
+            // Keyboard
             if (keys['ArrowLeft'] || keys['a'] || keys['A']) targetVx = -8.4;
             if (keys['ArrowRight'] || keys['d'] || keys['D']) targetVx = 8.4;
             if (keys['Shift']) isBoosting = true;
 
+            // Mouse controls
+            if (mouseRight) targetVx = 8.4;   // right click = move right
+
+            // Gamepad
             const pads = navigator.getGamepads ? navigator.getGamepads() : [];
             for (let gp of pads) {
                 if (!gp) continue;
-
                 if (Math.abs(gp.axes[0]) > 0.2) targetVx = gp.axes[0] * 8.4;
                 if (gp.buttons[12].pressed) targetVx = -8.4;
                 if (gp.buttons[13].pressed) targetVx = 8.4;
@@ -261,7 +258,6 @@
             player.y += player.vy;
             collideVertical();
 
-            // HAPTICS
             if (player.onGround && !previousOnGround) triggerHaptic('land');
             previousOnGround = player.onGround;
 
@@ -325,6 +321,22 @@
                 if (Math.abs(player.x + player.w/2 - (e.x + e.w/2)) < 37 && Math.abs(player.y + player.h/2 - (e.y + e.h/2)) < 39) gameOver = true;
             }
         }
+
+        // Mouse Controls
+        canvas.addEventListener('mousedown', e => {
+            if (e.button === 0) { // Left click = Jump
+                jumpBuffer = 8;
+            }
+            if (e.button === 2) { // Right click = Move right
+                mouseRight = true;
+            }
+        });
+
+        canvas.addEventListener('mouseup', e => {
+            if (e.button === 2) mouseRight = false;
+        });
+
+        canvas.addEventListener('contextmenu', e => e.preventDefault());
 
         function drawPlayer() {
             if (!playerSprite.complete) return;
