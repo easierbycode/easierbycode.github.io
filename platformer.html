@@ -211,7 +211,18 @@
 
         let rocktos = [];
 
+        // Subtle haptic for touch inputs (mobile browser + Cordova)
+        function vibrateTouch(ms) {
+            try {
+                if (navigator.vibrate) navigator.vibrate(ms);
+            } catch (e) {}
+        }
+
         function triggerHaptic(type = 'land') {
+            // Vibration API fallback for mobile/Cordova
+            if (type === 'land') vibrateTouch(12);
+            else vibrateTouch(6);
+
             const pads = navigator.getGamepads ? navigator.getGamepads() : [];
             for (let gp of pads) {
                 if (!gp) continue;
@@ -566,17 +577,6 @@
             requestAnimationFrame(loop);
         }
 
-        canvas.addEventListener('mousedown', e => {
-            if (e.button === 0) jumpBuffer = 8;
-            if (e.button === 2) mouseRight = true;
-        });
-
-        canvas.addEventListener('mouseup', e => {
-            if (e.button === 2) mouseRight = false;
-        });
-
-        canvas.addEventListener('contextmenu', e => e.preventDefault());
-
         window.addEventListener('keydown', e => {
             keys[e.key] = true;
             if (e.key.toLowerCase() === 'f') {
@@ -638,6 +638,7 @@
                 e.preventDefault();
                 touchState[stateKey] = true;
                 el.classList.add('pressed');
+                vibrateTouch(stateKey === 'jump' ? 18 : 10);
                 onTouchInput();
             }, { passive: false });
 
@@ -659,6 +660,7 @@
         bindTouchButton('touch-boost', 'boost');
 
         window.onload = () => {
+            loaded = true;
             startTime = Date.now();
             initLevel();
             detectTouch();
