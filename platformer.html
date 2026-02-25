@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.0/dist/phaser.min.js"></script>
+    <style>
+        body { margin: 0; background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        canvas { border: 2px solid #333; }
+    </style>
+</head>
+<body>
+
+<script>
+class GameScene extends Phaser.Scene {
+    constructor() {
+        super({ key: 'GameScene' });
+        this.player = null;
+        this.cursors = null;
+        this.mapLayer = null;
+        this.jumpTimer = 0;
+        this.tileWidth = 16;
+        this.tileHeight = 16;
+    }
+
+    preload() {
+        // Load the tileset image provided
+        this.load.image(
+      "tiles",
+      "https://easierbycode.com/assets/spritesheets/tiles.png"
+    );
+
+    // Load the JSON data file provided
+    this.load.json(
+      "levelData",
+      "https://easierbycode.com/assets/spritesheets/level_data.json"
+    );
+         }
+
+    create() {
+        // 1. Parse the Custom Map Data
+        const levelData = this.cache.json.get('levelData');
+        
+        // The JSON provided is a flat array, we need to convert it to a 2D array for Phaser
+        const map2D = [];
+        const flatMap = levelData.map;
+        const width = levelData.numCols;
+        const height = levelData.numRows;
+
+        for (let y = 0; y < height; y++) {
+            const row = [];
+            for (let x = 0; x < width; x++) {
+                // Tiled exports often use 0 for empty, but sometimes IDs are offset. 
+                // We map the raw data directly here.
+                row.push(flatMap[y * width + x]); 
+            }
+            map2D.push(row);
+        }
+
+        // 2. Create the Tilemap
+        const map = this.make.tilemap({ data: map2D, tileWidth: 16, tileHeight: 16 });
+        const tileset = map.addTilesetImage('tiles', null, 16, 16, 0, 0); // 16x16 tiles
+        this.mapLayer = map.createLayer(0, tileset, 0, 0);
+
+        // 3. Set Collisions
+        // Set collision for every tile that isn't ID 0 (Empty) or ID -1
+        this.mapLayer.setCollisionByExclusion([0, -1]);
+
+        // 4. Set World Bounds
+        this.physics.world.bounds.width = map.widthInPixels;
+        this.physics.world.bounds.height = map.heightInPixels;
+        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
+        this.cameras.main.setZoom(2); // Zoom in to see pixel art better
+
+        // 5. Create Player (Generating a texture since we don't have a player sprite)
+        const graphics = this.make.graphics().fillStyle(0xff0000).fillRect(0, 0, 12, 14);
+        graphics.generateTexture('playerTexture', 12, 14);
+        
+        // Spawn player near top left (adjust x,y if stuck in a wall)
+        this.player = this.physics.add.sprite(50, 800, 'playerTexture');
+        this.player.setBounce(0.1);
+        this.player.setCollideWorldBounds(true);
+        this.player.setGravityY(800); // Physics gravity
+
+        // Add collision between player and tiles
+        this.physics.add.collider(this.player, this.mapLayer);
+
+        // Camera follow
+        this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
+
+        // 6. Setup Inputs
+        this.cursors = this.input.keyboard.createCursorKeys();
+        
+        // Text instructions
+        this.add.text(10, 10, 'Gamepad: D-Pad/Stick to Move, A to Jump', { 
+            fontSize: '16px', 
+            fill: '#ffffff', 
+            backgroundColor: '#000000aa' 
+        }).setScrollFactor(0).setDepth(10);
+    }
+
+    update(time, delta) {
+        if (!this.player) return;
+
+        const speed = 160;
+        const jumpStrength = -400;
+        let moving = false;
+
+        // --- GAMEPAD CONTROLS ---
+        let pad = this.input.gamepad.pad1;
+        
+        if (pad) {
+            // Horizontal Movement (Stick or D-Pad)
+            if (pad.left || pad.axes[0].getValue() < -0.3) {
+                this.player.setVelocityX(-speed);
+                moving = true;
+            } else if (pad.right || pad.axes[0].getValue() > 0.3) {
+                this.player.setVelocityX(speed);
+                moving = true;
+            }
+
+            // Jump (Button 0 is usually A on Xbox, X on PS, B on Switch)
+            // We check touching.down to prevent double jumping
+            if (pad.buttons[0].pressed && this.player.body.blocked.down) {
+                this.player.setVelocityY(jumpStrength);
+            }
+        }
+
+        // --- KEYBOARD FALLBACK ---
+        if (!moving) {
+            if (this.cursors.left.isDown) {
+                this.player.setVelocityX(-speed);
+                moving = true;
+            } else if (this.cursors.right.isDown) {
+                this.player.setVelocityX(speed);
+                moving = true;
+            }
+        }
+
+        // Stop if no input
+        if (!moving) {
+            this.player.setVelocityX(0);
+        }
+
+        // Keyboard Jump
+        if ((this.cursors.space.isDown || this.cursors.up.isDown) && this.player.body.blocked.down) {
+            this.player.setVelocityY(jumpStrength);
+        }
+    }
+}
+
+const config = {
+    type: Phaser.AUTO,
+    width: 800,
+    height: 600,
+    backgroundColor: '#004400', // Greenish background matching the example
+    pixelArt: true, // Crucial for tile sets
+    input: {
+        gamepad: true // Enable gamepad support
+    },
+    physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 500 },
+            debug: false // Set to true to see collision boxes
+        }
+    },
+    scene: GameScene
+};
+
+const game = new Phaser.Game(config);
+</script>
+
+</body>
+</html>
