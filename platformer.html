@@ -42,6 +42,7 @@
         let particles = [], exhaustParticles = [], ringsList = [], enemies = [], platforms = [];
 
         let coyoteTime = 0, jumpBuffer = 0, isBoosting = false, boostKick = 0;
+        let previousOnGround = false;
 
         const playerSprite = new Image();
         playerSprite.src = 'http://easierbycode.com/assets/spritesheets/motorcycle.png';
@@ -57,22 +58,9 @@
 
         fg.onload = () => loaded = true;
 
-        // Load real level with strong fallback
-        let fetchTimeout = setTimeout(() => {
-            if (!levelLoaded) {
-                console.warn('%c⏰ JSON took too long → using fallback level', 'color:#f80');
-                levelLoaded = true;
-                generateFallbackPlatforms();
-            }
-        }, 4000);
-
         fetch('https://easierbycode.com/assets/spritesheets/level_data.json')
-            .then(r => {
-                if (!r.ok) throw new Error('Network error');
-                return r.json();
-            })
+            .then(r => r.json())
             .then(data => {
-                clearTimeout(fetchTimeout);
                 map = data.map || [];
                 numCols = data.numCols || 528;
                 numRows = data.numRows || 128;
@@ -80,11 +68,8 @@
                 WORLD_W = numCols * TILE_SIZE;
                 generateCollisionFromMap();
                 levelLoaded = true;
-                console.log('%c✅ Real level loaded — ' + numCols + '×' + numRows + ' tiles', 'color:#0f0;font-size:16px');
             })
-            .catch(err => {
-                clearTimeout(fetchTimeout);
-                console.warn('%c⚠️ JSON failed (' + err.message + ') → using fallback', 'color:#f80');
+            .catch(() => {
                 levelLoaded = true;
                 generateFallbackPlatforms();
             });
@@ -131,6 +116,24 @@
             ];
         }
 
+        function triggerHaptic(type = 'land') {
+            const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+            for (let gp of pads) {
+                if (!gp) continue;
+                try {
+                    if (gp.vibrationActuator) {
+                        if (type === 'land') {
+                            gp.vibrationActuator.playEffect("dual-rumble", { duration: 160, strongMagnitude: 0.9, weakMagnitude: 0.85 });
+                        } else if (type === 'left') {
+                            gp.vibrationActuator.playEffect("dual-rumble", { duration: 80, strongMagnitude: 0.2, weakMagnitude: 1.0 });
+                        } else if (type === 'right') {
+                            gp.vibrationActuator.playEffect("dual-rumble", { duration: 80, strongMagnitude: 1.0, weakMagnitude: 0.2 });
+                        }
+                    }
+                } catch (e) {}
+            }
+        }
+
         function createRing(x, y) { ringsList.push({x, y, collected: false, bob: 0}); }
         function createEnemy(x, y) { enemies.push({x, y, vx: -1.8, w: 36, h: 36}); }
         function createParticle(x, y, count = 8) {
@@ -154,8 +157,13 @@
         function collideHorizontal() {
             for (let p of platforms) {
                 if (player.x + player.w > p.x && player.x < p.x + p.w && player.y + player.h > p.y && player.y < p.y + p.h) {
-                    if (player.vx > 0) player.x = p.x - player.w;
-                    else if (player.vx < 0) player.x = p.x + p.w;
+                    if (player.vx > 0) {
+                        triggerHaptic('left');   // hitting left side of platform
+                        player.x = p.x - player.w;
+                    } else if (player.vx < 0) {
+                        triggerHaptic('right');  // hitting right side of platform
+                        player.x = p.x + p.w;
+                    }
                     player.vx = 0;
                 }
             }
@@ -188,12 +196,10 @@
             isBoosting = false;
             let restartPressed = false;
 
-            // Keyboard
             if (keys['ArrowLeft'] || keys['a'] || keys['A']) targetVx = -8.4;
             if (keys['ArrowRight'] || keys['d'] || keys['D']) targetVx = 8.4;
             if (keys['Shift']) isBoosting = true;
 
-            // Gamepad
             const pads = navigator.getGamepads ? navigator.getGamepads() : [];
             for (let gp of pads) {
                 if (!gp) continue;
@@ -255,6 +261,10 @@
             player.y += player.vy;
             collideVertical();
 
+            // HAPTICS
+            if (player.onGround && !previousOnGround) triggerHaptic('land');
+            previousOnGround = player.onGround;
+
             if (player.onGround) coyoteTime = 8;
             if (coyoteTime > 0) coyoteTime--;
 
@@ -262,7 +272,6 @@
             if (player.y > 950) gameOver = true;
             if (player.x > WORLD_W - 280 && !gameWon) gameWon = true;
 
-            // RESTART (works even if game over/won)
             if (restartPressed || keys['r'] || keys['R']) {
                 player.x = 180; player.y = 380; player.vx = player.vy = 0;
                 ringsCollected = 0; time = 0; gameWon = false; gameOver = false;
@@ -272,7 +281,6 @@
                 document.getElementById('rings').textContent = 'RINGS 00';
             }
 
-            // Camera
             const lookAhead = player.vx * (isBoosting ? 18 : 12);
             const targetCam = player.x - SCREEN_W * 0.42 + lookAhead + camOffset;
             camX += (targetCam - camX) * (isBoosting ? 0.38 : 0.32);
@@ -331,7 +339,6 @@
         }
 
         function draw() {
-            // ALWAYS draw sky first
             ctx.fillStyle = '#0b1f0b';
             ctx.fillRect(0, 0, SCREEN_W, SCREEN_H);
 
@@ -339,9 +346,7 @@
                 ctx.fillStyle = '#0f0';
                 ctx.font = 'bold 42px Courier New';
                 ctx.textAlign = 'center';
-                ctx.fillText('LOADING REAL LEVEL...', SCREEN_W/2, SCREEN_H/2 - 20);
-                ctx.font = '24px Courier New';
-                ctx.fillText('Please wait...', SCREEN_W/2, SCREEN_H/2 + 30);
+                ctx.fillText('LOADING LEVEL...', SCREEN_W/2, SCREEN_H/2);
                 return;
             }
 
@@ -384,14 +389,6 @@
                 ctx.fillRect(p.x - camX, p.y, p.size, p.size);
             }
             ctx.globalAlpha = 1;
-
-            if (showDebug) {
-                ctx.strokeStyle = '#f38630';
-                ctx.lineWidth = 2;
-                for (let p of platforms) ctx.strokeRect(p.x - camX, p.y, p.w, p.h);
-                ctx.strokeStyle = '#0f0';
-                ctx.strokeRect(player.x - camX, player.y, player.w, player.h);
-            }
 
             ctx.restore();
 
