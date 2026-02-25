@@ -50,19 +50,28 @@
         playerSprite.src = 'http://easierbycode.com/assets/spritesheets/motorcycle.png';
 
         const rocktoSprite = new Image();
-        rocktoSprite.src = 'http://easierbycode.com/assets/spritesheets/rockto.png'; // upload your 4-frame atlas here
+        rocktoSprite.src = 'http://easierbycode.com/assets/spritesheets/rockto.png';
+
+        let motorcycleLoaded = false;
+        let rocktoLoaded = false;
+        let tilesLoaded = false;
+
+        playerSprite.onload = () => { motorcycleLoaded = true; console.log('Motorcycle loaded'); };
+        playerSprite.onerror = () => console.error('Failed to load motorcycle.png');
+
+        rocktoSprite.onload = () => { rocktoLoaded = true; console.log('Rockto loaded'); };
+        rocktoSprite.onerror = () => console.error('Failed to load rockto.png');
+
+        const fg = new Image();
+        fg.src = 'http://easierbycode.com/assets/spritesheets/tiles.png';
+        fg.onload = () => { tilesLoaded = true; console.log('Tiles loaded'); };
+        fg.onerror = () => console.error('Failed to load tiles.png');
 
         let currentFrame = 0, lastAnimTime = Date.now();
         const FRAME_WIDTH = 86, FRAME_HEIGHT = 46, TOTAL_FRAMES = 10;
 
-        const fg = new Image();
-        fg.src = 'http://easierbycode.com/assets/spritesheets/tiles.png';
-
         let loaded = false, levelLoaded = false;
         let prevRestartPressed = false;
-
-        fg.onload = () => loaded = true;
-        rocktoSprite.onload = () => console.log('Rockto sprite loaded');
 
         fetch('https://easierbycode.com/assets/spritesheets/level_data.json')
             .then(r => r.json())
@@ -74,8 +83,10 @@
                 WORLD_W = numCols * TILE_SIZE;
                 generateCollisionFromMap();
                 levelLoaded = true;
+                console.log('Level data loaded');
             })
-            .catch(() => {
+            .catch(err => {
+                console.error('Level JSON failed:', err);
                 levelLoaded = true;
                 generateFallbackPlatforms();
             });
@@ -122,17 +133,16 @@
             ];
         }
 
-        // Rockto enemy class (Angry Sun pattern)
         class Rockto {
             constructor(x, y) {
                 this.x = x;
                 this.y = y;
                 this.w = 61;
                 this.h = 57;
-                this.phase = 0; // 0 to Math.PI*2
-                this.radius = 140; // orbit radius
-                this.speed = 0.028; // radians per frame
-                this.centerX = x + 320; // center of loop
+                this.phase = 0;
+                this.radius = 140;
+                this.speed = 0.028;
+                this.centerX = x + 320;
                 this.centerY = y + 180;
                 this.active = true;
             }
@@ -145,7 +155,14 @@
             }
 
             draw() {
-                if (!rocktoSprite.complete || !this.active) return;
+                if (!rocktoLoaded || !this.active) {
+                    // Fallback red circle if sprite broken
+                    ctx.fillStyle = '#ff4444';
+                    ctx.beginPath();
+                    ctx.arc(this.x - camX, this.y, 30, 0, Math.PI*2);
+                    ctx.fill();
+                    return;
+                }
                 let frame = Math.floor((Date.now() / 120) % 4);
                 let sx = frame * 61;
                 ctx.drawImage(rocktoSprite, sx, 0, 61, 57, this.x - camX, this.y, 61, 57);
@@ -190,10 +207,9 @@
             createEnemy(960, 512); createEnemy(2656, 352); createEnemy(4160, 432);
             createEnemy(5472, 256); createEnemy(6208, 384); createEnemy(7104, 320);
 
-            // Add Rockto enemies orbiting loops
             rocktos = [
-                new Rockto(3800, 220),  // orbiting the big loop
-                new Rockto(6200, 180)   // second loop area
+                new Rockto(3800, 220),
+                new Rockto(6200, 180)
             ];
         }
 
@@ -361,7 +377,6 @@
                 }
             }
 
-            // Update & check Rockto enemies
             for (let rock of rocktos) {
                 rock.update();
                 if (rock.checkCollision()) gameOver = true;
@@ -374,10 +389,9 @@
             }
         }
 
-        // Mouse Controls
         canvas.addEventListener('mousedown', e => {
-            if (e.button === 0) jumpBuffer = 8; // left click jump
-            if (e.button === 2) mouseRight = true; // right click move right
+            if (e.button === 0) jumpBuffer = 8;
+            if (e.button === 2) mouseRight = true;
         });
 
         canvas.addEventListener('mouseup', e => {
@@ -387,14 +401,29 @@
         canvas.addEventListener('contextmenu', e => e.preventDefault());
 
         function drawPlayer() {
-            if (!playerSprite.complete) return;
             let px = player.x - camX;
             let py = player.y;
+
             ctx.save();
             ctx.translate(px + player.w/2, py + 32);
             ctx.scale(player.facing, 1);
-            const sx = currentFrame * FRAME_WIDTH;
-            ctx.drawImage(playerSprite, sx, 0, FRAME_WIDTH, FRAME_HEIGHT, -FRAME_WIDTH/2, -FRAME_HEIGHT/2 + 18, FRAME_WIDTH, FRAME_HEIGHT);
+
+            if (motorcycleLoaded) {
+                const sx = currentFrame * FRAME_WIDTH;
+                ctx.drawImage(
+                    playerSprite,
+                    sx, 0, FRAME_WIDTH, FRAME_HEIGHT,
+                    -FRAME_WIDTH/2, -FRAME_HEIGHT/2 + 18,
+                    FRAME_WIDTH, FRAME_HEIGHT
+                );
+            } else {
+                ctx.fillStyle = '#ff3366';
+                ctx.fillRect(-30, -30, 60, 60);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '12px Arial';
+                ctx.fillText('IMG ERR', -25, 5);
+            }
+
             ctx.restore();
         }
 
@@ -419,7 +448,15 @@
             ctx.save();
             ctx.translate(-Math.floor(camX), 0);
 
-            if (loaded) ctx.drawImage(fg, 0, 0);
+            if (tilesLoaded) {
+                ctx.drawImage(fg, 0, 0);
+            } else {
+                ctx.fillStyle = '#444';
+                ctx.fillRect(0, 300, WORLD_W, 300);
+                ctx.fillStyle = '#888';
+                ctx.font = 'bold 32px Courier New';
+                ctx.fillText('TILES MISSING', 200, 450);
+            }
 
             for (let r of ringsList) if (!r.collected) {
                 ctx.fillStyle = '#f1c40f';
@@ -436,8 +473,9 @@
                 ctx.fillRect(ex + 6, e.y + 8, 24, 14);
             }
 
-            // Draw Rockto enemies
-            for (let rock of rocktos) rock.draw();
+            for (let rock of rocktos) {
+                rock.draw();
+            }
 
             drawPlayer();
 
@@ -454,6 +492,17 @@
             ctx.globalAlpha = 1;
 
             ctx.restore();
+
+            if (showDebug) {
+                ctx.save();
+                ctx.translate(-Math.floor(camX), 0);
+                ctx.strokeStyle = '#f38630';
+                ctx.lineWidth = 2;
+                for (let p of platforms) ctx.strokeRect(p.x, p.y, p.w, p.h);
+                ctx.strokeStyle = '#0f0';
+                ctx.strokeRect(player.x, player.y, player.w, player.h);
+                ctx.restore();
+            }
 
             if (gameWon || gameOver) {
                 ctx.fillStyle = gameWon ? 'rgba(0,40,0,0.9)' : 'rgba(40,0,0,0.9)';
@@ -475,8 +524,26 @@
             requestAnimationFrame(loop);
         }
 
-        window.addEventListener('keydown', e => { keys[e.key] = true; if (e.key.toLowerCase() === 'f') { if (!document.fullscreenElement) canvas.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
-            else document.exitFullscreen(); } if (e.key === 'd' || e.key === 'D') showDebug = !showDebug; });
+        canvas.addEventListener('mousedown', e => {
+            if (e.button === 0) jumpBuffer = 8;
+            if (e.button === 2) mouseRight = true;
+        });
+
+        canvas.addEventListener('mouseup', e => {
+            if (e.button === 2) mouseRight = false;
+        });
+
+        canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+        window.addEventListener('keydown', e => {
+            keys[e.key] = true;
+            if (e.key.toLowerCase() === 'f') {
+                if (!document.fullscreenElement) canvas.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
+                else document.exitFullscreen();
+            }
+            if (e.key === 'd' || e.key === 'D') showDebug = !showDebug;
+        });
+
         window.addEventListener('keyup', e => keys[e.key] = false);
 
         window.onload = () => {
