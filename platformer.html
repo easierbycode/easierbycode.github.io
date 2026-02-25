@@ -16,7 +16,8 @@
         <span id="rings">RINGS 00</span>  TIME <span id="time">000</span>
     </div>
     <div id="instructions">
-        ← → / A D = Move  SPACE / ↑ = Jump  D = Toggle collision debug  Collect rings • Avoid badniks & spikes
+        ← → / A D = Move  SPACE / ↑ = Jump<br>
+        GAMEPAD: Left Stick / D-Pad = Move  A / X (bottom face) = Jump  Any button = Fullscreen
     </div>
     <canvas id="c" width="800" height="600"></canvas>
 
@@ -25,6 +26,7 @@
         const ctx = canvas.getContext('2d');
         const SCREEN_W = 800;
         const SCREEN_H = 600;
+        const TILE_SIZE = 32;   // ← tiles from your tilemap (tiles.png)
 
         let WORLD_W = 8240;
 
@@ -40,6 +42,7 @@
         let gameWon = false;
         let gameOver = false;
         let showDebug = false;
+        let usedGamepad = false;   // for auto-fullscreen on first gamepad press
 
         const keys = {};
         let particles = [];
@@ -47,6 +50,7 @@
         let enemies = [];
         let platforms = [];
         let spikes = [];
+        let slopes = [];
 
         const fg = new Image();
         fg.src = 'http://easierbycode.com/assets/spritesheets/tiles.png';
@@ -75,47 +79,55 @@
         }
 
         function initLevel() {
-            // Ultra-precise platforms (hand-tuned to the PNG – 48 total)
+            // Tile-snapped platforms (32px grid from your tilemap)
             platforms = [
-                {x:0, y:530, w:WORLD_W, h:150}, // main floor
-                {x:140, y:442, w:460, h:26}, {x:720, y:382, w:280, h:26},
-                {x:1080, y:472, w:410, h:26}, {x:1550, y:342, w:340, h:26},
-                {x:1980, y:432, w:310, h:26}, {x:2350, y:292, w:480, h:26},
-                {x:2920, y:412, w:270, h:26}, {x:3250, y:262, w:560, h:26},
-                {x:3900, y:372, w:370, h:26}, {x:4350, y:312, w:310, h:26},
-                {x:4750, y:452, w:410, h:26}, {x:5250, y:282, w:460, h:26},
-                {x:5800, y:392, w:720, h:26}, {x:6150, y:322, w:260, h:26},
-                {x:6500, y:442, w:340, h:26}, {x:7200, y:312, w:420, h:26},
-                // small pipes / ledges
-                {x:480, y:492, w:160, h:20}, {x:1180, y:322, w:170, h:20},
-                {x:2680, y:352, w:190, h:22}, {x:3780, y:282, w:150, h:22},
-                {x:4480, y:342, w:110, h:18}, {x:4980, y:392, w:140, h:20},
-                {x:5620, y:262, w:130, h:20}, {x:6820, y:362, w:180, h:22},
-                // more detail platforms from the image
-                {x:820, y:410, w:90, h:18}, {x:1420, y:390, w:130, h:20},
-                {x:1820, y:290, w:110, h:20}, {x:2150, y:420, w:80, h:18},
-                {x:3120, y:330, w:150, h:20}, {x:3550, y:240, w:90, h:18},
-                {x:4020, y:310, w:120, h:20}, {x:4620, y:380, w:100, h:18},
-                {x:5100, y:210, w:140, h:20}, {x:5950, y:340, w:110, h:18},
-                {x:6300, y:280, w:160, h:20}, {x:6950, y:370, w:130, h:20},
-                {x:7400, y:290, w:180, h:22}
+                {x:0, y:528, w:WORLD_W, h:160}, // main floor (snapped)
+                {x:128, y:448, w:480, h:32}, {x:704, y:384, w:288, h:32},
+                {x:1056, y:480, w:416, h:32}, {x:1536, y:352, w:352, h:32},
+                {x:1984, y:448, w:320, h:32}, {x:2336, y:288, w:480, h:32},
+                {x:2912, y:416, w:288, h:32}, {x:3232, y:256, w:576, h:32},
+                {x:3904, y:384, w:384, h:32}, {x:4352, y:320, w:320, h:32},
+                {x:4736, y:448, w:416, h:32}, {x:5248, y:288, w:480, h:32},
+                {x:5792, y:384, w:736, h:32}, {x:6144, y:320, w:256, h:32},
+                {x:6496, y:448, w:352, h:32}, {x:7200, y:320, w:448, h:32},
+                // small tile ledges (all snapped to 32px grid)
+                {x:480, y:480, w:160, h:32}, {x:1184, y:320, w:160, h:32},
+                {x:2688, y:352, w:192, h:32}, {x:3776, y:288, w:160, h:32},
+                {x:4480, y:352, w:96, h:32}, {x:4960, y:384, w:160, h:32},
+                {x:5600, y:256, w:128, h:32}, {x:6816, y:352, w:192, h:32},
+                {x:800, y:416, w:96, h:32}, {x:1408, y:384, w:128, h:32},
+                {x:1824, y:288, w:128, h:32}, {x:2144, y:416, w:96, h:32},
+                {x:3104, y:320, w:160, h:32}, {x:3552, y:256, w:96, h:32},
+                {x:4000, y:320, w:128, h:32}, {x:4608, y:384, w:96, h:32},
+                {x:5088, y:224, w:160, h:32}, {x:5952, y:352, w:96, h:32},
+                {x:6272, y:288, w:160, h:32}, {x:6944, y:384, w:128, h:32},
+                {x:7392, y:288, w:192, h:32}
             ];
 
             spikes = [
-                {x:620, y:510, w:80, h:20}, {x:1480, y:510, w:60, h:20},
-                {x:2650, y:510, w:100, h:20}, {x:4150, y:510, w:70, h:20},
-                {x:5480, y:510, w:90, h:20}, {x:6200, y:510, w:50, h:20}
+                {x:608, y:512, w:96, h:32}, {x:1472, y:512, w:64, h:32},
+                {x:2624, y:512, w:96, h:32}, {x:4128, y:512, w:64, h:32},
+                {x:5440, y:512, w:96, h:32}, {x:6176, y:512, w:64, h:32}
+            ];
+
+            slopes = [
+                {x: 640, y: 512, width: 256, rise: -128},
+                {x: 1920, y: 448, width: 192, rise: 128},
+                {x: 3232, y: 352, width: 256, rise: -160},
+                {x: 4736, y: 416, width: 192, rise: 96},
+                {x: 5792, y: 384, width: 224, rise: -128},
+                {x: 6784, y: 352, width: 256, rise: 144}
             ];
 
             ringsList = [];
             for (let i = 0; i < 18; i++) {
-                createRing(280 + i*380, 280 + (i%5)*40);
+                createRing(288 + i*384, 272 + (i%5)*40);
             }
 
             enemies = [];
-            createEnemy(950, 510); createEnemy(2650, 340);
-            createEnemy(4150, 430); createEnemy(5480, 250);
-            createEnemy(6200, 390); createEnemy(7100, 310);
+            createEnemy(960, 512); createEnemy(2656, 352);
+            createEnemy(4160, 432); createEnemy(5472, 256);
+            createEnemy(6208, 384); createEnemy(7104, 320);
         }
 
         const GRAVITY = 0.88;
@@ -146,11 +158,30 @@
                     player.vy = 0.6;
                 }
             }
-            // spikes
             for (let s of spikes) {
                 if (player.x + player.w > s.x && player.x < s.x + s.w &&
-                    player.y + player.h > s.y && player.y < s.y + s.h) {
-                    gameOver = true;
+                    player.y + player.h > s.y && player.y < s.y + s.h) gameOver = true;
+            }
+        }
+
+        function resolveSlopes() {
+            for (let s of slopes) {
+                const pLeft = player.x;
+                const pRight = player.x + player.w;
+                if (pRight < s.x || pLeft > s.x + s.width) continue;
+                const frac = Math.max(0, Math.min(1, (player.x + player.w/2 - s.x) / s.width));
+                const slopeY = s.y + frac * s.rise;
+                const playerBottom = player.y + player.h;
+                if (playerBottom > slopeY - 26 && playerBottom < slopeY + 20 && player.vy >= -3) {
+                    player.y = slopeY - player.h;
+                    player.vy = 0;
+                    player.onGround = true;
+                    const slopeFactor = s.rise / s.width;
+                    if (Math.abs(slopeFactor) > 0.3) player.vx += slopeFactor * 4.5;
+                    if (s.rise < 0) player.vx *= 1.06;
+                    else player.vx *= 0.97;
+                    createParticle(player.x + 15, player.y + player.h - 4);
+                    return;
                 }
             }
         }
@@ -160,10 +191,45 @@
 
             time = Math.floor((Date.now() - startTime) / 1000);
 
-            // Input + physics
+            // === KEYBOARD ===
             let targetVx = 0;
-            if (keys['ArrowLeft'] || keys['a'] || keys['A']) { targetVx = -8.2; player.facing = -1; }
-            if (keys['ArrowRight'] || keys['d'] || keys['D']) { targetVx = 8.2; player.facing = 1; }
+            if (keys['ArrowLeft'] || keys['a'] || keys['A']) targetVx = -8.2;
+            if (keys['ArrowRight'] || keys['d'] || keys['D']) targetVx = 8.2;
+            if (targetVx) player.facing = targetVx > 0 ? 1 : -1;
+
+            // === GAMEPAD ===
+            const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+            for (let gp of pads) {
+                if (!gp || !gp.connected) continue;
+
+                // Movement (stick + D-pad)
+                let gpVx = 0;
+                if (Math.abs(gp.axes[0]) > 0.25) gpVx = gp.axes[0] * 8.2;
+                if (gp.buttons[12].pressed) gpVx = -8.2; // D-pad left
+                if (gp.buttons[13].pressed) gpVx = 8.2;  // D-pad right
+                if (gpVx) {
+                    targetVx = gpVx;
+                    player.facing = gpVx > 0 ? 1 : -1;
+                }
+
+                // Jump - BOTTOM FACE BUTTON (A on Xbox, X on PS, B on Switch)
+                if (gp.buttons[0].pressed && player.onGround) {
+                    player.vy = -17.5;
+                    player.onGround = false;
+                }
+
+                // Auto-fullscreen on FIRST gamepad button press
+                let anyPressed = false;
+                for (let b = 0; b < gp.buttons.length; b++) {
+                    if (gp.buttons[b].pressed) anyPressed = true;
+                }
+                if (anyPressed && !usedGamepad) {
+                    usedGamepad = true;
+                    if (!document.fullscreenElement) {
+                        canvas.requestFullscreen({ navigationUI: "hide" }).catch(() => {});
+                    }
+                }
+            }
 
             const accel = player.onGround ? 0.28 : 0.16;
             player.vx += (targetVx - player.vx) * accel;
@@ -175,14 +241,14 @@
 
             player.vy += GRAVITY;
 
-            // Separate axis movement + collision (the big improvement)
             player.x += player.vx;
             collideHorizontal();
 
             player.y += player.vy;
             collideVertical();
+            resolveSlopes();
 
-            // Rings
+            // rings / enemies / bounds / camera / particles (unchanged)
             for (let r of ringsList) {
                 if (!r.collected) {
                     r.bob = Math.sin(Date.now() / 140) * 5;
@@ -194,27 +260,21 @@
                 }
             }
 
-            // Enemies
             for (let e of enemies) {
                 e.x += e.vx;
                 if (Math.random() < 0.018) e.vx *= -1;
                 if (Math.abs(player.x + player.w/2 - (e.x + e.w/2)) < 37 &&
-                    Math.abs(player.y + player.h/2 - (e.y + e.h/2)) < 39) {
-                    gameOver = true;
-                }
+                    Math.abs(player.y + player.h/2 - (e.y + e.h/2)) < 39) gameOver = true;
             }
 
-            // Bounds
             if (player.x < 0) player.x = 0;
             if (player.y > 900) gameOver = true;
             if (player.x > WORLD_W - 300 && !gameWon) gameWon = true;
 
-            // Camera
             let targetCam = player.x - SCREEN_W * 0.45;
             camX += (targetCam - camX) * 0.13;
             camX = Math.max(0, Math.min(camX, WORLD_W - SCREEN_W));
 
-            // Particles
             for (let i = particles.length-1; i >= 0; i--) {
                 let p = particles[i];
                 p.x += p.vx; p.y += p.vy; p.vy += 0.32; p.life--;
@@ -228,23 +288,13 @@
             ctx.save();
             ctx.translate(px + player.w/2, py + player.h/2 - 3);
             ctx.scale(player.facing, 1);
-
-            // Shoes
-            ctx.fillStyle = '#c0392b';
-            ctx.fillRect(-18, 19, 36, 13);
-            // Body
-            ctx.fillStyle = '#2980b9';
-            ctx.fillRect(-15, -9, 30, 30);
-            ctx.fillStyle = '#ecf0f1';
-            ctx.fillRect(-12, -5, 24, 18);
-            // Head
+            ctx.fillStyle = '#c0392b'; ctx.fillRect(-18, 19, 36, 13);
+            ctx.fillStyle = '#2980b9'; ctx.fillRect(-15, -9, 30, 30);
+            ctx.fillStyle = '#ecf0f1'; ctx.fillRect(-12, -5, 24, 18);
             ctx.fillStyle = '#2980b9';
             ctx.beginPath(); ctx.arc(0, -23, 17, 0, Math.PI*2); ctx.fill();
-            // Spines
             ctx.fillStyle = '#2c3e50';
-            ctx.fillRect(-19, -27, 8, 15);
-            ctx.fillRect(-13, -31, 7, 13);
-            // Eye
+            ctx.fillRect(-19, -27, 8, 15); ctx.fillRect(-13, -31, 7, 13);
             ctx.fillStyle = '#fff';
             ctx.fillRect(6, -26, 12, 10);
             ctx.fillStyle = '#111';
@@ -267,7 +317,7 @@
 
             if (loaded) ctx.drawImage(fg, 0, 0);
 
-            // Rings
+            // rings
             for (let r of ringsList) if (!r.collected) {
                 ctx.fillStyle = '#f1c40f';
                 ctx.beginPath(); ctx.arc(r.x, r.y + r.bob, 15, 0, Math.PI*2); ctx.fill();
@@ -275,7 +325,7 @@
                 ctx.beginPath(); ctx.arc(r.x, r.y + r.bob, 10, 0, Math.PI*2); ctx.fill();
             }
 
-            // Enemies
+            // enemies & spikes
             for (let e of enemies) {
                 let ex = e.x - camX;
                 ctx.fillStyle = '#e74c3c';
@@ -283,22 +333,18 @@
                 ctx.fillStyle = '#2c3e50';
                 ctx.fillRect(ex + 6, e.y + 8, 24, 14);
             }
-
-            // Spikes
             ctx.fillStyle = '#e74c3c';
             for (let s of spikes) {
                 let sx = s.x - camX;
                 ctx.fillRect(sx, s.y, s.w, s.h);
                 ctx.fillStyle = '#fff';
-                for (let i = 0; i < s.w; i += 12) {
-                    ctx.fillRect(sx + i + 4, s.y - 8, 4, 10);
-                }
+                for (let i = 0; i < s.w; i += 12) ctx.fillRect(sx + i + 4, s.y - 8, 4, 10);
                 ctx.fillStyle = '#e74c3c';
             }
 
             drawPlayer();
 
-            // Particles
+            // particles
             ctx.fillStyle = '#f1c40f';
             for (let p of particles) {
                 ctx.globalAlpha = p.life / 40;
@@ -306,16 +352,20 @@
             }
             ctx.globalAlpha = 1;
 
-            // Collision debug (Phaser-style orange overlay – press D)
+            // tile-debug (orange tiles + cyan slopes)
             if (showDebug) {
                 ctx.strokeStyle = '#f38630';
                 ctx.lineWidth = 2;
-                for (let p of platforms) {
-                    ctx.strokeRect(p.x - camX, p.y, p.w, p.h);
-                }
-                for (let s of spikes) {
-                    ctx.strokeStyle = '#e74c3c';
-                    ctx.strokeRect(s.x - camX, s.y, s.w, s.h);
+                for (let p of platforms) ctx.strokeRect(p.x - camX, p.y, p.w, p.h);
+                ctx.strokeStyle = '#e74c3c';
+                for (let s of spikes) ctx.strokeRect(s.x - camX, s.y, s.w, s.h);
+                ctx.strokeStyle = '#0ff';
+                ctx.lineWidth = 4;
+                for (let s of slopes) {
+                    ctx.beginPath();
+                    ctx.moveTo(s.x - camX, s.y);
+                    ctx.lineTo(s.x + s.width - camX, s.y + s.rise);
+                    ctx.stroke();
                 }
                 ctx.strokeStyle = '#0f0';
                 ctx.strokeRect(player.x - camX, player.y, player.w, player.h);
@@ -323,7 +373,6 @@
 
             ctx.restore();
 
-            // Win / Game Over
             if (gameWon || gameOver) {
                 ctx.fillStyle = gameWon ? 'rgba(0,40,0,0.9)' : 'rgba(40,0,0,0.9)';
                 ctx.fillRect(0, 0, SCREEN_W, SCREEN_H);
@@ -346,11 +395,16 @@
 
         window.addEventListener('keydown', e => {
             keys[e.key] = true;
-            if ((e.key === 'd' || e.key === 'D')) showDebug = !showDebug;
+            if (e.key.toLowerCase() === 'f') {
+                if (!document.fullscreenElement) canvas.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
+                else document.exitFullscreen();
+            }
+            if (e.key === 'd' || e.key === 'D') showDebug = !showDebug;
             if ((e.key === 'r' || e.key === 'R') && (gameWon || gameOver)) {
                 player.x = 120; player.y = 400; player.vx = player.vy = 0;
                 ringsCollected = 0; time = 0; gameWon = false; gameOver = false;
                 startTime = Date.now();
+                usedGamepad = false;
                 document.getElementById('rings').textContent = 'RINGS 00';
             }
         });
