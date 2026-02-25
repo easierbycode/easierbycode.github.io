@@ -1,1 +1,1 @@
-# easierbycode.github.io
+https://easierbycode.com/platformer.html
