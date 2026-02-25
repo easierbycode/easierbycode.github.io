@@ -16,9 +16,9 @@
         <span id="rings">RINGS 00</span>  TIME <span id="time">000</span>
     </div>
     <div id="instructions">
-        ← → / A D = Move  SPACE / ↑ = Jump  F = Fullscreen  D = Debug<br>
-        GAMEPAD: Stick/D-Pad = Move  A/X (bottom) = Jump  X (left face) = BOOST<br>
-        Keyboard: SHIFT = BOOST
+        ← → / A D = Move  SPACE / ↑ = Jump  SHIFT / X (left face) = BOOST<br>
+        Right Analog = Camera X  L3 (left stick click) = Fullscreen<br>
+        A/X or START/OPTIONS = Restart (when dead or won)
     </div>
     <canvas id="c" width="800" height="600"></canvas>
 
@@ -32,7 +32,7 @@
 
         const player = {
             x: 120, y: 400, vx: 0, vy: 0,
-            w: 38, h: 48,          // collision box stays the same
+            w: 38, h: 48,
             facing: 1,
             onGround: false
         };
@@ -45,6 +45,7 @@
         let usedGamepad = false;
 
         let camX = 0;
+        let camOffset = 0;   // ← controlled by right analog stick
 
         const keys = {};
         let particles = [];
@@ -57,13 +58,12 @@
         let coyoteTime = 0;
         let jumpBuffer = 0;
 
-        // === NEW: Motorcycle spritesheet ===
+        // Motorcycle spritesheet (10 frames)
         const playerSprite = new Image();
-        playerSprite.src = 'http://easierbycode.com/assets/spritesheets/motorcycle.png'; // ← Upload your PNG here
+        playerSprite.src = 'http://easierbycode.com/assets/spritesheets/motorcycle.png';
 
-        let animFrame = 0;
-        let lastAnimTime = Date.now();
         let currentFrame = 0;
+        let lastAnimTime = Date.now();
         const FRAME_WIDTH = 86;
         const FRAME_HEIGHT = 46;
         const TOTAL_FRAMES = 10;
@@ -96,7 +96,7 @@
         }
 
         function initLevel() {
-            platforms = [ /* same 48 platforms as before */ 
+            platforms = [
                 {x:0, y:528, w:WORLD_W, h:160},
                 {x:128, y:448, w:480, h:32}, {x:704, y:384, w:288, h:32},
                 {x:1056, y:480, w:416, h:32}, {x:1536, y:352, w:352, h:32},
@@ -145,7 +145,7 @@
         const GRAVITY = 0.82;
         let startTime = Date.now();
 
-        function collideHorizontal() { /* unchanged */ 
+        function collideHorizontal() {
             for (let p of platforms) {
                 if (player.x + player.w > p.x && player.x < p.x + p.w &&
                     player.y + player.h > p.y && player.y < p.y + p.h) {
@@ -156,7 +156,7 @@
             }
         }
 
-        function collideVertical() { /* unchanged */ 
+        function collideVertical() {
             player.onGround = false;
             for (let p of platforms) {
                 if (player.x + player.w > p.x && player.x < p.x + p.w &&
@@ -179,7 +179,7 @@
             }
         }
 
-        function resolveSlopes() { /* unchanged */ 
+        function resolveSlopes() {
             for (let s of slopes) {
                 const left = player.x;
                 const right = player.x + player.w;
@@ -207,6 +207,7 @@
 
             let targetVx = 0;
             isBoosting = false;
+            let restartPressed = false;
 
             // Keyboard
             if (keys['ArrowLeft'] || keys['a'] || keys['A']) targetVx = -8.4;
@@ -218,39 +219,55 @@
             for (let gp of pads) {
                 if (!gp) continue;
 
+                // Left stick movement
                 if (Math.abs(gp.axes[0]) > 0.2) targetVx = gp.axes[0] * 8.4;
                 if (gp.buttons[12].pressed) targetVx = -8.4;
                 if (gp.buttons[13].pressed) targetVx = 8.4;
 
-                // Bottom face (A/X) = Jump
-                if ((gp.buttons[0].pressed || gp.buttons[2].pressed) && (player.onGround || coyoteTime > 0)) {
-                    player.vy = -17.8;
-                    player.onGround = false;
-                    coyoteTime = 0;
+                // Bottom face (A/X) = Jump (unless game over/won)
+                if ((gp.buttons[0].pressed || gp.buttons[2].pressed)) {
+                    if (gameWon || gameOver) {
+                        restartPressed = true;
+                    } else if (player.onGround || coyoteTime > 0) {
+                        player.vy = -17.8;
+                        player.onGround = false;
+                        coyoteTime = 0;
+                    }
                 }
 
-                // Left face button (X / button 2) = BOOST
+                // Right analog → camera X control
+                const rightStickX = gp.axes[2] || 0;
+                if (Math.abs(rightStickX) > 0.15) {
+                    camOffset += rightStickX * 22;   // smooth manual camera panning
+                } else {
+                    camOffset *= 0.82;               // gentle dampening
+                }
+
+                // Boost (left face X)
                 if (gp.buttons[2].pressed) isBoosting = true;
 
-                if (!usedGamepad) {
-                    for (let b of gp.buttons) if (b.pressed) {
-                        usedGamepad = true;
-                        if (!document.fullscreenElement) canvas.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
-                        break;
+                // L3 (left stick click) = Fullscreen
+                if (gp.buttons[10].pressed && !usedGamepad) {
+                    usedGamepad = true;
+                    if (!document.fullscreenElement) {
+                        canvas.requestFullscreen({ navigationUI: "hide" }).catch(() => {});
                     }
+                }
+
+                // Start / Options = restart
+                if (gp.buttons[9].pressed || gp.buttons[8].pressed) {
+                    restartPressed = true;
                 }
             }
 
             if (targetVx) player.facing = targetVx > 0 ? 1 : -1;
 
-            // BOOST increases max speed and acceleration
             const maxSpeed = isBoosting ? 13.5 : 8.4;
             const accel = (player.onGround || coyoteTime > 0) ? (isBoosting ? 0.45 : 0.34) : 0.19;
 
             player.vx += (targetVx * (isBoosting ? 1.6 : 1) - player.vx) * accel;
             if (Math.abs(player.vx) > maxSpeed) player.vx = Math.sign(player.vx) * maxSpeed;
 
-            // Jump buffer + coyote
             if ((keys[' '] || keys['ArrowUp'] || keys['w'] || keys['W'])) jumpBuffer = 8;
             if (jumpBuffer > 0) jumpBuffer--;
 
@@ -277,35 +294,41 @@
             if (player.y > 950) gameOver = true;
             if (player.x > WORLD_W - 280 && !gameWon) gameWon = true;
 
-            // Camera (same great lookahead)
+            // Restart logic
+            if ((gameWon || gameOver) && (restartPressed || (keys['r'] || keys['R']))) {
+                player.x = 120; player.y = 400; player.vx = player.vy = 0;
+                ringsCollected = 0; time = 0; gameWon = false; gameOver = false;
+                startTime = Date.now();
+                usedGamepad = false;
+                document.getElementById('rings').textContent = 'RINGS 00';
+                camOffset = 0;
+            }
+
+            // Camera with right-stick offset
             const lookAhead = player.vx * 9;
-            const targetCam = player.x - SCREEN_W * 0.42 + lookAhead;
-            camX += (targetCam - camX) * 0.22;
+            let targetCam = player.x - SCREEN_W * 0.42 + lookAhead + camOffset;
+            camX += (targetCam - camX) * 0.24;
             camX = Math.max(0, Math.min(camX, WORLD_W - SCREEN_W));
 
-            // Running dust (more when boosting)
+            // Dust
             if (player.onGround && Math.abs(player.vx) > 5.5 && Math.random() < (isBoosting ? 0.7 : 0.4)) {
                 createParticle(player.x + (player.facing * 12), player.y + player.h - 4, isBoosting ? 7 : 4);
             }
 
-            // === ANIMATION (12 fps default, 24 fps when boosting) ===
+            // Animation (12 → 24 fps on boost)
             const now = Date.now();
             const fps = isBoosting ? 24 : 12;
-            const frameDuration = 1000 / fps;
-
-            if (now - lastAnimTime > frameDuration) {
+            if (now - lastAnimTime > 1000 / fps) {
                 currentFrame = (currentFrame + 1) % TOTAL_FRAMES;
                 lastAnimTime = now;
             }
 
-            // Particles cleanup
             for (let i = particles.length - 1; i >= 0; i--) {
                 let p = particles[i];
                 p.x += p.vx; p.y += p.vy; p.vy += 0.25; p.life--;
                 if (p.life <= 0) particles.splice(i, 1);
             }
 
-            // Rings / enemies
             for (let r of ringsList) {
                 if (!r.collected) {
                     r.bob = Math.sin(Date.now() / 140) * 5;
@@ -326,22 +349,14 @@
 
         function drawPlayer() {
             if (!playerSprite.complete) return;
-
             let px = player.x - camX;
             let py = player.y;
-
             ctx.save();
-            ctx.translate(px + player.w/2, py + 28); // centered on collision box, slightly lowered for motorcycle feel
+            ctx.translate(px + player.w/2, py + 28);
             ctx.scale(player.facing, 1);
-
             const sx = currentFrame * FRAME_WIDTH;
-            ctx.drawImage(
-                playerSprite,
-                sx, 0, FRAME_WIDTH, FRAME_HEIGHT,
-                -FRAME_WIDTH/2, -FRAME_HEIGHT/2 + 6,   // visual offset so wheels sit on ground
-                FRAME_WIDTH, FRAME_HEIGHT
-            );
-
+            ctx.drawImage(playerSprite, sx, 0, FRAME_WIDTH, FRAME_HEIGHT,
+                          -FRAME_WIDTH/2, -FRAME_HEIGHT/2 + 6, FRAME_WIDTH, FRAME_HEIGHT);
             ctx.restore();
         }
 
@@ -400,10 +415,8 @@
                 for (let s of spikes) ctx.strokeRect(s.x - camX, s.y, s.w, s.h);
                 ctx.strokeStyle = '#0ff';
                 for (let s of slopes) {
-                    ctx.beginPath();
-                    ctx.moveTo(s.x - camX, s.y);
-                    ctx.lineTo(s.x + s.width - camX, s.y + s.rise);
-                    ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(s.x - camX, s.y);
+                    ctx.lineTo(s.x + s.width - camX, s.y + s.rise); ctx.stroke();
                 }
                 ctx.strokeStyle = '#0f0';
                 ctx.strokeRect(player.x - camX, player.y, player.w, player.h);
@@ -421,7 +434,7 @@
                 ctx.font = '28px Courier New';
                 ctx.fillText(`RINGS ${ringsCollected}   TIME ${time}`, SCREEN_W/2, 300);
                 ctx.font = '18px Courier New';
-                ctx.fillText('Press R to restart', SCREEN_W/2, 370);
+                ctx.fillText('A/X or START to restart', SCREEN_W/2, 370);
             }
         }
 
@@ -444,6 +457,7 @@
                 startTime = Date.now();
                 usedGamepad = false;
                 document.getElementById('rings').textContent = 'RINGS 00';
+                camOffset = 0;
             }
         });
         window.addEventListener('keyup', e => keys[e.key] = false);
