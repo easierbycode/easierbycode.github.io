@@ -44,10 +44,13 @@
 
         let coyoteTime = 0, jumpBuffer = 0, isBoosting = false, boostKick = 0;
         let previousOnGround = false;
-        let mouseRight = false;   // ← new for right click
+        let mouseRight = false;
 
         const playerSprite = new Image();
         playerSprite.src = 'http://easierbycode.com/assets/spritesheets/motorcycle.png';
+
+        const rocktoSprite = new Image();
+        rocktoSprite.src = 'http://easierbycode.com/assets/spritesheets/rockto.png'; // upload your 4-frame atlas here
 
         let currentFrame = 0, lastAnimTime = Date.now();
         const FRAME_WIDTH = 86, FRAME_HEIGHT = 46, TOTAL_FRAMES = 10;
@@ -59,6 +62,7 @@
         let prevRestartPressed = false;
 
         fg.onload = () => loaded = true;
+        rocktoSprite.onload = () => console.log('Rockto sprite loaded');
 
         fetch('https://easierbycode.com/assets/spritesheets/level_data.json')
             .then(r => r.json())
@@ -94,7 +98,7 @@
         }
 
         function generateFallbackPlatforms() {
-            platforms = [ /* your previous fallback platforms */ 
+            platforms = [
                 {x:0, y:528, w:WORLD_W, h:160},
                 {x:128, y:448, w:480, h:32}, {x:704, y:384, w:288, h:32},
                 {x:1056, y:480, w:416, h:32}, {x:1536, y:352, w:352, h:32},
@@ -117,6 +121,44 @@
                 {x:7392, y:288, w:192, h:32}
             ];
         }
+
+        // Rockto enemy class (Angry Sun pattern)
+        class Rockto {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.w = 61;
+                this.h = 57;
+                this.phase = 0; // 0 to Math.PI*2
+                this.radius = 140; // orbit radius
+                this.speed = 0.028; // radians per frame
+                this.centerX = x + 320; // center of loop
+                this.centerY = y + 180;
+                this.active = true;
+            }
+
+            update() {
+                if (!this.active) return;
+                this.phase += this.speed;
+                this.x = this.centerX + Math.cos(this.phase) * this.radius;
+                this.y = this.centerY + Math.sin(this.phase) * this.radius;
+            }
+
+            draw() {
+                if (!rocktoSprite.complete || !this.active) return;
+                let frame = Math.floor((Date.now() / 120) % 4);
+                let sx = frame * 61;
+                ctx.drawImage(rocktoSprite, sx, 0, 61, 57, this.x - camX, this.y, 61, 57);
+            }
+
+            checkCollision() {
+                if (!this.active) return false;
+                return Math.abs(player.x + player.w/2 - this.x) < 50 &&
+                       Math.abs(player.y + player.h/2 - this.y) < 50;
+            }
+        }
+
+        let rocktos = [];
 
         function triggerHaptic(type = 'land') {
             const pads = navigator.getGamepads ? navigator.getGamepads() : [];
@@ -147,12 +189,18 @@
             enemies = [];
             createEnemy(960, 512); createEnemy(2656, 352); createEnemy(4160, 432);
             createEnemy(5472, 256); createEnemy(6208, 384); createEnemy(7104, 320);
+
+            // Add Rockto enemies orbiting loops
+            rocktos = [
+                new Rockto(3800, 220),  // orbiting the big loop
+                new Rockto(6200, 180)   // second loop area
+            ];
         }
 
         const GRAVITY = 0.82;
         let startTime = Date.now();
 
-        function collideHorizontal() { /* same as before */ 
+        function collideHorizontal() {
             for (let p of platforms) {
                 if (player.x + player.w > p.x && player.x < p.x + p.w && player.y + player.h > p.y && player.y < p.y + p.h) {
                     if (player.vx > 0) { triggerHaptic('left'); player.x = p.x - player.w; }
@@ -189,15 +237,12 @@
             isBoosting = false;
             let restartPressed = false;
 
-            // Keyboard
             if (keys['ArrowLeft'] || keys['a'] || keys['A']) targetVx = -8.4;
             if (keys['ArrowRight'] || keys['d'] || keys['D']) targetVx = 8.4;
             if (keys['Shift']) isBoosting = true;
 
-            // Mouse controls
-            if (mouseRight) targetVx = 8.4;   // right click = move right
+            if (mouseRight) targetVx = 8.4;
 
-            // Gamepad
             const pads = navigator.getGamepads ? navigator.getGamepads() : [];
             for (let gp of pads) {
                 if (!gp) continue;
@@ -315,6 +360,13 @@
                     }
                 }
             }
+
+            // Update & check Rockto enemies
+            for (let rock of rocktos) {
+                rock.update();
+                if (rock.checkCollision()) gameOver = true;
+            }
+
             for (let e of enemies) {
                 e.x += e.vx;
                 if (Math.random() < 0.018) e.vx *= -1;
@@ -324,12 +376,8 @@
 
         // Mouse Controls
         canvas.addEventListener('mousedown', e => {
-            if (e.button === 0) { // Left click = Jump
-                jumpBuffer = 8;
-            }
-            if (e.button === 2) { // Right click = Move right
-                mouseRight = true;
-            }
+            if (e.button === 0) jumpBuffer = 8; // left click jump
+            if (e.button === 2) mouseRight = true; // right click move right
         });
 
         canvas.addEventListener('mouseup', e => {
@@ -387,6 +435,9 @@
                 ctx.fillStyle = '#2c3e50';
                 ctx.fillRect(ex + 6, e.y + 8, 24, 14);
             }
+
+            // Draw Rockto enemies
+            for (let rock of rocktos) rock.draw();
 
             drawPlayer();
 
