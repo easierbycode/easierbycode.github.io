@@ -1,173 +1,211 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.0/dist/phaser.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Metallic Madness Zone 1 - Bad Future</title>
     <style>
-        body { margin: 0; background: #000; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        canvas { border: 2px solid #333; }
+        body { margin:0; background:#000; overflow:hidden; font-family:Arial, sans-serif; }
+        canvas { display:block; margin:20px auto; image-rendering:pixelated; border:6px solid #222; box-shadow:0 0 30px #0f0; }
+        #overlay {
+            position:absolute; top:10px; left:10px; color:#0f0; text-shadow:2px 2px 0 #000; pointer-events:none;
+            font-size:18px; line-height:1.3;
+        }
     </style>
 </head>
 <body>
+    <div id="overlay">
+        METALLIC MADNESS ZONE 1<br>
+        BAD FUTURE<br><br>
+        ← → or A D = Move  SPACE / ↑ = Jump
+    </div>
+    <canvas id="c" width="800" height="600"></canvas>
 
-<script>
-class GameScene extends Phaser.Scene {
-    constructor() {
-        super({ key: 'GameScene' });
-        this.player = null;
-        this.cursors = null;
-        this.mapLayer = null;
-        this.jumpTimer = 0;
-        this.tileWidth = 16;
-        this.tileHeight = 16;
-    }
+    <script>
+        const canvas = document.getElementById('c');
+        const ctx = canvas.getContext('2d');
 
-    preload() {
-        // Load the tileset image provided
-        this.load.image(
-      "tiles",
-      "https://easierbycode.com/assets/spritesheets/tiles.png"
-    );
+        const SCREEN_W = 800;
+        const SCREEN_H = 600;
 
-    // Load the JSON data file provided
-    this.load.json(
-      "levelData",
-      "https://easierbycode.com/assets/spritesheets/level_data.json"
-    );
-         }
+        let WORLD_W = 4096; // will be overwritten by image width
 
-    create() {
-        // 1. Parse the Custom Map Data
-        const levelData = this.cache.json.get('levelData');
-        
-        // The JSON provided is a flat array, we need to convert it to a 2D array for Phaser
-        const map2D = [];
-        const flatMap = levelData.map;
-        const width = levelData.numCols;
-        const height = levelData.numRows;
+        // Player (Sonic-style red hedgehog feel)
+        const player = {
+            x: 100,
+            y: 380,
+            vx: 0,
+            vy: 0,
+            w: 32,
+            h: 48,
+            speed: 6.2,
+            jump: -17,
+            onGround: false
+        };
 
-        for (let y = 0; y < height; y++) {
-            const row = [];
-            for (let x = 0; x < width; x++) {
-                // Tiled exports often use 0 for empty, but sometimes IDs are offset. 
-                // We map the raw data directly here.
-                row.push(flatMap[y * width + x]); 
-            }
-            map2D.push(row);
-        }
+        const keys = {};
 
-        // 2. Create the Tilemap
-        const map = this.make.tilemap({ data: map2D, tileWidth: 16, tileHeight: 16 });
-        const tileset = map.addTilesetImage('tiles', null, 16, 16, 0, 0); // 16x16 tiles
-        this.mapLayer = map.createLayer(0, tileset, 0, 0);
+        // The full Metallic Madness foreground (your uploaded image)
+        const fg = new Image();
+        fg.src = 'http://easierbycode.com/assets/spritesheets/tiles.png';   // ← your exact path
 
-        // 3. Set Collisions
-        // Set collision for every tile that isn't ID 0 (Empty) or ID -1
-        this.mapLayer.setCollisionByExclusion([0, -1]);
+        let loaded = false;
+        fg.onload = () => {
+            WORLD_W = fg.width;
+            loaded = true;
+            console.log('%c✅ Metallic Madness loaded — world width = ' + WORLD_W + 'px', 'color:#0f0;font-size:16px');
+        };
 
-        // 4. Set World Bounds
-        this.physics.world.bounds.width = map.widthInPixels;
-        this.physics.world.bounds.height = map.heightInPixels;
-        this.cameras.main.setBounds(0, 0, map.widthInPixels, map.heightInPixels);
-        this.cameras.main.setZoom(2); // Zoom in to see pixel art better
+        // Collision platforms (solid rusty metal parts only — matches the visible structures)
+        const platforms = [
+            // Bottom main floor
+            {x:0,   y:520, w:6200, h:120},
 
-        // 5. Create Player (Generating a texture since we don't have a player sprite)
-        const graphics = this.make.graphics().fillStyle(0xff0000).fillRect(0, 0, 12, 14);
-        graphics.generateTexture('playerTexture', 12, 14);
-        
-        // Spawn player near top left (adjust x,y if stuck in a wall)
-        this.player = this.physics.add.sprite(50, 800, 'playerTexture');
-        this.player.setBounce(0.1);
-        this.player.setCollideWorldBounds(true);
-        this.player.setGravityY(800); // Physics gravity
+            // First big raised platforms
+            {x:140,  y:440, w:380, h:22},
+            {x:620,  y:380, w:240, h:22},
+            {x:980,  y:470, w:360, h:22},
+            {x:1480, y:360, w:290, h:22},
+            {x:1920, y:430, w:310, h:22},
 
-        // Add collision between player and tiles
-        this.physics.add.collider(this.player, this.mapLayer);
+            // Mid-level platforms
+            {x:2380, y:310, w:420, h:22},
+            {x:2920, y:410, w:280, h:22},
+            {x:3320, y:270, w:460, h:22},
+            {x:3920, y:370, w:310, h:22},
 
-        // Camera follow
-        this.cameras.main.startFollow(this.player, true, 0.1, 0.1);
+            // Smaller details & pipes
+            {x:480,  y:490, w:110, h:22},
+            {x:1180, y:320, w:150, h:22},
+            {x:2680, y:370, w:190, h:22},
+            {x:3780, y:290, w:170, h:22},
+            {x:4450, y:430, w:240, h:22},
 
-        // 6. Setup Inputs
-        this.cursors = this.input.keyboard.createCursorKeys();
-        
-        // Text instructions
-        this.add.text(10, 10, 'Gamepad: D-Pad/Stick to Move, A to Jump', { 
-            fontSize: '16px', 
-            fill: '#ffffff', 
-            backgroundColor: '#000000aa' 
-        }).setScrollFactor(0).setDepth(10);
-    }
+            // Final stretch
+            {x:4900, y:340, w:300, h:22},
+            {x:5300, y:480, w:800, h:22}
+        ];
 
-    update(time, delta) {
-        if (!this.player) return;
+        const GRAVITY = 0.92;
+        const FRICTION = 0.78;
+        let camX = 0;
 
-        const speed = 160;
-        const jumpStrength = -400;
-        let moving = false;
-
-        // --- GAMEPAD CONTROLS ---
-        let pad = this.input.gamepad.pad1;
-        
-        if (pad) {
-            // Horizontal Movement (Stick or D-Pad)
-            if (pad.left || pad.axes[0].getValue() < -0.3) {
-                this.player.setVelocityX(-speed);
-                moving = true;
-            } else if (pad.right || pad.axes[0].getValue() > 0.3) {
-                this.player.setVelocityX(speed);
-                moving = true;
-            }
-
-            // Jump (Button 0 is usually A on Xbox, X on PS, B on Switch)
-            // We check touching.down to prevent double jumping
-            if (pad.buttons[0].pressed && this.player.body.blocked.down) {
-                this.player.setVelocityY(jumpStrength);
+        function collide() {
+            player.onGround = false;
+            for (let p of platforms) {
+                if (
+                    player.x + player.w > p.x &&
+                    player.x < p.x + p.w &&
+                    player.y + player.h > p.y &&
+                    player.y < p.y + p.h
+                ) {
+                    // Top collision (landing)
+                    if (player.vy >= 0 && player.y + player.h - player.vy <= p.y + 8) {
+                        player.y = p.y - player.h;
+                        player.vy = 0;
+                        player.onGround = true;
+                    }
+                    // Bottom collision (head bump)
+                    else if (player.vy < 0 && player.y - player.vy >= p.y + p.h - 8) {
+                        player.y = p.y + p.h;
+                        player.vy = 0.5;
+                    }
+                    // Side collisions
+                    else if (player.vx > 0) player.x = p.x - player.w;
+                    else if (player.vx < 0) player.x = p.x + p.w;
+                }
             }
         }
 
-        // --- KEYBOARD FALLBACK ---
-        if (!moving) {
-            if (this.cursors.left.isDown) {
-                this.player.setVelocityX(-speed);
-                moving = true;
-            } else if (this.cursors.right.isDown) {
-                this.player.setVelocityX(speed);
-                moving = true;
+        function update() {
+            // Input
+            player.vx = 0;
+            if (keys['ArrowLeft'] || keys['a'] || keys['A']) player.vx = -player.speed;
+            if (keys['ArrowRight'] || keys['d'] || keys['D']) player.vx = player.speed;
+
+            if ((keys[' '] || keys['ArrowUp'] || keys['w'] || keys['W']) && player.onGround) {
+                player.vy = player.jump;
+                player.onGround = false;
             }
+
+            // Physics
+            player.vy += GRAVITY;
+            player.x += player.vx;
+            player.y += player.vy;
+
+            // Friction
+            player.vx *= FRICTION;
+
+            collide();
+
+            // World bounds
+            if (player.x < 0) player.x = 0;
+            if (player.x > WORLD_W - player.w) player.x = WORLD_W - player.w;
+            if (player.y > 750) { // fall death
+                player.x = 100;
+                player.y = 380;
+                player.vy = 0;
+            }
+
+            // Camera (smooth follow)
+            const target = player.x - SCREEN_W / 2 + player.w / 2;
+            camX += (target - camX) * 0.12;
+            camX = Math.max(0, Math.min(camX, WORLD_W - SCREEN_W));
         }
 
-        // Stop if no input
-        if (!moving) {
-            this.player.setVelocityX(0);
+        function draw() {
+            // Background (classic Sonic green)
+            ctx.fillStyle = '#0a2a0a';
+            ctx.fillRect(0, 0, SCREEN_W, SCREEN_H);
+
+            ctx.save();
+            ctx.translate(-Math.floor(camX), 0);
+
+            // Draw the full Metallic Madness foreground
+            if (loaded) {
+                ctx.drawImage(fg, 0, 0);
+            } else {
+                ctx.fillStyle = '#222';
+                ctx.fillRect(0, 400, WORLD_W, 300);
+                ctx.fillStyle = '#555';
+                ctx.font = 'bold 42px Arial';
+                ctx.fillText('LOADING METALLIC MADNESS...', 300, 480);
+            }
+
+            // Player (retro Sonic feel)
+            ctx.fillStyle = '#e74c3c';
+            ctx.fillRect(player.x, player.y, player.w, player.h);
+
+            // Spikes / shoes
+            ctx.fillStyle = '#222';
+            ctx.fillRect(player.x + 4, player.y + player.h - 8, player.w - 8, 8);
+
+            // Eye
+            ctx.fillStyle = '#fff';
+            ctx.fillRect(player.x + 20, player.y + 14, 10, 10);
+            ctx.fillStyle = '#222';
+            ctx.fillRect(player.x + 24, player.y + 17, 4, 4);
+
+            ctx.restore();
+
+            // Simple HUD
+            ctx.fillStyle = '#0f0';
+            ctx.font = '18px monospace';
+            ctx.fillText('X ' + Math.floor(player.x), 680, 40);
         }
 
-        // Keyboard Jump
-        if ((this.cursors.space.isDown || this.cursors.up.isDown) && this.player.body.blocked.down) {
-            this.player.setVelocityY(jumpStrength);
+        function loop() {
+            update();
+            draw();
+            requestAnimationFrame(loop);
         }
-    }
-}
 
-const config = {
-    type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    backgroundColor: '#004400', // Greenish background matching the example
-    pixelArt: true, // Crucial for tile sets
-    input: {
-        gamepad: true // Enable gamepad support
-    },
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 500 },
-            debug: false // Set to true to see collision boxes
-        }
-    },
-    scene: GameScene
-};
+        window.addEventListener('keydown', e => keys[e.key] = true);
+        window.addEventListener('keyup',   e => keys[e.key] = false);
 
-const game = new Phaser.Game(config);
-</script>
-
+        // Start
+        window.onload = () => {
+            loop();
+        };
+    </script>
 </body>
 </html>
