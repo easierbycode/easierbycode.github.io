@@ -101,6 +101,24 @@
         fg.onload = () => { tilesLoaded = true; console.log('Tiles loaded'); };
         fg.onerror = () => console.error('Failed to load tiles.png');
 
+        const parallaxImg = new Image();
+        parallaxImg.src = 'https://easierbycode.com/assets/spritesheets/bg-parallax.png';
+        let parallaxLoaded = false;
+        parallaxImg.onload = () => { parallaxLoaded = true; console.log('Parallax loaded'); };
+        parallaxImg.onerror = () => console.error('Failed to load bg-parallax.png');
+
+        let parallaxFrames = [];
+        fetch('https://easierbycode.com/assets/spritesheets/bg-parallax.json')
+            .then(r => r.json())
+            .then(data => {
+                const names = Object.keys(data.frames).sort((a, b) =>
+                    parseInt(a.replace('atlas_s', '')) - parseInt(b.replace('atlas_s', ''))
+                );
+                parallaxFrames = names.map(name => data.frames[name].frame);
+                console.log('Parallax atlas loaded:', parallaxFrames.length, 'layers');
+            })
+            .catch(err => console.error('Parallax JSON failed:', err));
+
         let currentFrame = 0, lastAnimTime = Date.now();
         const FRAME_WIDTH = 86, FRAME_HEIGHT = 46, TOTAL_FRAMES = 10;
 
@@ -489,11 +507,25 @@
                 return;
             }
 
-            ctx.save();
-            ctx.translate(-Math.floor(camX * 0.55), 0);
-            ctx.fillStyle = '#132e13';
-            ctx.fillRect(0, 260, WORLD_W, 480);
-            ctx.restore();
+            if (parallaxLoaded && parallaxFrames.length > 0) {
+                const n = parallaxFrames.length;
+                const spacing = (SCREEN_H - 144) / (n - 1);
+                for (let i = 0; i < n; i++) {
+                    const f = parallaxFrames[i];
+                    const speed = 0.02 + (i / (n - 1)) * 0.53;
+                    const yPos = Math.floor(i * spacing);
+                    const offset = Math.floor(camX * speed) % f.w;
+                    for (let x = -offset; x < SCREEN_W; x += f.w) {
+                        ctx.drawImage(parallaxImg, f.x, f.y, f.w, f.h, x, yPos, f.w, f.h);
+                    }
+                }
+            } else {
+                ctx.save();
+                ctx.translate(-Math.floor(camX * 0.55), 0);
+                ctx.fillStyle = '#132e13';
+                ctx.fillRect(0, 260, WORLD_W, 480);
+                ctx.restore();
+            }
 
             ctx.save();
             ctx.translate(-Math.floor(camX), 0);
