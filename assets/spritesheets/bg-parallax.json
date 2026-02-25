@@ -1,0 +1,575 @@
+{
+  "frames": {
+    "atlas_s0": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 128,
+        "y": 56,
+        "w": 512,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s1": {
+      "frame": {
+        "x": 768,
+        "y": 0,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 128,
+        "y": 56,
+        "w": 512,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s2": {
+      "frame": {
+        "x": 0,
+        "y": 144,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 128,
+        "y": 64,
+        "w": 512,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s3": {
+      "frame": {
+        "x": 768,
+        "y": 144,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 128,
+        "y": 64,
+        "w": 512,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s4": {
+      "frame": {
+        "x": 0,
+        "y": 288,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 128,
+        "y": 64,
+        "w": 512,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s5": {
+      "frame": {
+        "x": 768,
+        "y": 288,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 128,
+        "y": 56,
+        "w": 512,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s6": {
+      "frame": {
+        "x": 0,
+        "y": 432,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 128,
+        "y": 56,
+        "w": 512,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s7": {
+      "frame": {
+        "x": 768,
+        "y": 432,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 128,
+        "y": 64,
+        "w": 512,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s8": {
+      "frame": {
+        "x": 0,
+        "y": 576,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 128,
+        "y": 56,
+        "w": 512,
+        "h": 32
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s9": {
+      "frame": {
+        "x": 768,
+        "y": 576,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 128,
+        "y": 64,
+        "w": 512,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s10": {
+      "frame": {
+        "x": 0,
+        "y": 720,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 128,
+        "y": 64,
+        "w": 512,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s11": {
+      "frame": {
+        "x": 768,
+        "y": 720,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 64,
+        "w": 768,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s12": {
+      "frame": {
+        "x": 0,
+        "y": 864,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 64,
+        "w": 768,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s13": {
+      "frame": {
+        "x": 768,
+        "y": 864,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 68,
+        "w": 768,
+        "h": 8
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s14": {
+      "frame": {
+        "x": 0,
+        "y": 1008,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 32,
+        "w": 768,
+        "h": 80
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s15": {
+      "frame": {
+        "x": 768,
+        "y": 1008,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 68,
+        "w": 768,
+        "h": 8
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s16": {
+      "frame": {
+        "x": 0,
+        "y": 1152,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 68,
+        "w": 768,
+        "h": 8
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s17": {
+      "frame": {
+        "x": 768,
+        "y": 1152,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 68,
+        "w": 768,
+        "h": 8
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s18": {
+      "frame": {
+        "x": 0,
+        "y": 1296,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 68,
+        "w": 768,
+        "h": 8
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s19": {
+      "frame": {
+        "x": 768,
+        "y": 1296,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 68,
+        "w": 768,
+        "h": 8
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s20": {
+      "frame": {
+        "x": 0,
+        "y": 1440,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 64,
+        "w": 768,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s21": {
+      "frame": {
+        "x": 768,
+        "y": 1440,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 64,
+        "w": 768,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s22": {
+      "frame": {
+        "x": 0,
+        "y": 1584,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 64,
+        "w": 768,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s23": {
+      "frame": {
+        "x": 768,
+        "y": 1584,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 64,
+        "w": 768,
+        "h": 16
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s24": {
+      "frame": {
+        "x": 0,
+        "y": 1728,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 68,
+        "w": 768,
+        "h": 8
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s25": {
+      "frame": {
+        "x": 768,
+        "y": 1728,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 68,
+        "w": 768,
+        "h": 8
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s26": {
+      "frame": {
+        "x": 0,
+        "y": 1872,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 8,
+        "w": 768,
+        "h": 128
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    },
+    "atlas_s27": {
+      "frame": {
+        "x": 768,
+        "y": 1872,
+        "w": 768,
+        "h": 144
+      },
+      "rotated": false,
+      "trimmed": false,
+      "spriteSourceSize": {
+        "x": 0,
+        "y": 0,
+        "w": 768,
+        "h": 144
+      },
+      "sourceSize": {
+        "w": 768,
+        "h": 144
+      }
+    }
+  },
+  "meta": {
+    "app": "Evil Invaders Atlas Builder",
+    "version": "1.0",
+    "image": "atlas.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 2048,
+      "h": 2016
+    },
+    "scale": "1"
+  }
+}
