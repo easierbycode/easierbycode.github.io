@@ -8,6 +8,34 @@
         canvas { display:block; margin:20px auto; image-rendering:pixelated; border:8px solid #111; box-shadow:0 0 40px #0a3;}
         #ui { position:absolute; top:15px; left:15px; color:#0f0; text-shadow:2px 2px 0 #000; pointer-events:none; font-size:22px; line-height:1.1; letter-spacing:2px; }
         #instructions { position:absolute; bottom:15px; left:15px; color:#0f0; text-shadow:2px 2px 0 #000; pointer-events:none; font-size:14px; line-height:1.4; }
+        #touch-controls {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            pointer-events: none; z-index: 10;
+            transition: opacity 0.35s ease;
+            display: none;
+        }
+        #touch-controls.visible { display: block; }
+        #touch-controls.hidden { opacity: 0; pointer-events: none !important; }
+        .touch-btn {
+            position: absolute; pointer-events: auto;
+            border: 2px solid rgba(0,255,0,0.45);
+            background: rgba(0,20,0,0.4);
+            border-radius: 14px; color: rgba(0,255,0,0.7);
+            font-family: 'Courier New', monospace; font-weight: bold;
+            display: flex; align-items: center; justify-content: center;
+            user-select: none; -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: none;
+        }
+        .touch-btn:active, .touch-btn.pressed {
+            background: rgba(0,255,0,0.18);
+            border-color: rgba(0,255,0,0.8);
+            color: rgba(0,255,0,1);
+        }
+        #touch-left  { left: 16px; bottom: 28px; width: 72px; height: 72px; font-size: 32px; }
+        #touch-right { left: 104px; bottom: 28px; width: 72px; height: 72px; font-size: 32px; }
+        #touch-jump  { right: 16px; bottom: 28px; width: 80px; height: 80px; font-size: 16px; }
+        #touch-boost { right: 112px; bottom: 28px; width: 64px; height: 64px; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -21,6 +49,12 @@
         RIGHT CLICK = Move Right (hold)
     </div>
     <canvas id="c" width="800" height="600"></canvas>
+    <div id="touch-controls">
+        <div id="touch-left" class="touch-btn">&larr;</div>
+        <div id="touch-right" class="touch-btn">&rarr;</div>
+        <div id="touch-boost" class="touch-btn">BOOST</div>
+        <div id="touch-jump" class="touch-btn">JUMP</div>
+    </div>
 
     <script>
         const canvas = document.getElementById('c');
@@ -257,11 +291,19 @@
             if (keys['ArrowRight'] || keys['d'] || keys['D']) targetVx = 8.4;
             if (keys['Shift']) isBoosting = true;
 
+            // Touch controls
+            if (touchState.left) targetVx = -8.4;
+            if (touchState.right) targetVx = 8.4;
+            if (touchState.boost) isBoosting = true;
+            if (touchState.jump) jumpBuffer = 8;
+
             if (mouseRight) targetVx = 8.4;
 
             const pads = navigator.getGamepads ? navigator.getGamepads() : [];
             for (let gp of pads) {
                 if (!gp) continue;
+                // Auto-hide touch controls on gamepad input
+                if (Math.abs(gp.axes[0]) > 0.2 || gp.buttons.some(b => b.pressed)) onNonTouchInput();
                 if (Math.abs(gp.axes[0]) > 0.2) targetVx = gp.axes[0] * 8.4;
                 if (gp.buttons[12].pressed) targetVx = -8.4;
                 if (gp.buttons[13].pressed) targetVx = 8.4;
@@ -546,9 +588,80 @@
 
         window.addEventListener('keyup', e => keys[e.key] = false);
 
+        // --- Touch controls with auto-hide ---
+        const touchControls = document.getElementById('touch-controls');
+        const touchState = { left: false, right: false, jump: false, boost: false };
+        let touchHideTimer = null;
+        let inputMode = 'none'; // 'none' | 'touch' | 'keyboard' | 'gamepad'
+
+        function showTouchControls() {
+            touchControls.classList.add('visible');
+            touchControls.classList.remove('hidden');
+        }
+
+        function hideTouchControls() {
+            touchControls.classList.add('hidden');
+        }
+
+        // Detect touch-capable device and show controls initially
+        function detectTouch() {
+            if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+                inputMode = 'touch';
+                showTouchControls();
+            }
+        }
+
+        function onNonTouchInput() {
+            if (inputMode === 'touch') {
+                inputMode = 'keyboard';
+                hideTouchControls();
+            } else if (inputMode === 'none') {
+                inputMode = 'keyboard';
+            }
+        }
+
+        function onTouchInput() {
+            inputMode = 'touch';
+            showTouchControls();
+            // Clear any pending hide
+            if (touchHideTimer) { clearTimeout(touchHideTimer); touchHideTimer = null; }
+        }
+
+        // Hook into existing keyboard listeners to detect non-touch input
+        window.addEventListener('keydown', () => onNonTouchInput());
+
+        // Wire up touch buttons
+        function bindTouchButton(id, stateKey) {
+            const el = document.getElementById(id);
+
+            el.addEventListener('touchstart', e => {
+                e.preventDefault();
+                touchState[stateKey] = true;
+                el.classList.add('pressed');
+                onTouchInput();
+            }, { passive: false });
+
+            el.addEventListener('touchend', e => {
+                e.preventDefault();
+                touchState[stateKey] = false;
+                el.classList.remove('pressed');
+            }, { passive: false });
+
+            el.addEventListener('touchcancel', e => {
+                touchState[stateKey] = false;
+                el.classList.remove('pressed');
+            });
+        }
+
+        bindTouchButton('touch-left', 'left');
+        bindTouchButton('touch-right', 'right');
+        bindTouchButton('touch-jump', 'jump');
+        bindTouchButton('touch-boost', 'boost');
+
         window.onload = () => {
             startTime = Date.now();
             initLevel();
+            detectTouch();
             loop();
         };
     </script>
