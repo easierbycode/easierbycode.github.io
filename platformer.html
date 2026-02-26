@@ -13,11 +13,11 @@
 <body>
     <div id="ui">
         METALLIC MADNESS<br>
-        <span id="rings">RINGS 00</span>  TIME <span id="time">000</span>
+        <span id="rings">RINGS 00</span>  TIME <span id="time">000</span>
     </div>
     <div id="instructions">
-        ← → / A D = Move  SPACE / ↑ / LEFT CLICK = Jump  SHIFT / X = BOOST<br>
-        Right Analog = Camera  L3 = Fullscreen  R / A/X / START = Restart<br>
+        ← → / A D = Move  SPACE / ↑ / LEFT CLICK = Jump  SHIFT / X = BOOST<br>
+        Right Analog = Camera  L3 = Fullscreen  R3 = Reload  R / START = Restart<br>
         RIGHT CLICK = Move Right (hold)
     </div>
     <canvas id="c" width="800" height="600"></canvas>
@@ -28,9 +28,17 @@
         const SCREEN_W = 800;
         const SCREEN_H = 600;
 
-        let WORLD_W = 8448;
+        const TILE_SIZE = 20;
+        const numCols = 132;
+        const numRows = 30;
+        const WORLD_W = numCols * TILE_SIZE;
+        const WORLD_H = numRows * TILE_SIZE;
 
-        const player = { x: 180, y: 380, vx: 0, vy: 0, w: 38, h: 48, facing: 1, onGround: false };
+        // Collision map generated from tilemap image analysis
+        const COLLISION_STR = '100000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000110000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100000000000000000000000000000000000000110000000000000000000000000000000001000100000000000000000000000000000000000000000000000000000100000000000000000000000001000000000000110000001100001000000000000000000010100011100000000000000000001100001000000000000000000010100001000000000000000000011000010000000000110000011100000100000000000000011111000011110000000000000000011100000100000000000000000010100011000000000000000000111000001000000000110000011100000000000000000000011111000111110000001110000000011100000000000000000000000011100000000000000000000000111000000000000000110000011100001100000000000000011111001011110000111110000000011100001111111010100000000011111111111111100000000000111000011000000000110001011100001110000000000000011111100011110000001110000001011100001111011010100000000011100011100000000000000010011000011100000000111100011100000110100000000000011111000000101000010110000010011100000110000000000000010001100000100000000000111111111000001100000000100000001000000000000000000000011110000000100000001100000011011000000010000000000000000011000000000000000000000000010000000000000000110000001000000000001111111100000010010000000010000000001111111000000000000000000000000011010000000010000000000000010000000000000000110100011100000101001100000001000011010001101010000000000111111010000100001000000000000011010000101010000000000000110000001010000000110000101001111110100000000010100101111011000000000000000011101000000000000000000011111111100001000001111000000000010011111101000000110100000000000001010000000001000000000000000000000000000111100000000000000000000000000111100000000000111000001000000000000010000000110100000000100000000000011111000000011000000000000000000100000000100000010000000000000111111000000000111000001000000001000000100000111111111111111000010000000011100001000000000100000000000100001000100000010000000000100011111001111111011000001111111000000000100000110000011010000000100000000011110000000000000100000000000000000011110000100000000000100001111100001100111000001100110000000001000000110000000000000000000000000011001000000000000000111001000000000001111001000000000000001000111110000000011000000001000000000010000000110101000000000000000000000011001000000001000011111111000101000011110000111000000000101110011110000010111000001000000000000000110000110100000000000000001000000011110000000000000000000000000000000001111000101000000001000000001111000010011000001000000000000001010000101000000011000000001000000011000000010000000111000000001000000000011001000000000001000000000111100001111000010000000000001000010000111001000011110001101100000010010000010000000110000000010000000000011000000000000011000000000011110001111000110010000101100010000000111111111111111101000100011111000000100000111111100000010001000100000111000100001111111111100001111000111000111111111111111110001000111100100000000111000100011111001000000001000000100000010000000000000111000100010000000000000000111000111000110001000000001110001000111000000000000001000111111100011000001100000000100000110001100000000001001100110010010000000000111100111111110000000000000010001000111000000000000001101111111000011000000100001001000000110001110000000001100101100010110000000000111011111111110010000000000011111010111010001100000000111101111001111000000100000010000000110011110000000000111110000000010110000000101011111111110100011000000001110010111000001100000000001111111011011000001100000000000000110001110000000000000010000000000000000000111011111111110000011000000000010011111111111111111111111111111111111111111111111111111111111111111110000000001100000000001111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111110000000000000000000001111111111111111111111111111111111111111111111';
+        const collisionMap = COLLISION_STR.split('').map(Number);
+
+        const player = { x: 60, y: 460, vx: 0, vy: 0, w: 38, h: 48, facing: 1, onGround: false };
 
         let ringsCollected = 0, time = 0, gameWon = false, gameOver = false, showDebug = false, usedGamepad = false;
         let camX = 0, camOffset = 0;
@@ -42,49 +50,66 @@
         let previousOnGround = false;
         let mouseRight = false;
 
+        const BASE_URL = 'https://easierbycode.com/assets/spritesheets';
+
+        function getGamepads() {
+            try { return navigator.getGamepads ? navigator.getGamepads() : []; }
+            catch(e) { return []; }
+        }
+
         const playerSprite = new Image();
-        playerSprite.src = 'http://easierbycode.com/assets/spritesheets/motorcycle.png';
+        playerSprite.src = `${BASE_URL}/motorcycle.png`;
 
         const rocktoSprite = new Image();
-        rocktoSprite.src = 'http://easierbycode.com/assets/spritesheets/rockto.png';
+        rocktoSprite.src = `${BASE_URL}/rockto.png`;
 
         const fg = new Image();
-        fg.src = 'http://easierbycode.com/assets/spritesheets/tiles.png';
+        fg.src = `${BASE_URL}/tilemap.jpg`;
 
         let motorcycleLoaded = false;
         let rocktoLoaded = false;
         let tilesLoaded = false;
 
-        playerSprite.onload = () => { motorcycleLoaded = true; console.log('Motorcycle loaded'); };
-        playerSprite.onerror = () => console.error('Motorcycle.png failed to load');
+        playerSprite.onload = () => { motorcycleLoaded = true; };
+        playerSprite.onerror = () => console.error('Failed to load motorcycle.png');
 
-        rocktoSprite.onload = () => { rocktoLoaded = true; console.log('Rockto loaded'); };
-        rocktoSprite.onerror = () => console.error('Rockto.png failed to load');
+        rocktoSprite.onload = () => { rocktoLoaded = true; };
+        rocktoSprite.onerror = () => console.error('Failed to load rockto.png');
 
-        fg.onload = () => { tilesLoaded = true; console.log('Tiles loaded'); };
-        fg.onerror = () => console.error('Tiles.png failed to load');
+        fg.onload = () => { tilesLoaded = true; };
+        fg.onerror = () => console.error('Failed to load tilemap.jpg');
 
         let currentFrame = 0, lastAnimTime = Date.now();
         const FRAME_WIDTH = 86, FRAME_HEIGHT = 46, TOTAL_FRAMES = 10;
 
-        let levelLoaded = true; // we no longer need tilemap collision
-
         let prevRestartPressed = false;
+        let prevR3Pressed = false;
 
-        // Only bottom floor collision
-        platforms = [{ x: 0, y: 550, w: WORLD_W, h: 100 }];
+        // Build collision platforms from the collision map
+        function generateCollisionFromMap() {
+            platforms = [];
+            for (let y = 0; y < numRows; y++) {
+                let start = -1;
+                for (let x = 0; x <= numCols; x++) {
+                    const solid = x < numCols && collisionMap[y * numCols + x] === 1;
+                    if (solid && start === -1) start = x;
+                    else if (!solid && start !== -1) {
+                        platforms.push({ x: start * TILE_SIZE, y: y * TILE_SIZE, w: (x - start) * TILE_SIZE, h: TILE_SIZE });
+                        start = -1;
+                    }
+                }
+                if (start !== -1) platforms.push({ x: start * TILE_SIZE, y: numRows * TILE_SIZE, w: (numCols - start) * TILE_SIZE, h: TILE_SIZE });
+            }
+        }
 
         class Rockto {
             constructor(x, y) {
-                this.x = x;
-                this.y = y;
-                this.w = 61;
-                this.h = 57;
-                this.phase = Math.random() * Math.PI * 2;
-                this.radius = 140;
+                this.x = x; this.y = y;
+                this.w = 61; this.h = 57;
+                this.phase = 0; this.radius = 100;
                 this.speed = 0.028;
-                this.centerX = x + 320;
-                this.centerY = y + 180;
+                this.centerX = x + 200;
+                this.centerY = y + 120;
                 this.active = true;
             }
             update() {
@@ -102,8 +127,7 @@
                     return;
                 }
                 let frame = Math.floor((Date.now() / 120) % 4);
-                let sx = frame * 61;
-                ctx.drawImage(rocktoSprite, sx, 0, 61, 57, this.x - camX, this.y, 61, 57);
+                ctx.drawImage(rocktoSprite, frame * 61, 0, 61, 57, this.x - camX, this.y, 61, 57);
             }
             checkCollision() {
                 if (!this.active) return false;
@@ -115,7 +139,7 @@
         let rocktos = [];
 
         function triggerHaptic(type = 'land') {
-            const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+            const pads = getGamepads();
             for (let gp of pads) {
                 if (!gp) continue;
                 try {
@@ -138,15 +162,18 @@
         }
 
         function initLevel() {
+            generateCollisionFromMap();
+
             ringsList = [];
-            for (let i = 0; i < 18; i++) createRing(288 + i*384, 272 + (i%5)*40);
+            for (let i = 0; i < 14; i++) createRing(180 + i * 160, 200 + (i % 5) * 30);
+
             enemies = [];
-            createEnemy(960, 512); createEnemy(2656, 352); createEnemy(4160, 432);
-            createEnemy(5472, 256); createEnemy(6208, 384); createEnemy(7104, 320);
+            createEnemy(600, 520); createEnemy(1400, 400); createEnemy(1900, 300);
+            createEnemy(2200, 520);
 
             rocktos = [
-                new Rockto(3800, 220),
-                new Rockto(6200, 180)
+                new Rockto(1000, 140),
+                new Rockto(2000, 120)
             ];
         }
 
@@ -182,9 +209,8 @@
         }
 
         function update() {
-            if (!loaded) return;
-
             time = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('time').textContent = time.toString().padStart(3, '0');
 
             let targetVx = 0;
             isBoosting = false;
@@ -196,12 +222,12 @@
 
             if (mouseRight) targetVx = 8.4;
 
-            const pads = navigator.getGamepads ? navigator.getGamepads() : [];
+            const pads = getGamepads();
             for (let gp of pads) {
                 if (!gp) continue;
                 if (Math.abs(gp.axes[0]) > 0.2) targetVx = gp.axes[0] * 8.4;
-                if (gp.buttons[12].pressed) targetVx = -8.4;
-                if (gp.buttons[13].pressed) targetVx = 8.4;
+                if (gp.buttons[12] && gp.buttons[12].pressed) targetVx = -8.4;
+                if (gp.buttons[13] && gp.buttons[13].pressed) targetVx = 8.4;
 
                 const currentRestart = (gp.buttons[0].pressed || gp.buttons[2].pressed || gp.buttons[9].pressed || gp.buttons[8].pressed);
                 if (currentRestart && !prevRestartPressed) restartPressed = true;
@@ -218,14 +244,27 @@
                 if (Math.abs(rightStickX) > 0.15) camOffset += rightStickX * 22;
                 else camOffset *= 0.82;
 
-                if (gp.buttons[2].pressed) isBoosting = true;
+                if (gp.buttons[2] && gp.buttons[2].pressed) isBoosting = true;
 
-                if (gp.buttons[10].pressed && !usedGamepad) {
+                // L3 = Fullscreen
+                if (gp.buttons[10] && gp.buttons[10].pressed && !usedGamepad) {
                     usedGamepad = true;
                     if (!document.fullscreenElement) canvas.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
                 }
+
+                // R3 = location.reload()
+                const r3Pressed = gp.buttons[11] && gp.buttons[11].pressed;
+                if (r3Pressed && !prevR3Pressed) {
+                    location.reload();
+                }
+                prevR3Pressed = r3Pressed;
             }
             prevRestartPressed = pads.some(gp => gp && (gp.buttons[0].pressed || gp.buttons[2].pressed || gp.buttons[9].pressed || gp.buttons[8].pressed));
+
+            if (gameWon || gameOver) {
+                if (restartPressed || keys['r'] || keys['R']) resetGame();
+                return;
+            }
 
             if (targetVx) player.facing = targetVx > 0 ? 1 : -1;
 
@@ -263,17 +302,10 @@
             if (coyoteTime > 0) coyoteTime--;
 
             if (player.x < 0) player.x = 0;
-            if (player.y > 950) gameOver = true;
-            if (player.x > WORLD_W - 280 && !gameWon) gameWon = true;
+            if (player.y > WORLD_H + 80) gameOver = true;
+            if (player.x > WORLD_W - 120 && !gameWon) gameWon = true;
 
-            if (restartPressed || keys['r'] || keys['R']) {
-                player.x = 180; player.y = 380; player.vx = player.vy = 0;
-                ringsCollected = 0; time = 0; gameWon = false; gameOver = false;
-                startTime = Date.now();
-                usedGamepad = false;
-                camOffset = 0;
-                document.getElementById('rings').textContent = 'RINGS 00';
-            }
+            if (restartPressed || keys['r'] || keys['R']) resetGame();
 
             const lookAhead = player.vx * (isBoosting ? 18 : 12);
             const targetCam = player.x - SCREEN_W * 0.42 + lookAhead + camOffset;
@@ -326,15 +358,22 @@
             }
         }
 
+        function resetGame() {
+            player.x = 60; player.y = 460; player.vx = player.vy = 0;
+            ringsCollected = 0; time = 0; gameWon = false; gameOver = false;
+            startTime = Date.now();
+            usedGamepad = false;
+            camOffset = 0;
+            document.getElementById('rings').textContent = 'RINGS 00';
+        }
+
         canvas.addEventListener('mousedown', e => {
             if (e.button === 0) jumpBuffer = 8;
             if (e.button === 2) mouseRight = true;
         });
-
         canvas.addEventListener('mouseup', e => {
             if (e.button === 2) mouseRight = false;
         });
-
         canvas.addEventListener('contextmenu', e => e.preventDefault());
 
         function drawPlayer() {
@@ -351,6 +390,9 @@
             } else {
                 ctx.fillStyle = '#ff3366';
                 ctx.fillRect(-30, -30, 60, 60);
+                ctx.fillStyle = '#ffffff';
+                ctx.font = '12px Arial';
+                ctx.fillText('IMG ERR', -25, 5);
             }
 
             ctx.restore();
@@ -361,15 +403,17 @@
             ctx.fillRect(0, 0, SCREEN_W, SCREEN_H);
 
             ctx.save();
-            ctx.translate(-Math.floor(camX * 0.55), 0);
-            ctx.fillStyle = '#132e13';
-            ctx.fillRect(0, 260, WORLD_W, 480);
-            ctx.restore();
-
-            ctx.save();
             ctx.translate(-Math.floor(camX), 0);
 
-            if (tilesLoaded) ctx.drawImage(fg, 0, 0);  // existing tilemap as glitched background
+            if (tilesLoaded) {
+                ctx.drawImage(fg, 0, 0, fg.naturalWidth, fg.naturalHeight, 0, 0, WORLD_W, WORLD_H);
+            } else {
+                ctx.fillStyle = '#444';
+                ctx.fillRect(0, 300, WORLD_W, 300);
+                ctx.fillStyle = '#888';
+                ctx.font = 'bold 32px Courier New';
+                ctx.fillText('LOADING TILEMAP...', 200, 450);
+            }
 
             for (let r of ringsList) if (!r.collected) {
                 ctx.fillStyle = '#f1c40f';
@@ -379,11 +423,10 @@
             }
 
             for (let e of enemies) {
-                let ex = e.x - camX;
                 ctx.fillStyle = '#e74c3c';
-                ctx.fillRect(ex, e.y, e.w, e.h);
+                ctx.fillRect(e.x, e.y, e.w, e.h);
                 ctx.fillStyle = '#2c3e50';
-                ctx.fillRect(ex + 6, e.y + 8, 24, 14);
+                ctx.fillRect(e.x + 6, e.y + 8, 24, 14);
             }
 
             for (let rock of rocktos) rock.draw();
@@ -393,16 +436,28 @@
             ctx.fillStyle = '#f1c40f';
             for (let p of particles) {
                 ctx.globalAlpha = p.life / 35;
-                ctx.fillRect(p.x - camX, p.y, p.size, p.size);
+                ctx.fillRect(p.x, p.y, p.size, p.size);
             }
             for (let p of exhaustParticles) {
                 ctx.globalAlpha = p.life / 25;
                 ctx.fillStyle = p.color;
-                ctx.fillRect(p.x - camX, p.y, p.size, p.size);
+                ctx.fillRect(p.x, p.y, p.size, p.size);
             }
             ctx.globalAlpha = 1;
 
             ctx.restore();
+
+            if (showDebug) {
+                ctx.save();
+                ctx.translate(-Math.floor(camX), 0);
+                ctx.strokeStyle = '#f38630';
+                ctx.lineWidth = 1;
+                for (let p of platforms) ctx.strokeRect(p.x, p.y, p.w, p.h);
+                ctx.strokeStyle = '#0f0';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(player.x, player.y, player.w, player.h);
+                ctx.restore();
+            }
 
             if (gameWon || gameOver) {
                 ctx.fillStyle = gameWon ? 'rgba(0,40,0,0.9)' : 'rgba(40,0,0,0.9)';
@@ -414,7 +469,7 @@
                 ctx.font = '28px Courier New';
                 ctx.fillText(`RINGS ${ringsCollected}   TIME ${time}`, SCREEN_W/2, 300);
                 ctx.font = '18px Courier New';
-                ctx.fillText('Press R or A/X or START to restart', SCREEN_W/2, 370);
+                ctx.fillText('Press R or START to restart', SCREEN_W/2, 370);
             }
         }
 
@@ -424,8 +479,14 @@
             requestAnimationFrame(loop);
         }
 
-        window.addEventListener('keydown', e => { keys[e.key] = true; if (e.key.toLowerCase() === 'f') { if (!document.fullscreenElement) canvas.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
-            else document.exitFullscreen(); } if (e.key === 'd' || e.key === 'D') showDebug = !showDebug; });
+        window.addEventListener('keydown', e => {
+            keys[e.key] = true;
+            if (e.key.toLowerCase() === 'f') {
+                if (!document.fullscreenElement) canvas.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
+                else document.exitFullscreen();
+            }
+            if (e.key === 'd' || e.key === 'D') showDebug = !showDebug;
+        });
         window.addEventListener('keyup', e => keys[e.key] = false);
 
         window.onload = () => {
