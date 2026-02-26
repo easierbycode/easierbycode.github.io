@@ -8,34 +8,6 @@
         canvas { display:block; margin:20px auto; image-rendering:pixelated; border:8px solid #111; box-shadow:0 0 40px #0a3;}
         #ui { position:absolute; top:15px; left:15px; color:#0f0; text-shadow:2px 2px 0 #000; pointer-events:none; font-size:22px; line-height:1.1; letter-spacing:2px; }
         #instructions { position:absolute; bottom:15px; left:15px; color:#0f0; text-shadow:2px 2px 0 #000; pointer-events:none; font-size:14px; line-height:1.4; }
-        #touch-controls {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            pointer-events: none; z-index: 10;
-            transition: opacity 0.35s ease;
-            display: none;
-        }
-        #touch-controls.visible { display: block; }
-        #touch-controls.hidden { opacity: 0; pointer-events: none !important; }
-        .touch-btn {
-            position: absolute; pointer-events: auto;
-            border: 2px solid rgba(0,255,0,0.45);
-            background: rgba(0,20,0,0.4);
-            border-radius: 14px; color: rgba(0,255,0,0.7);
-            font-family: 'Courier New', monospace; font-weight: bold;
-            display: flex; align-items: center; justify-content: center;
-            user-select: none; -webkit-user-select: none;
-            -webkit-tap-highlight-color: transparent;
-            touch-action: none;
-        }
-        .touch-btn:active, .touch-btn.pressed {
-            background: rgba(0,255,0,0.18);
-            border-color: rgba(0,255,0,0.8);
-            color: rgba(0,255,0,1);
-        }
-        #touch-left  { left: 16px; bottom: 28px; width: 72px; height: 72px; font-size: 32px; }
-        #touch-right { left: 104px; bottom: 28px; width: 72px; height: 72px; font-size: 32px; }
-        #touch-jump  { right: 16px; bottom: 28px; width: 80px; height: 80px; font-size: 16px; }
-        #touch-boost { right: 112px; bottom: 28px; width: 64px; height: 64px; font-size: 13px; }
     </style>
 </head>
 <body>
@@ -49,12 +21,6 @@
         RIGHT CLICK = Move Right (hold)
     </div>
     <canvas id="c" width="800" height="600"></canvas>
-    <div id="touch-controls">
-        <div id="touch-left" class="touch-btn">&larr;</div>
-        <div id="touch-right" class="touch-btn">&rarr;</div>
-        <div id="touch-boost" class="touch-btn">BOOST</div>
-        <div id="touch-jump" class="touch-btn">JUMP</div>
-    </div>
 
     <script>
         const canvas = document.getElementById('c');
@@ -62,11 +28,7 @@
         const SCREEN_W = 800;
         const SCREEN_H = 600;
 
-        let TILE_SIZE = 16;
         let WORLD_W = 8448;
-        let numCols = 528;
-        let numRows = 128;
-        let map = null;
 
         const player = { x: 180, y: 380, vx: 0, vy: 0, w: 38, h: 48, facing: 1, onGround: false };
 
@@ -86,104 +48,31 @@
         const rocktoSprite = new Image();
         rocktoSprite.src = 'http://easierbycode.com/assets/spritesheets/rockto.png';
 
+        const fg = new Image();
+        fg.src = 'http://easierbycode.com/assets/spritesheets/tiles.png';
+
         let motorcycleLoaded = false;
         let rocktoLoaded = false;
         let tilesLoaded = false;
 
         playerSprite.onload = () => { motorcycleLoaded = true; console.log('Motorcycle loaded'); };
-        playerSprite.onerror = () => console.error('Failed to load motorcycle.png');
+        playerSprite.onerror = () => console.error('Motorcycle.png failed to load');
 
         rocktoSprite.onload = () => { rocktoLoaded = true; console.log('Rockto loaded'); };
-        rocktoSprite.onerror = () => console.error('Failed to load rockto.png');
+        rocktoSprite.onerror = () => console.error('Rockto.png failed to load');
 
-        const fg = new Image();
-        fg.src = 'http://easierbycode.com/assets/spritesheets/tiles.png';
         fg.onload = () => { tilesLoaded = true; console.log('Tiles loaded'); };
-        fg.onerror = () => console.error('Failed to load tiles.png');
-
-        const parallaxImg = new Image();
-        parallaxImg.src = 'https://easierbycode.com/assets/spritesheets/bg-parallax.png';
-        let parallaxLoaded = false;
-        parallaxImg.onload = () => { parallaxLoaded = true; console.log('Parallax loaded'); };
-        parallaxImg.onerror = () => console.error('Failed to load bg-parallax.png');
-
-        let parallaxFrames = [];
-        fetch('https://easierbycode.com/assets/spritesheets/bg-parallax.json')
-            .then(r => r.json())
-            .then(data => {
-                const names = Object.keys(data.frames).sort((a, b) =>
-                    parseInt(a.replace('atlas_s', '')) - parseInt(b.replace('atlas_s', ''))
-                );
-                parallaxFrames = names.map(name => data.frames[name].frame);
-                console.log('Parallax atlas loaded:', parallaxFrames.length, 'layers');
-            })
-            .catch(err => console.error('Parallax JSON failed:', err));
+        fg.onerror = () => console.error('Tiles.png failed to load');
 
         let currentFrame = 0, lastAnimTime = Date.now();
         const FRAME_WIDTH = 86, FRAME_HEIGHT = 46, TOTAL_FRAMES = 10;
 
-        let loaded = false, levelLoaded = false;
+        let levelLoaded = true; // we no longer need tilemap collision
+
         let prevRestartPressed = false;
 
-        fetch('https://easierbycode.com/assets/spritesheets/level_data.json')
-            .then(r => r.json())
-            .then(data => {
-                map = data.map || [];
-                numCols = data.numCols || 528;
-                numRows = data.numRows || 128;
-                TILE_SIZE = 16;
-                WORLD_W = numCols * TILE_SIZE;
-                generateCollisionFromMap();
-                levelLoaded = true;
-                console.log('Level data loaded');
-            })
-            .catch(err => {
-                console.error('Level JSON failed:', err);
-                levelLoaded = true;
-                generateFallbackPlatforms();
-            });
-
-        function generateCollisionFromMap() {
-            platforms = [];
-            for (let y = 0; y < numRows; y++) {
-                let start = -1;
-                for (let x = 0; x <= numCols; x++) {
-                    const tile = map[y * numCols + x];
-                    const solid = tile !== 2 && tile !== 0 && tile !== undefined && tile !== null;
-                    if (solid && start === -1) start = x;
-                    else if (!solid && start !== -1) {
-                        platforms.push({ x: start * TILE_SIZE, y: y * TILE_SIZE, w: (x - start) * TILE_SIZE, h: TILE_SIZE });
-                        start = -1;
-                    }
-                }
-                if (start !== -1) platforms.push({ x: start * TILE_SIZE, y: y * TILE_SIZE, w: (numCols - start) * TILE_SIZE, h: TILE_SIZE });
-            }
-        }
-
-        function generateFallbackPlatforms() {
-            platforms = [
-                {x:0, y:528, w:WORLD_W, h:160},
-                {x:128, y:448, w:480, h:32}, {x:704, y:384, w:288, h:32},
-                {x:1056, y:480, w:416, h:32}, {x:1536, y:352, w:352, h:32},
-                {x:1984, y:448, w:320, h:32}, {x:2336, y:288, w:480, h:32},
-                {x:2912, y:416, w:288, h:32}, {x:3232, y:256, w:576, h:32},
-                {x:3904, y:384, w:384, h:32}, {x:4352, y:320, w:320, h:32},
-                {x:4736, y:448, w:416, h:32}, {x:5248, y:288, w:480, h:32},
-                {x:5792, y:384, w:736, h:32}, {x:6144, y:320, w:256, h:32},
-                {x:6496, y:448, w:352, h:32}, {x:7200, y:320, w:448, h:32},
-                {x:480, y:480, w:160, h:32}, {x:1184, y:320, w:160, h:32},
-                {x:2688, y:352, w:192, h:32}, {x:3776, y:288, w:160, h:32},
-                {x:4480, y:352, w:96, h:32}, {x:4960, y:384, w:160, h:32},
-                {x:5600, y:256, w:128, h:32}, {x:6816, y:352, w:192, h:32},
-                {x:800, y:416, w:96, h:32}, {x:1408, y:384, w:128, h:32},
-                {x:1824, y:288, w:128, h:32}, {x:2144, y:416, w:96, h:32},
-                {x:3104, y:320, w:160, h:32}, {x:3552, y:256, w:96, h:32},
-                {x:4000, y:320, w:128, h:32}, {x:4608, y:384, w:96, h:32},
-                {x:5088, y:224, w:160, h:32}, {x:5952, y:352, w:96, h:32},
-                {x:6272, y:288, w:160, h:32}, {x:6944, y:384, w:128, h:32},
-                {x:7392, y:288, w:192, h:32}
-            ];
-        }
+        // Only bottom floor collision
+        platforms = [{ x: 0, y: 550, w: WORLD_W, h: 100 }];
 
         class Rockto {
             constructor(x, y) {
@@ -191,24 +80,21 @@
                 this.y = y;
                 this.w = 61;
                 this.h = 57;
-                this.phase = 0;
+                this.phase = Math.random() * Math.PI * 2;
                 this.radius = 140;
                 this.speed = 0.028;
                 this.centerX = x + 320;
                 this.centerY = y + 180;
                 this.active = true;
             }
-
             update() {
                 if (!this.active) return;
                 this.phase += this.speed;
                 this.x = this.centerX + Math.cos(this.phase) * this.radius;
                 this.y = this.centerY + Math.sin(this.phase) * this.radius;
             }
-
             draw() {
                 if (!rocktoLoaded || !this.active) {
-                    // Fallback red circle if sprite broken
                     ctx.fillStyle = '#ff4444';
                     ctx.beginPath();
                     ctx.arc(this.x - camX, this.y, 30, 0, Math.PI*2);
@@ -219,7 +105,6 @@
                 let sx = frame * 61;
                 ctx.drawImage(rocktoSprite, sx, 0, 61, 57, this.x - camX, this.y, 61, 57);
             }
-
             checkCollision() {
                 if (!this.active) return false;
                 return Math.abs(player.x + player.w/2 - this.x) < 50 &&
@@ -230,7 +115,6 @@
         let rocktos = [];
 
         function triggerHaptic(type = 'land') {
-            // Gamepad rumble (desktop + gamepad)
             const pads = navigator.getGamepads ? navigator.getGamepads() : [];
             for (let gp of pads) {
                 if (!gp) continue;
@@ -240,13 +124,6 @@
                         else if (type === 'left') gp.vibrationActuator.playEffect("dual-rumble", { duration: 80, strongMagnitude: 0.2, weakMagnitude: 1.0 });
                         else if (type === 'right') gp.vibrationActuator.playEffect("dual-rumble", { duration: 80, strongMagnitude: 1.0, weakMagnitude: 0.2 });
                     }
-                } catch (e) {}
-            }
-            // Mobile browser + Cordova vibration
-            if (navigator.vibrate) {
-                try {
-                    if (type === 'land') navigator.vibrate(60);
-                    else if (type === 'left' || type === 'right') navigator.vibrate(25);
                 } catch (e) {}
             }
         }
@@ -305,7 +182,7 @@
         }
 
         function update() {
-            if (!loaded || !levelLoaded) return;
+            if (!loaded) return;
 
             time = Math.floor((Date.now() - startTime) / 1000);
 
@@ -317,19 +194,11 @@
             if (keys['ArrowRight'] || keys['d'] || keys['D']) targetVx = 8.4;
             if (keys['Shift']) isBoosting = true;
 
-            // Touch controls
-            if (touchState.left) targetVx = -8.4;
-            if (touchState.right) targetVx = 8.4;
-            if (touchState.boost) isBoosting = true;
-            if (touchState.jump) jumpBuffer = 8;
-
             if (mouseRight) targetVx = 8.4;
 
             const pads = navigator.getGamepads ? navigator.getGamepads() : [];
             for (let gp of pads) {
                 if (!gp) continue;
-                // Auto-hide touch controls on gamepad input
-                if (Math.abs(gp.axes[0]) > 0.2 || gp.buttons.some(b => b.pressed)) onNonTouchInput();
                 if (Math.abs(gp.axes[0]) > 0.2) targetVx = gp.axes[0] * 8.4;
                 if (gp.buttons[12].pressed) targetVx = -8.4;
                 if (gp.buttons[13].pressed) targetVx = 8.4;
@@ -478,18 +347,10 @@
 
             if (motorcycleLoaded) {
                 const sx = currentFrame * FRAME_WIDTH;
-                ctx.drawImage(
-                    playerSprite,
-                    sx, 0, FRAME_WIDTH, FRAME_HEIGHT,
-                    -FRAME_WIDTH/2, -FRAME_HEIGHT/2 + 18,
-                    FRAME_WIDTH, FRAME_HEIGHT
-                );
+                ctx.drawImage(playerSprite, sx, 0, FRAME_WIDTH, FRAME_HEIGHT, -FRAME_WIDTH/2, -FRAME_HEIGHT/2 + 18, FRAME_WIDTH, FRAME_HEIGHT);
             } else {
                 ctx.fillStyle = '#ff3366';
                 ctx.fillRect(-30, -30, 60, 60);
-                ctx.fillStyle = '#ffffff';
-                ctx.font = '12px Arial';
-                ctx.fillText('IMG ERR', -25, 5);
             }
 
             ctx.restore();
@@ -499,46 +360,16 @@
             ctx.fillStyle = '#0b1f0b';
             ctx.fillRect(0, 0, SCREEN_W, SCREEN_H);
 
-            if (!levelLoaded) {
-                ctx.fillStyle = '#0f0';
-                ctx.font = 'bold 42px Courier New';
-                ctx.textAlign = 'center';
-                ctx.fillText('LOADING LEVEL...', SCREEN_W/2, SCREEN_H/2);
-                return;
-            }
-
-            if (parallaxLoaded && parallaxFrames.length > 0) {
-                const n = parallaxFrames.length;
-                const spacing = (SCREEN_H - 144) / (n - 1);
-                for (let i = 0; i < n; i++) {
-                    const f = parallaxFrames[i];
-                    const speed = 0.02 + (i / (n - 1)) * 0.53;
-                    const yPos = Math.floor(i * spacing);
-                    const offset = Math.floor(camX * speed) % f.w;
-                    for (let x = -offset; x < SCREEN_W; x += f.w) {
-                        ctx.drawImage(parallaxImg, f.x, f.y, f.w, f.h, x, yPos, f.w, f.h);
-                    }
-                }
-            } else {
-                ctx.save();
-                ctx.translate(-Math.floor(camX * 0.55), 0);
-                ctx.fillStyle = '#132e13';
-                ctx.fillRect(0, 260, WORLD_W, 480);
-                ctx.restore();
-            }
+            ctx.save();
+            ctx.translate(-Math.floor(camX * 0.55), 0);
+            ctx.fillStyle = '#132e13';
+            ctx.fillRect(0, 260, WORLD_W, 480);
+            ctx.restore();
 
             ctx.save();
             ctx.translate(-Math.floor(camX), 0);
 
-            if (tilesLoaded) {
-                ctx.drawImage(fg, 0, 0);
-            } else {
-                ctx.fillStyle = '#444';
-                ctx.fillRect(0, 300, WORLD_W, 300);
-                ctx.fillStyle = '#888';
-                ctx.font = 'bold 32px Courier New';
-                ctx.fillText('TILES MISSING', 200, 450);
-            }
+            if (tilesLoaded) ctx.drawImage(fg, 0, 0);  // existing tilemap as glitched background
 
             for (let r of ringsList) if (!r.collected) {
                 ctx.fillStyle = '#f1c40f';
@@ -555,9 +386,7 @@
                 ctx.fillRect(ex + 6, e.y + 8, 24, 14);
             }
 
-            for (let rock of rocktos) {
-                rock.draw();
-            }
+            for (let rock of rocktos) rock.draw();
 
             drawPlayer();
 
@@ -574,17 +403,6 @@
             ctx.globalAlpha = 1;
 
             ctx.restore();
-
-            if (showDebug) {
-                ctx.save();
-                ctx.translate(-Math.floor(camX), 0);
-                ctx.strokeStyle = '#f38630';
-                ctx.lineWidth = 2;
-                for (let p of platforms) ctx.strokeRect(p.x, p.y, p.w, p.h);
-                ctx.strokeStyle = '#0f0';
-                ctx.strokeRect(player.x, player.y, player.w, player.h);
-                ctx.restore();
-            }
 
             if (gameWon || gameOver) {
                 ctx.fillStyle = gameWon ? 'rgba(0,40,0,0.9)' : 'rgba(40,0,0,0.9)';
@@ -606,104 +424,13 @@
             requestAnimationFrame(loop);
         }
 
-        canvas.addEventListener('mousedown', e => {
-            if (e.button === 0) jumpBuffer = 8;
-            if (e.button === 2) mouseRight = true;
-        });
-
-        canvas.addEventListener('mouseup', e => {
-            if (e.button === 2) mouseRight = false;
-        });
-
-        canvas.addEventListener('contextmenu', e => e.preventDefault());
-
-        window.addEventListener('keydown', e => {
-            keys[e.key] = true;
-            if (e.key.toLowerCase() === 'f') {
-                if (!document.fullscreenElement) canvas.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
-                else document.exitFullscreen();
-            }
-            if (e.key === 'd' || e.key === 'D') showDebug = !showDebug;
-        });
-
+        window.addEventListener('keydown', e => { keys[e.key] = true; if (e.key.toLowerCase() === 'f') { if (!document.fullscreenElement) canvas.requestFullscreen({navigationUI:'hide'}).catch(()=>{});
+            else document.exitFullscreen(); } if (e.key === 'd' || e.key === 'D') showDebug = !showDebug; });
         window.addEventListener('keyup', e => keys[e.key] = false);
 
-        // --- Touch controls with auto-hide ---
-        const touchControls = document.getElementById('touch-controls');
-        const touchState = { left: false, right: false, jump: false, boost: false };
-        let touchHideTimer = null;
-        let inputMode = 'none'; // 'none' | 'touch' | 'keyboard' | 'gamepad'
-
-        function showTouchControls() {
-            touchControls.classList.add('visible');
-            touchControls.classList.remove('hidden');
-        }
-
-        function hideTouchControls() {
-            touchControls.classList.add('hidden');
-        }
-
-        // Detect touch-capable device and show controls initially
-        function detectTouch() {
-            if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-                inputMode = 'touch';
-                showTouchControls();
-            }
-        }
-
-        function onNonTouchInput() {
-            if (inputMode === 'touch') {
-                inputMode = 'keyboard';
-                hideTouchControls();
-            } else if (inputMode === 'none') {
-                inputMode = 'keyboard';
-            }
-        }
-
-        function onTouchInput() {
-            inputMode = 'touch';
-            showTouchControls();
-            // Clear any pending hide
-            if (touchHideTimer) { clearTimeout(touchHideTimer); touchHideTimer = null; }
-        }
-
-        // Hook into existing keyboard listeners to detect non-touch input
-        window.addEventListener('keydown', () => onNonTouchInput());
-
-        // Wire up touch buttons
-        function bindTouchButton(id, stateKey) {
-            const el = document.getElementById(id);
-
-            el.addEventListener('touchstart', e => {
-                e.preventDefault();
-                touchState[stateKey] = true;
-                el.classList.add('pressed');
-                onTouchInput();
-                if (navigator.vibrate) { try { navigator.vibrate(12); } catch (e) {} }
-            }, { passive: false });
-
-            el.addEventListener('touchend', e => {
-                e.preventDefault();
-                touchState[stateKey] = false;
-                el.classList.remove('pressed');
-            }, { passive: false });
-
-            el.addEventListener('touchcancel', e => {
-                touchState[stateKey] = false;
-                el.classList.remove('pressed');
-            });
-        }
-
-        bindTouchButton('touch-left', 'left');
-        bindTouchButton('touch-right', 'right');
-        bindTouchButton('touch-jump', 'jump');
-        bindTouchButton('touch-boost', 'boost');
-
         window.onload = () => {
-            loaded = true;
             startTime = Date.now();
             initLevel();
-            detectTouch();
             loop();
         };
     </script>
