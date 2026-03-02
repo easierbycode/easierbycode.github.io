@@ -1,6 +1,6 @@
-import CONSTANTS from "https://codepen.io/CodeMonkeyGames/pen/MWMxmOq.js";
-import PROPERTIES from "https://codepen.io/CodeMonkeyGames/pen/rNERbzw.js";
-import { LoadScene } from "https://codepen.io/CodeMonkeyGames/pen/LYKayQE.js";
+import CONSTANTS from "./constants.js";
+import PROPERTIES from "./properties.js";
+import { LoadScene } from "./load-scene.js";
 import {
   AdvScene,
   BigNum,
@@ -30,7 +30,7 @@ import {
   TitleScreen,
   Trump,
   YesButton
-} from "https://codepen.io/CodeMonkeyGames/pen/MWRrLqy.js";
+} from "./objects-and-scenes.js";
 
 export class Player extends Character {
   constructor(t) {

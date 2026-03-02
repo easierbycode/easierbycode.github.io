@@ -185,3 +185,17 @@ export const ANIMATION = {
 };
 
 export const FPS = 30;
+
+// Backward-compatible default export used by legacy game modules.
+const CONSTANTS = {
+    LANG,
+    RESOURCE: RESOURCE_PATHS,
+    GAME_WIDTH: GAME_DIMENSIONS.WIDTH,
+    GAME_HEIGHT: GAME_DIMENSIONS.HEIGHT,
+    GAME_CENTER: GAME_DIMENSIONS.CENTER_X,
+    GAME_MIDDLE: GAME_DIMENSIONS.CENTER_Y,
+    STAGE_WIDTH: STAGE_DIMENSIONS.WIDTH,
+    STAGE_HEIGHT: STAGE_DIMENSIONS.HEIGHT,
+};
+
+export default CONSTANTS;
