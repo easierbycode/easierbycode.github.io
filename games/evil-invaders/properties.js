@@ -1,5 +1,5 @@
 export default {
-  baseUrl: "",
+  baseUrl: "https://assets.codepen.io/11817390/",
   lowModeFlg: 0,
   hitarea: 0,
   player: null,
