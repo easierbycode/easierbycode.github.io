@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>2019-es7</title>
+    <!-- PWA manifest & iOS standalone mode -->
+    <link rel="manifest" href="./manifest.json" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Evil Invaders" />
+    <link rel="apple-touch-icon" href="./icons/apple-touch-icon.png" />
+    <meta name="theme-color" content="#000000" />
+
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            background: #000;
+            overflow: hidden;
+            overscroll-behavior: none;
+            touch-action: none;
+            -webkit-overflow-scrolling: auto;
+            -ms-touch-action: none;
+            font-family: sans-serif;
+            color: #0f0;
+        }
+        #canvas, #phaser-canvas {
+            width: 100%;
+            height: 100%;
+            height: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #canvas canvas, #phaser-canvas canvas {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            touch-action: none;
+        }
+        #downloadBtn {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            z-index: 1000;
+            display: none;
+        }
+        #iosInstallBanner {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 2000;
+            background: rgba(0,0,0,0.85);
+            color: #fff;
+            font-size: 12px;
+            padding: 10px 12px;
+            text-align: center;
+            border-top: 1px solid #333;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        /* Force portrait layout hack */
+        @media screen and (orientation: landscape) {
+            html {
+                transform: rotate(-90deg);
+                transform-origin: left top;
+                width: 100vh;
+                height: 100vw;
+                overflow: hidden;
+                position: absolute;
+                top: 100%;
+                left: 0;
+            }
+        }
+    </style>
+
+    <!-- Firebase config (kept as global before loading compat libs) -->
+    <script>
+        window.firebaseConfig = window.firebaseConfig || {
+            apiKey: "AIzaSyAHY_agipyNEXvY2J4jDgnlk9kLeM6O37Y",
+            authDomain: "evil-invaders.firebaseapp.com",
+            databaseURL: "https://evil-invaders-default-rtdb.firebaseio.com",
+            projectId: "evil-invaders",
+            storageBucket: "evil-invaders.firebasestorage.app",
+            messagingSenderId: "149257705855",
+            appId: "1:149257705855:web:3f048481dfc66cef61224a",
+        };
+        window.__FIREBASE_CONFIG__ = window.__FIREBASE_CONFIG__ || window.firebaseConfig;
+        window.__FIREBASE_DATABASE_PATH__ = window.__FIREBASE_DATABASE_PATH__ || "leaderboards/globalHighScore";
+    </script>
+</head>
+<body>
+    <div id="baseUrl" hidden>./</div>
+
+    <!-- Game containers -->
+    <div id="canvas"></div>
+    <div id="phaser-canvas" style="display:none;"></div>
+
+    <!-- Download & iOS banner -->
+    <div id="downloadBtn">
+        <a href="https://EasierByCode.com/2019-es7/game.apk" style="color:#888; text-decoration:none; font-size:10px; background:rgba(0,0,0,0.3); padding:2px 5px; border-radius:3px;">🪬 DOWNLOAD APK 🪬</a>
+    </div>
+    <div id="iosInstallBanner">
+        <span style="display:inline-block; max-width:280px; line-height:1.4;">
+            For fullscreen: tap
+            <span style="font-size:16px; vertical-align:middle;">&#x1F4E4;</span>
+            then <strong>“Add to Home Screen”</strong>
+        </span>
+        <button id="iosInstallDismiss" style="position:absolute; top:4px; right:8px; background:none; border:none; color:#888; font-size:18px; cursor:pointer; padding:4px 8px; line-height:1;">×</button>
+    </div>
+
+    <!-- Libraries (loaded before game boot) -->
+    <script src="./src/lib/pixi.min.js"></script>
+    <script src="./src/lib/pixi-sound.min.js"></script>
+    <script src="./src/lib/TweenMax.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
+
+    <script type="module" src="./src/main.js"></script>
+</body>
+</html>
