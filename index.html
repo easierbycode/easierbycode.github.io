@@ -2,6 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="easierbycode">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/games/2019/v1/icons/apple-touch-icon.png">
     <link href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
     <!--<link href="http://v4-alpha.getbootstrap.com/examples/cover/cover.css" rel="stylesheet">-->
     <link href="https://v4-alpha.getbootstrap.com/examples/blog/blog.css" rel="stylesheet">
@@ -1984,5 +1990,18 @@ return Tether;
     </script>
 
     <script src="./script.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('/sw.js')
+            .then(function (reg) {
+              console.log('Service worker registered:', reg.scope);
+            })
+            .catch(function (err) {
+              console.warn('Service worker registration failed:', err);
+            });
+        });
+      }
+    </script>
   </body>
 </html>
