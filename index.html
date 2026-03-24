@@ -2,12 +2,6 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="theme-color" content="#ffffff">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="easierbycode">
-    <link rel="manifest" href="/manifest.json">
-    <link rel="apple-touch-icon" href="/games/2019/v1/icons/apple-touch-icon.png">
     <link href="https://v4-alpha.getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
     <!--<link href="http://v4-alpha.getbootstrap.com/examples/cover/cover.css" rel="stylesheet">-->
     <link href="https://v4-alpha.getbootstrap.com/examples/blog/blog.css" rel="stylesheet">
@@ -150,8 +144,7 @@ body {
           <span class="text-muted">Something else</span>
         </div>
         <div class="col-xs-6 col-sm-3 placeholder lab" data-iframe='hellophaser/v3' style="cursor: pointer;">
-          <!-- <img src="//img1.ak.crunchyroll.com/i/spire4/d16983e1b53d44288b0757e0ce8ca90b1310737785_large.png" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail"> -->
-          <img src='https://easierbycode.com/assets/sprites/headphone-invader-icon.png' width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
+          <img src="//img1.ak.crunchyroll.com/i/spire4/d16983e1b53d44288b0757e0ce8ca90b1310737785_large.png" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
           <h4>RonaGun</h4>
           <span class="text-muted">Something else</span>
         </div>
@@ -165,12 +158,12 @@ body {
           <h4>Evil Invaders</h4>
           <span class="text-muted">MutoidScene</span>
         </div>
-        <div class="col-xs-6 col-sm-3 placeholder lab" data-iframe='pacman-halloween-2025' style="cursor: pointer;">
+        <div class="col-xs-6 col-sm-3 placeholder lab" data-iframe='https://easierbycode.com/pacman-halloween-2025' style="cursor: pointer;">
           <img src="https://easierbycode.com/pacman-halloween-2025/pacman/halloween/static/favicon/favicon.svg" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
           <h4>PAC-MAN Halloween</h4>
           <span class="text-muted">Something else</span>
         </div>
-        <div class="col-xs-6 col-sm-3 placeholder lab" data-iframe='shmup-party-phaser3' style="cursor: pointer;">
+        <div class="col-xs-6 col-sm-3 placeholder lab" data-iframe='https://easierbycode.com/shmup-party-phaser3' style="cursor: pointer;">
           <img src="https://easierbycode.com/assets/sprites/shmup-party-icon.png" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
           <h4>Sh'M↑ Party</h4>
         </div>
@@ -1991,18 +1984,5 @@ return Tether;
     </script>
 
     <script src="./script.js"></script>
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', function () {
-          navigator.serviceWorker.register('/sw.js')
-            .then(function (reg) {
-              console.log('Service worker registered:', reg.scope);
-            })
-            .catch(function (err) {
-              console.warn('Service worker registration failed:', err);
-            });
-        });
-      }
-    </script>
   </body>
 </html>

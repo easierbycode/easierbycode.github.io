@@ -75,69 +75,6 @@ body {
     text-align: center;
 }
 
-/* Gamepad launcher - centered in nav */
-.blog-nav {
-    position: relative;
-}
-.gamepad-launcher {
-    font-size: 1.6rem !important;
-    text-transform: none !important;
-    cursor: pointer;
-    transition: transform 0.15s ease, filter 0.15s ease;
-    padding: 0.25rem 0.75rem !important;
-    line-height: 1 !important;
-}
-.gamepad-launcher:hover {
-    transform: scale(1.3);
-    filter: drop-shadow(0 0 6px rgba(255, 200, 0, 0.8));
-}
-
-/* MK2 random select - flashing border on game tiles */
-@keyframes mk2-flash-border {
-    0%   { box-shadow: 0 0 0 4px #ff0, 0 0 15px 4px #ff0; }
-    25%  { box-shadow: 0 0 0 4px #f00, 0 0 15px 4px #f00; }
-    50%  { box-shadow: 0 0 0 4px #0ff, 0 0 15px 4px #0ff; }
-    75%  { box-shadow: 0 0 0 4px #0f0, 0 0 15px 4px #0f0; }
-    100% { box-shadow: 0 0 0 4px #ff0, 0 0 15px 4px #ff0; }
-}
-
-.mk2-highlight {
-    animation: mk2-flash-border 0.15s linear infinite;
-    border-radius: 8px;
-    z-index: 100;
-    position: relative;
-}
-
-.mk2-selected {
-    animation: mk2-selected-pulse 0.4s ease-in-out 3;
-    border-radius: 8px;
-    z-index: 100;
-    position: relative;
-}
-
-@keyframes mk2-selected-pulse {
-    0%   { box-shadow: 0 0 0 4px #fff, 0 0 20px 8px #ff0; }
-    50%  { box-shadow: 0 0 0 6px #ff0, 0 0 30px 12px #f80; }
-    100% { box-shadow: 0 0 0 4px #fff, 0 0 20px 8px #ff0; }
-}
-
-/* MK2 overlay for the selection sequence */
-.mk2-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 99;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-.mk2-overlay.active {
-    opacity: 1;
-}
-
 /* Long-press camera shake on pacman-halloween tile */
 @keyframes camera-shake {
     0%   { transform: translate(0, 0) rotate(0deg); }
