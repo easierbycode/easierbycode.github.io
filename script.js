@@ -130,6 +130,49 @@ $('#gamepadBtn').on('click', function (evt) {
   }
 });
 
+// --- Long-press on pacman-halloween-2025: launch classic pacman instead ---
+(function () {
+  var el = $('[data-iframe="pacman-halloween-2025"]')[0];
+  if (!el) return;
+
+  var holdTimer = null;
+  var longPressed = false;
+  var HOLD_MS = 650;
+
+  function onLongPress() {
+    longPressed = true;
+    if (navigator.vibrate) navigator.vibrate(80);
+    var container = $(el).closest('.placeholders, .container, body').first();
+    container.addClass('camera-shake');
+    container.one('animationend', function () { container.removeClass('camera-shake'); });
+    launchGame('pacman');
+  }
+
+  function startHold() {
+    longPressed = false;
+    holdTimer = setTimeout(onLongPress, HOLD_MS);
+  }
+
+  function cancelHold() {
+    clearTimeout(holdTimer);
+  }
+
+  // Suppress the click event that fires after a completed long-press
+  el.addEventListener('click', function (e) {
+    if (longPressed) {
+      e.stopImmediatePropagation();
+      longPressed = false;
+    }
+  }, true); // capture phase so it runs before jQuery's handler
+
+  el.addEventListener('mousedown', startHold);
+  el.addEventListener('touchstart', startHold, { passive: true });
+  el.addEventListener('mouseup', cancelHold);
+  el.addEventListener('mouseleave', cancelHold);
+  el.addEventListener('touchend', cancelHold);
+  el.addEventListener('touchcancel', cancelHold);
+}());
+
 // --- Game tile click ---
 $('.lab').click(function () {
   var ID = $(this).data('iframe');
