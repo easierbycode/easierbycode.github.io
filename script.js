@@ -230,6 +230,17 @@ function makeLongPress(selector, altId) {
 makeLongPress('pacman-halloween-2025', 'pacman');
 makeLongPress('evil-invaders', 'evil-invaders-phaser4/?scene=PackerScene');
 
+// --- Dragon button → Monkey Kombat scene 17 ---
+$('#dragonBtn').on('click', function (evt) {
+  evt.preventDefault();
+  evt.stopPropagation();
+  if ($('iframe').length) return;
+  setTimeout(function () {
+    $('body').append('<iframe height="100%" style="width: 100%;" scrolling="no" title="monkey-kombat" src="https://easierbycode.com/monkey-kombat/?scene=17" frameborder="no" loading="lazy" allowtransparency="true" allowfullscreen="true"></iframe>');
+  }, 1500);
+  setTimeout(function () { $('iframe, footer').css('opacity', 1); }, 1600);
+});
+
 $('.lab').click(function () {
   let ID = $(this).data('iframe');
 
