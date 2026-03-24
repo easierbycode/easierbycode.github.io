@@ -1,4 +1,4 @@
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v2';
 const STATIC_CACHE = `easierbycode-static-${CACHE_VERSION}`;
 const PAGES_CACHE = `easierbycode-pages-${CACHE_VERSION}`;
 const GAMES_CACHE = `easierbycode-games-${CACHE_VERSION}`;
@@ -9,6 +9,7 @@ const PRECACHE_URLS = [
   '/index.html',
   '/style.css',
   '/script.js',
+  '/gamepad.css',
   '/fonts/Orbitron.woff2',
   '/logo-dark.png',
   '/hire-daniel.png',
