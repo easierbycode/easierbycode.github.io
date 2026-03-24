@@ -133,10 +133,11 @@ async function staleWhileRevalidate(request, cacheName) {
   const networkFetch = fetch(request).then(response => {
     // Cache opaque (cross-origin) responses and successful responses
     if (response.type === 'opaque' || response.status === 200) {
-      caches.open(cacheName).then(cache => cache.put(request, response.clone()));
+      const clone = response.clone();
+      caches.open(cacheName).then(cache => cache.put(request, clone));
     }
     return response;
   }).catch(() => null);
 
-  return cached || await networkFetch;
+  return cached || await networkFetch || new Response('', { status: 503 });
 }
