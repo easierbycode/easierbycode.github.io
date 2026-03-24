@@ -1,86 +1,9 @@
-html, body {
-    background-color: #f2f2f2;
-}
-body {
-    color: #616161;
-    font-family: -apple-system,".SFNSText-Regular","Helvetica Neue","Roboto","Segoe UI",sans-serif;
-}
-.blog-header h1 {
-    font-weight: 300;
-}
-.blog-masthead {
-    background-color: #fff;
-    box-shadow: none;
-}
-.nav-link {
-    color: rgba(0,0,0,0.6);
-    font-weight: 400;
-    text-transform: uppercase;
-}
-.nav-link.active {
-    color: rgba(0,0,0,0.8);
-    font-weight: 700;
-}
-.nav-link.active:after {
-    color: #f2f2f2;
-}
-.navbar-brand {
-    padding-top: 1rem;
-}
-.navbar-brand pre {
-    color: #57585a;
-    font-family: Consolas, Monaco, 'Andale Mono', monospace;
-    margin-bottom: 0;
-}
-.placeholders {
-    text-align: center;
-}
-.placeholders h4 {
-    margin-bottom: 0;
-}
-.placeholder img {
-    display: inline-block;
-    border-radius: 50%;
-}
-.section-header {
-    margin: -20px 0 40px 0;
-    font-size: 14px;
-    color: rgba(0, 0, 0, 0.2);
-    text-align: center;
-    overflow: hidden;
-    width: 100%;
-}
-.section-header span {
-    display: inline-block;
-    text-align: center;
-    text-transform: uppercase;
-    position: relative;
-}
-.section-header span:before {
-    left: -1010px;
-}
-.section-header span:after {
-    right: -1010px;
-}
-.section-header span:after, .section-header span:before {
-    content: " ";
-    display: block;
-    height: 1px;
-    width: 1000px;
-    background: rgba(0, 0, 0, 0.15);
-    position: absolute;
-    top: 50%;
-}
-.text-center {
-    text-align: center;
-}
-
 /* Gamepad launcher - centered in nav */
 .blog-nav {
     position: relative;
 }
 .gamepad-launcher {
-    font-size: 1.6rem !important;
+    font-size: 2rem !important;
     text-transform: none !important;
     cursor: pointer;
     transition: transform 0.15s ease, filter 0.15s ease;
@@ -100,21 +23,18 @@ body {
     75%  { box-shadow: 0 0 0 4px #0f0, 0 0 15px 4px #0f0; }
     100% { box-shadow: 0 0 0 4px #ff0, 0 0 15px 4px #ff0; }
 }
-
 .mk2-highlight {
     animation: mk2-flash-border 0.15s linear infinite;
     border-radius: 8px;
     z-index: 100;
     position: relative;
 }
-
 .mk2-selected {
     animation: mk2-selected-pulse 0.4s ease-in-out 3;
     border-radius: 8px;
     z-index: 100;
     position: relative;
 }
-
 @keyframes mk2-selected-pulse {
     0%   { box-shadow: 0 0 0 4px #fff, 0 0 20px 8px #ff0; }
     50%  { box-shadow: 0 0 0 6px #ff0, 0 0 30px 12px #f80; }
