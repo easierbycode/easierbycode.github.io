@@ -230,6 +230,54 @@ function makeLongPress(selector, altId) {
 makeLongPress('pacman-halloween-2025', 'pacman');
 makeLongPress('evil-invaders', 'evil-invaders-phaser4/?scene=PackerScene');
 
+// --- Secret touch: top-right + bottom-left corners simultaneously → random gamelab scene ---
+(function () {
+  var GAMELAB_SCENES = [
+    'Boing',    // bouncing logo (300×250)
+    'Stars',    // 3D starfield (328×266)
+    'Clock',    // analog clock (275×276)
+    'Eyes',     // cursor-tracking eyes (183×162)
+    'Invaders', // space invaders mini-game (408×326)
+    'Juggler',  // juggler animation (328×226)
+    'Example2', // starfield + bouncing logo (360×640)
+    'MyScene'   // emoji physics particles (1024×896)
+  ];
+
+  var CORNER_SIZE = 0.25; // 25% of each screen dimension
+
+  function inTopRight(touch) {
+    return touch.clientX > window.innerWidth * (1 - CORNER_SIZE) &&
+           touch.clientY < window.innerHeight * CORNER_SIZE;
+  }
+
+  function inBottomLeft(touch) {
+    return touch.clientX < window.innerWidth * CORNER_SIZE &&
+           touch.clientY > window.innerHeight * (1 - CORNER_SIZE);
+  }
+
+  document.addEventListener('touchstart', function (e) {
+    if (e.touches.length < 2) return;
+    if ($('iframe').length) return; // game already open
+
+    var touches = e.touches;
+    var hasTopRight = false;
+    var hasBottomLeft = false;
+
+    for (var i = 0; i < touches.length; i++) {
+      if (inTopRight(touches[i])) hasTopRight = true;
+      if (inBottomLeft(touches[i])) hasBottomLeft = true;
+    }
+
+    if (!hasTopRight || !hasBottomLeft) return;
+
+    e.preventDefault();
+    if (navigator.vibrate) navigator.vibrate([80, 40, 80, 40, 150]);
+
+    var scene = GAMELAB_SCENES[Math.floor(Math.random() * GAMELAB_SCENES.length)];
+    launchGame('gamelab/?scene=' + scene);
+  }, { passive: false });
+}());
+
 // --- Dragon button → Monkey Kombat scene 17 ---
 $('#dragonBtn').on('click', function (evt) {
   evt.preventDefault();
