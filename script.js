@@ -37,15 +37,16 @@ function makeLongPress(selector, altId) {
     if (longPressed) { e.stopImmediatePropagation(); longPressed = false; }
   }, true);
 
+  el.addEventListener('contextmenu', function (e) { e.preventDefault(); });
   el.addEventListener('mousedown', startHold);
-  el.addEventListener('touchstart', startHold, { passive: true });
+  el.addEventListener('touchstart', function (e) { e.preventDefault(); startHold(); }, { passive: false });
   el.addEventListener('mouseup', cancelHold);
   el.addEventListener('mouseleave', cancelHold);
   el.addEventListener('touchend', cancelHold);
   el.addEventListener('touchcancel', cancelHold);
 }
 
-makeLongPress('pacman-halloween-2025', 'pacman');
+makeLongPress('https://easierbycode.com/pacman-halloween-2025', 'pacman');
 makeLongPress('evil-invaders', 'evil-invaders-phaser4/?scene=PackerScene');
 
 $('.lab').click(function () {
