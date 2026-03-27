@@ -1930,15 +1930,17 @@ export class Pyramid extends Boss {
     constructor(opts) {
         super(opts);
         Object.keys(opts.anim).forEach((key) => {
-            this.anims.create({
-                key,
-                frames: opts.anim[key].map((frame) => ({
-                    key: "game_asset",
-                    frame
-                })),
-                frameRate: key == "attack" ? 60 : 6,
-                repeat: -1
-            });
+            if (!this.scene.anims.exists(key)) {
+                this.anims.create({
+                    key,
+                    frames: opts.anim[key].map((frame) => ({
+                        key: "game_asset",
+                        frame
+                    })),
+                    frameRate: key == "attack" ? 60 : 6,
+                    repeat: -1
+                });
+            }
         });
         this.play("idle");
         (opts.projectileDataB.name = "psychoField"),
