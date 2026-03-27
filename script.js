@@ -276,6 +276,17 @@ makeLongPress('games/evil-invaders/index.html?turbo=1&audio=1', '2019-es7/phaser
     e.preventDefault();
     if (navigator.vibrate) navigator.vibrate([80, 40, 80, 40, 150]);
 
+    // Visual haptic feedback confirmation flash
+    var overlay = document.getElementById('haptic-confirm');
+    if (overlay) {
+      overlay.style.display = 'block';
+      overlay.style.opacity = '1';
+      setTimeout(function () {
+        overlay.style.opacity = '0';
+        setTimeout(function () { overlay.style.display = 'none'; }, 150);
+      }, 200);
+    }
+
     var scene = GAMELAB_SCENES[Math.floor(Math.random() * GAMELAB_SCENES.length)];
     launchGame('gamelab/?scene=' + scene);
   }, { passive: false });
