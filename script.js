@@ -132,7 +132,7 @@ $('#gamepadBtn').on('click', function (evt) {
 
 // --- Long-press on pacman-halloween-2025: launch classic pacman instead ---
 (function () {
-  var el = $('[data-iframe="pacman-halloween-2025"]')[0];
+  var el = $('[data-iframe="https://easierbycode.com/pacman-halloween-2025"]')[0];
   if (!el) return;
 
   var holdTimer = null;
@@ -165,6 +165,7 @@ $('#gamepadBtn').on('click', function (evt) {
     }
   }, true); // capture phase so it runs before jQuery's handler
 
+  el.addEventListener('contextmenu', function (e) { e.preventDefault(); });
   el.addEventListener('mousedown', startHold);
   el.addEventListener('touchstart', startHold, { passive: true });
   el.addEventListener('mouseup', cancelHold);
@@ -219,6 +220,7 @@ function makeLongPress(selector, altId) {
     if (longPressed) { e.stopImmediatePropagation(); longPressed = false; }
   }, true);
 
+  el.addEventListener('contextmenu', function (e) { e.preventDefault(); });
   el.addEventListener('mousedown', startHold);
   el.addEventListener('touchstart', startHold, { passive: true });
   el.addEventListener('mouseup', cancelHold);
@@ -227,8 +229,9 @@ function makeLongPress(selector, altId) {
   el.addEventListener('touchcancel', cancelHold);
 }
 
-makeLongPress('pacman-halloween-2025', 'pacman');
+makeLongPress('https://easierbycode.com/pacman-halloween-2025', 'pacman');
 makeLongPress('evil-invaders', 'evil-invaders-phaser4/?scene=PackerScene');
+makeLongPress('games/evil-invaders/index.html?turbo=1&audio=1', '2019-es7/phaser-game.html');
 
 // --- Dragon button → Monkey Kombat scene 17 ---
 $('#dragonBtn').on('click', function (evt) {
