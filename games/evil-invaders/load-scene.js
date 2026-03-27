@@ -78,6 +78,11 @@ export class LoadScene extends Phaser.Scene {
         "button",
         "https://assets.codepen.io/11817390/button-small-idle.png"
       );
+
+      this.load.audio(
+        "bgm_main",
+        "https://res.cloudinary.com/dujip8nqb/video/upload/v1770804101/Sol_Invicto_-_Initium_ft_Zach_Hill_Death_Grips_cdav0i.mp3"
+      );
     }
 
     this.load.spritesheet(

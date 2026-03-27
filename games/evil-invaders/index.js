@@ -708,6 +708,15 @@ class GameScene extends Scene {
     }
     if (stageSelect != undefined) PROPERTIES.stageId = +stageSelect;
 
+    if (this.cache.audio.exists("bgm_main")) {
+      const bgm = this.sound.get("bgm_main");
+      if (bgm && bgm.isPaused) {
+        bgm.resume();
+      } else if (!bgm || !bgm.isPlaying) {
+        this.sound.play("bgm_main", { loop: true, volume: 0.5 });
+      }
+    }
+
     this.title.gameStart(PROPERTIES.stageId),
       this.hud.specialBtnDeactive(),
       TweenMax.delayedCall(
@@ -1352,6 +1361,9 @@ class GameScene extends Scene {
   }
 
   sceneRemoved() {
+    const bgm = this.sound.get("bgm_main");
+    if (bgm && bgm.isPlaying) bgm.pause();
+
     for (var t = 0; t < this.children.length; t++) {
       var o = this.children[t];
       this.sys.displayList.remove(o);
