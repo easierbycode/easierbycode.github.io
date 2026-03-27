@@ -175,7 +175,7 @@ $('#gamepadBtn').on('click', function (evt) {
 }());
 
 // --- Game tile click ---
-$('.lab').click(function () {
+$('.lab, .navbar-brand[data-iframe]').click(function () {
   var ID = $(this).data('iframe');
   launchGame(ID);
 });
