@@ -1,455 +1,787 @@
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="CreatorFlow — AI tools built for TikTok creators: script generator, trend tracker, captions, voice clone & more." />
-  <title>CreatorFlow 🚀 — AI for TikTok Creators</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            bg: '#0f0f11',
-            surface: '#1a1a1d',
-            surface-hover: '#252529',
-            primary: '#f59e0b', // TikTok-inspired amber/orange
-            text: '#e5e7eb',
-            accent: '#fb923c',
-            border: '#2d2d30',
-          },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-          }
+    <base target="_self">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Euka AI - TikTok Creator Intelligence Platform</title>
+    <meta name="description" content="The intelligence platform for TikTok creators to discover, connect with, and manage creator relationships at scale. Turn authentic content into measurable sales growth.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#FF0050',
+                        secondary: '#00F2EA',
+                        dark: '#0a0a0a',
+                        darker: '#050505',
+                        surface: '#111111',
+                        'surface-light': '#1a1a1a',
+                    },
+                    animation: {
+                        'gradient': 'gradient 8s linear infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        gradient: {
+                            '0%, 100%': { backgroundPosition: '0% 50%' },
+                            '50%': { backgroundPosition: '100% 50%' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-20px)' },
+                        }
+                    }
+                }
+            }
         }
-      }
-    }
-  </script>
-  <style>
-    .glass {
-      background: rgba(26, 26, 29, 0.7);
-      backdrop-filter: blur(8px);
-    }
-    .prose p {
-      margin-bottom: 1rem;
-      line-height: 1.75;
-    }
-    .chat-scroll::-webkit-scrollbar { width: 4px; }
-    .chat-scroll::-webkit-scrollbar-track { background: transparent; }
-    .chat-scroll::-webkit-scrollbar-thumb { background: #2d2d30; border-radius: 4px; }
-    .animate-fade-in { animation: fadeIn 0.6s ease-out; }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .preserve-white-space {
-      white-space: pre-wrap;
-    }
-  </style>
+    </script>
+    <style>
+        .glass {
+            background: rgba(17, 17, 17, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .text-gradient {
+            background: linear-gradient(135deg, #FF0050 0%, #00F2EA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .bg-gradient-radial {
+            background: radial-gradient(circle at center, rgba(255, 0, 80, 0.15) 0%, transparent 70%);
+        }
+        .glow {
+            box-shadow: 0 0 40px rgba(255, 0, 80, 0.3);
+        }
+    </style>
 </head>
-<body class="bg-bg text-text flex flex-col min-h-screen overflow-hidden font-sans">
-  <header class="glass fixed top-0 left-0 right-0 z-50 border-b border-border">
-    <div class="container mx-auto px-4 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-2 font-bold text-xl tracking-tight">
-        <i data-lucide="video" class="text-primary h-6 w-6"></i>
-        <span>CreatorFlow</span>
-      </div>
-      
-      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-gray-300">
-        <a href="#features" class="hover:text-primary transition">Features</a>
-        <a href="#how-it-works" class="hover:text-primary transition">How it Works</a>
-        <a href="#pricing" class="hover:text-primary transition">Pricing</a>
-        <a href="#faq" class="hover:text-primary transition">FAQ</a>
-      </nav>
-      
-      <div class="flex items-center gap-3">
-        <a href="#" class="px-4 py-2 rounded-lg text-sm font-medium hover:bg-surface-hover transition hidden sm:block">Log in</a>
-        <a href="#Get Started" class="px-4 py-2 rounded-lg text-sm font-medium bg-primary hover:bg-accent transition">Get started</a>
-      </div>
-      
-      <!-- Mobile Menu Toggle -->
-      <button id="mobile-menu" class="md:hidden p-2 rounded-lg hover:bg-surface-hover">
-        <i data-lucide="menu" class="h-6 w-6"></i>
-      </button>
-    </div>
+<body class="bg-darker text-white font-sans antialiased overflow-x-hidden">
     
-    <!-- Mobile Menu -->
-    <div id="mobile-nav" class="hidden md:hidden bg-surface border-b border-border pb-4">
-      <div class="container mx-auto px-4 py-2 flex flex-col gap-3">
-        <a href="#features" class="py-2 px-3 rounded-lg hover:bg-surface-hover transition">Features</a>
-        <a href="#how-it-works" class="py-2 px-3 rounded-lg hover:bg-surface-hover transition">How it Works</a>
-        <a href="#pricing" class="py-2 px-3 rounded-lg hover:bg-surface-hover transition">Pricing</a>
-        <a href="#faq" class="py-2 px-3 rounded-lg hover:bg-surface-hover transition">FAQ</a>
-        <div class="flex flex-col gap-2 pt-2">
-          <a href="#" class="text-center py-2 font-medium hover:bg-surface-hover rounded-lg">Log in</a>
-          <a href="#Get Started" class="text-center py-2 bg-primary text-white rounded-lg">Get started</a>
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16 lg:h-20">
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                        <i class="fas fa-bolt text-white text-sm"></i>
+                    </div>
+                    <span class="text-xl font-bold tracking-tight">Euka</span>
+                </div>
+                
+                <div class="hidden md:flex items-center gap-8">
+                    <div id="nav-links" class="flex items-center gap-6"></div>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <button class="hidden sm:block text-sm font-medium text-gray-300 hover:text-white transition-colors">Sign In</button>
+                    <button class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-full text-sm font-semibold transition-all hover:scale-105">
+                        Get Started
+                    </button>
+                    <button id="mobile-menu-btn" class="md:hidden text-gray-300 hover:text-white">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </header>
+        
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden glass border-t border-white/10">
+            <div class="px-4 py-4 space-y-3" id="mobile-nav-links"></div>
+        </div>
+    </nav>
 
-  <main class="flex-grow pt-16">
     <!-- Hero Section -->
-    <section class="relative container mx-auto px-4 py-20 md:py-28 overflow-hidden">
-      <div class="max-w-3xl relative z-10 animate-fade-in">
-        <h1 class="text-5xl md:text-6xl font-bold leading-tight mb-6 tracking-tight">
-          Go viral with <br class="hidden md:block" />
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">AI that understands TikTok</span>
-        </h1>
-        <p class="text-xl text-gray-400 mb-10 max-w-2xl">
-          CreatorFlow helps you generate scripts, captions, trend insights, and auto-captions — all built for the TikTok algorithm and Gen Z engagement.
-        </p>
-        <div class="flex flex-col sm:flex-row gap-4">
-          <a href="#Get Started" class="px-8 py-4 rounded-xl bg-primary hover:bg-accent font-semibold text-lg transition flex items-center justify-center gap-2 inline-flex">
-            Start Creating Free <i data-lucide="chevron-right" class="h-5 w-5"></i>
-          </a>
-          <a href="#features" class="px-8 py-4 rounded-xl border border-surface-hover hover:bg-surface-hover font-semibold text-lg transition inline-flex items-center justify-center gap-2">
-            See How It Works <i data-lucide="zap" class="h-5 w-5"></i>
-          </a>
-        </div>
-      </div>
-      
-      {/* Background Elements */}
-      <div class="absolute top-0 right-0 w-96 h-96 bg-primary/20 rounded-full blur-3xl -translate-y-1/4 translate-x-1/4"></div>
-      <div class="absolute bottom-0 left-0 w-80 h-80 bg-accent/20 rounded-full blur-3xl translate-y-1/4 -translate-x-1/4"></div>
-    </section>
-    
-    {/* Logo Wall */}
-    <section class="border-y border-surface py-12">
-      <div class="container mx-auto px-4">
-        <p class="text-center text-sm text-gray-500 mb-8 uppercase tracking-wider font-medium">Trusted by top TikTok creators</p>
-        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 items-center opacity-70">
-          <div class="flex items-center justify-center gap-2 font-bold text-xl">@Viral<span class="text-primary">Vibe</span></div>
-          <div class="flex items-center justify-center gap-2 font-bold text-xl">@Trend<span class="text-primary">God</span></div>
-          <div class="flex items-center justify-center gap-2 font-bold text-xl">@Script<span class="text-primary">Lab</span></div>
-          <div class="flex items-center justify-center gap-2 font-bold text-xl">@Byte<span class="text-primary">Boost</span></div>
-          <div class="flex items-center justify-center gap-2 font-bold text-xl">@Reel<span class="text-primary">Wiz</span></div>
-        </div>
-      </div>
-
-
-          <!-- Feature 5 -->
-          <div class="group p-8 rounded-2xl bg-surface-hover transition hover:bg-surface-hover/80 border border-transparent hover:border-surface">
-            <div class="w-14 h-14 rounded-2xl bg-primary/10 flex items-center justify-center mb-6 group-hover:bg-primary/20 transition">
-              <i data-lucide="bar-chart" class="h-7 w-7 text-primary"></i>
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-radial"></div>
+        <div class="absolute top-20 left-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse-slow"></div>
+        <div class="absolute bottom-20 right-10 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse-slow" style="animation-delay: 2s;"></div>
+        
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-4xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface border border-white/10 mb-8 animate-float">
+                    <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                    <span class="text-sm text-gray-300">Now supporting TikTok Shop integration</span>
+                </div>
+                
+                <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight mb-6 leading-tight">
+                    Turn TikTok creators into <br>
+                    <span class="text-gradient">revenue engines</span>
+                </h1>
+                
+                <p class="text-lg sm:text-xl text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed">
+                    The intelligence platform for brands to discover, connect with, and manage creator relationships at scale. Transform authentic content into measurable sales growth.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+                    <button class="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white px-8 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 glow flex items-center justify-center gap-2">
+                        Start Free Trial
+                        <i class="fas fa-arrow-right text-sm"></i>
+                    </button>
+                    <button class="w-full sm:w-auto bg-surface hover:bg-surface-light text-white px-8 py-4 rounded-full font-semibold text-lg transition-all border border-white/10 flex items-center justify-center gap-2">
+                        <i class="fas fa-play text-xs"></i>
+                        Watch Demo
+                    </button>
+                </div>
+                
+                <div class="flex items-center justify-center gap-8 text-sm text-gray-500">
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-check text-primary"></i>
+                        <span>No credit card required</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-check text-primary"></i>
+                        <span>14-day free trial</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <i class="fas fa-check text-primary"></i>
+                        <span>Cancel anytime</span>
+                    </div>
+                </div>
             </div>
-            <h3 class="text-xl font-bold mb-3">Engagement Predictor</h3>
-            <p class="text-gray-400">Get AI estimates on your video’s engagement before publishing. Optimize hashtags, captions, and timing.</p>
-          </div>
-          
-          <!-- Feature 6 -->
-          <div class="group p-8 rounded-2xl bg-surface-hover transition hover:bg-surface-hover/80 border border-transparent hover:border-surface">
-            <div class="w-14 h-14 rounded-2xl bg-accent/10 flex items-center justify-center mb-6 group-hover:bg-accent/20 transition">
-              <i data-lucide="code" class="h-7 w-7 text-accent"></i>
+            
+            <!-- Dashboard Preview -->
+            <div class="mt-16 relative">
+                <div class="absolute inset-0 bg-gradient-to-t from-darker via-transparent to-transparent z-10"></div>
+                <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-2xl glow">
+                    <img src="https://picsum.photos/1200/700?random=1" alt="Euka AI Dashboard showing creator analytics and management interface" class="w-full h-auto">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-primary/10 to-secondary/10"></div>
+                </div>
             </div>
-            <h3 class="text-xl font-bold mb-3">Auto-Export</h3>
-            <p class="text-gray-400">Export videos to TikTok, Instagram Reels, YouTube Shorts — formatted with captions and orientation ready.</p>
-          </div>
         </div>
-      </div>
     </section>
-    
+
+    <!-- Trust Bar -->
+    <section class="py-12 border-y border-white/5 bg-surface/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-sm text-gray-500 mb-8 uppercase tracking-wider font-medium">Trusted by leading brands</p>
+            <div id="trust-logos" class="flex flex-wrap justify-center items-center gap-8 lg:gap-16 opacity-60"></div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section class="py-24 lg:py-32 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Everything you need to <span class="text-gradient">scale creator partnerships</span></h2>
+                <p class="text-gray-400 text-lg">From discovery to ROI tracking, manage your entire creator marketing workflow in one powerful platform.</p>
+            </div>
+            
+            <div id="features-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </div>
+    </section>
+
     <!-- How It Works -->
-    <section id="how-it-works" class="py-24 bg-bg">
-      <div class="container mx-auto px-4">
-        <div class="grid lg:grid-cols-2 gap-16 items-center">
-          <div>
-            <h2 class="text-3xl md:text-5xl font-bold mb-6">From idea to viral in 3 steps</h2>
-            <p class="text-lg text-gray-400 mb-10">No more blank screens or staring at the edit timeline. CreatorFlow accelerates your creative process.</p>
+    <section class="py-24 lg:py-32 bg-surface/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">From discovery to <span class="text-gradient">sales impact</span> in minutes</h2>
+                    <p class="text-gray-400 text-lg mb-12">Our AI-powered platform streamlines every step of your creator marketing workflow.</p>
+                    
+                    <div id="process-steps" class="space-y-8"></div>
+                </div>
+                
+                <div class="relative">
+                    <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-3xl blur-3xl"></div>
+                    <div class="relative rounded-2xl overflow-hidden border border-white/10">
+                        <img src="https://picsum.photos/600/800?random=2" alt="Euka AI mobile interface showing creator profiles" class="w-full h-auto">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-24 border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div id="stats-grid" class="grid grid-cols-2 lg:grid-cols-4 gap-8"></div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section class="py-24 lg:py-32">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">Loved by growth teams <span class="text-gradient">worldwide</span></h2>
+                <p class="text-gray-400 text-lg">See how brands are transforming their TikTok strategy with Euka.</p>
+            </div>
             
-            <div class="space-y-6">
-              <div class="flex items-start gap-4">
-                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold mt-1">1</div>
-                <div>
-                  <h4 class="text-xl font-bold mb-2">Describe your idea</h4>
-                  <p class="text-gray-400">Briefly state your topic, mood, or viral angle (e.g., “a funny campus life hack with a surprise ending”).</p>
-                </div>
-              </div>
-              
-              <div class="flex items-start gap-4">
-                <div class="w-8 h-8 rounded-full bg-accent/10 flex items-center justify-center text-accent font-bold mt-1">2</div>
-                <div>
-                  <h4 class="text-xl font-bold mb-2">Edit with AI feedback</h4>
-                  <p class="text-gray-400">Refine your script, add trending hashtags, or get caption edits in real time.</p>
-                </div>
-              </div>
-              
-              <div class="flex items-start gap-4">
-                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold mt-1">3</div>
-                <div>
-                  <h4 class="text-xl font-bold mb-2">Export & post</h4>
-                  <p class="text-gray-400">Export video + captions in TikTok format, or copy to clipboard for CapCut or CapShot.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="relative">
-            <div class="absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 rounded-2xl transform rotate-3 scale-95"></div>
-            <div class="relative rounded-2xl overflow-hidden shadow-2xl border border-surface">
-              <!-- Mock UI --><img src="http://static.photos/abstract/1024x576/123" alt="CreatorFlow App Interface" class="w-full h-auto object-cover opacity-90">
-              <div class="absolute inset-0 bg-gradient-to-t from-surface/80 to-transparent"></div>
-              <div class="absolute bottom-6 left-6 right-6">
-                <p class="text-white font-medium">Try our TikTok Script Generator</p>
-                <div class="h-1 w-full bg-gray-600 mt-2 rounded overflow-hidden">
-                  <div class="h-full bg-accent w-2/3 rounded-full animate-pulse"></div>
-                </div>
-              </div>
-            </div>
-          </div>
+            <div id="testimonials-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
         </div>
-      </div>
     </section>
-    
-    <!-- Pricing Section -->
-    <section id="pricing" class="py-24 bg-surface">
-      <div class="container mx-auto px-4">
-        <div class="text-center max-w-3xl mx-auto mb-20">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6">Simple, transparent pricing</h2>
-          <p class="text-lg text-gray-400">Start for free — upgrade as you scale and unlock trend alerts, voice clone, and avatar creation.</p>
-        </div>
-        
-        <div class="max-w-5xl mx-auto grid lg:grid-cols-3 gap-8">
-          <!-- Free Plan -->
-          <div class="p-8 rounded-3xl bg-surface-hover border border-surface hover:border-primary transition">
-            <h3 class="text-xl font-bold text-gray-300 mb-2">Creator</h3>
-            <div class="flex items-baseline mb-6">
-              <span class="text-4xl font-bold">$0</span>
-              <span class="text-gray-500 ml-2">/mo</span>
-            </div>
-            <ul class="space-y-4 mb-8">
-              <li class="flex items-center gap-2"><i data-lucide="check" class="h-4 w-4 text-primary"></i> 5 scripts/mo</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="h-4 w-4 text-primary"></i> Basic caption generator</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="h-4 w-4 text-primary"></i> Trend insights (public)</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="h-4 w-4 text-primary"></i> Community support</li>
-            </ul>
-            <button class="w-full py-3 rounded-xl border border-surface-hover hover:bg-surface-hover font-medium transition">Start Free</button>
-          </div>
-          
-          <!-- Pro Plan -->
-          <div class="p-8 rounded-3xl bg-surface-hover border border-surface relative transform md:-translate-y-6 shadow-xl">
-            <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 px-4 py-1 rounded-full bg-primary text-white text-sm font-medium">Most Popular</div>
-            <h3 class="text-xl font-bold text-white mb-2">Growth</h3>
-            <div class="flex items-baseline mb-6">
-              <span class="text-4xl font-bold">$15</span>
-              <span class="text-gray-500 ml-2">/mo</span>
-            </div>
-            <ul class="space-y-4 mb-8">
-              <li class="flex items-center gap-2"><i data-lucide="check" class="h-4 w-4 text-primary"></i> 100 scripts/mo</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="h-4 w-4 text-primary"></i> Auto-captions + hashtags</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="h-4 w-4 text-primary"></i> Voice clone (1 voice)</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="h-4 w-4 text-primary"></i> Engagement predictor</li>
-            </ul>
-            <button class="w-full py-3 rounded-xl bg-primary hover:bg-accent text-white font-medium transition">Get Growth Plan</button>
-          </div>
-          
 
-
-          
-          <!-- Business Plan -->
-          <div class="p-8 rounded-3xl bg-surface-hover border border-surface hover:border-primary transition">
-            <h3 class="text-xl font-bold text-gray-300 mb-2">Agency</h3>
-            <div class="flex items-baseline mb-6">
-              <span class="text-4xl font-bold">$49</span>
-              <span class="text-gray-500 ml-2">/mo</span>
+    <!-- Pricing -->
+    <section class="py-24 lg:py-32 bg-surface/30">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-6">Simple, transparent <span class="text-gradient">pricing</span></h2>
+                <p class="text-gray-400 text-lg mb-8">Start free, scale as you grow. No hidden fees, no long-term contracts.</p>
+                
+                <div class="inline-flex items-center gap-4 p-1 rounded-full bg-surface border border-white/10">
+                    <button id="monthly-btn" class="px-6 py-2 rounded-full text-sm font-medium transition-all bg-primary text-white">Monthly</button>
+                    <button id="yearly-btn" class="px-6 py-2 rounded-full text-sm font-medium transition-all text-gray-400 hover:text-white">Yearly <span class="text-primary">-20%</span></button>
+                </div>
             </div>
-            <ul class="space-y-4 mb-8">
-              <li class="flex items-center gap-2"><i data-lucide="check" class="h-4 w-4 text-primary"></i> Unlimited scripts & captions</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="h-4 w-4 text-primary"></i> Real-time trend alerts</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="h-4 w-4 text-primary"></i> 3 voice clones</li>
-              <li class="flex items-center gap-2"><i data-lucide="check" class="h-4 w-4 text-primary"></i> Export to Reels/Shorts</li>
-            </ul>
-            <button class="w-full py-3 rounded-xl border border-surface-hover hover:bg-surface-hover font-medium transition">Contact Sales</button>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- FAQ Section -->
-    <section id="faq" class="py-24 bg-bg">
-      <div class="container mx-auto px-4 max-w-3xl">
-        <div class="text-center mb-12">
-          <h2 class="text-3xl md:text-4xl font-bold mb-6">Frequently Asked Questions</h2>
-          <p class="text-gray-400">Everything you need to know about CreatorFlow.</p>
-        </div>
-        
-        <div class="space-y-6">
-          <div class="border border-surface rounded-2xl overflow-hidden">
-            <button class="w-full px-6 py-4 text-left flex items-center justify-between group" onclick="toggleFAQ(this)">
-              <span class="font-medium">Can CreatorFlow write trending scripts?</span>
-              <i data-lucide="chevron-down" class="h-5 w-5 text-gray-400 transition transform group-open:rotate-180"></i>
-            </button>
-            <div class="px-6 pb-4 text-gray-400 hidden" id="faq1">
-              <p>Yes! Our script generator taps into real-time trend data (public TikTok insights), so your hooks match what’s working today — not last week.</p>
-            </div>
-          </div>
-          
-          <div class="border border-surface rounded-2xl overflow-hidden">
-            <button class="w-full px-6 py-4 text-left flex items-center justify-between group" onclick="toggleFAQ(this)">
-              <span class="font-medium">Does it work with CapCut and CapShot?</span>
-              <i data-lucide="chevron-down" class="h-5 w-5 text-gray-400 transition transform group-open:rotate-180"></i>
-            </button>
-            <div class="px-6 pb-4 text-gray-400 hidden" id="faq2">
-              <p>Absolutely. Export your script + auto-captions in TikTok-ready format or copy-paste directly into your CapCut project window.</p>
-            </div>
-          </div>
-          
-          <div class="border border-surface rounded-2xl overflow-hidden">
-            <button class="w-full px-6 py-4 text-left flex items-center justify-between group" onclick="toggleFAQ(this)">
-              <span class="font-medium">Can I clone my own voice?</span>
-              <i data-lucide="chevron-down" class="h-5 w-5 text-gray-400 transition transform group-open:rotate-180"></i>
-            </button>
-            <div class="px-6 pb-4 text-gray-400 hidden" id="faq3">
-              <p>Yes — the voice clone feature records 3 minutes of your voice and generates authentic AI narration that sounds like you.</p>
-            </div>
-          </div>
-          
-          <div class="border border-surface rounded-2xl overflow-hidden">
-            <button class="w-full px-6 py-4 text-left flex items-center justify-between group" onclick="toggleFAQ(this)">
-              <span class="font-medium">Is the trend data real-time?</span>
-              <i data-lucide="chevron-down" class="h-5 w-5 text-gray-400 transition transform group-open:rotate-180"></i>
-            </button>
-            <div class="px-6 pb-4 text-gray-400 hidden" id="faq4">
-              <p>We track real-time visibility spikes across 50+ trending hashtags and copy sounds — so you post what’s *currently* resonating.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    
-    <!-- CTA -->
-    <section class="py-24 relative overflow-hidden">
-      <div class="container mx-auto px-4 z-10 relative">
-        <div class="max-w-4xl mx-auto bg-gradient-to-br from-surface-hover to-surface rounded-3xl p-8 md:p-16 text-center relative overflow-hidden">
-          <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20"></div>
-          <div class="relative z-10">
-            <h2 class="text-3xl md:text-5xl font-bold mb-6">Ready to grow faster</h2>
-            <p class="text-xl text-gray-400 mb-10">Join 10,000+ TikTok creators using CreatorFlow to pump out viral content — without burnout.</p>
             
-            <form class="max-w-md mx-auto flex flex-col sm:flex-row gap-4">
-              <input type="email" placeholder="Enter your email" class="flex-grow px-5 py-4 rounded-xl bg-surface-hover border border-surface focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition">
-              <button class="px-8 py-4 rounded-xl bg-primary hover:bg-accent text-white font-semibold transition">Get Early Access</button>
-            </form>
-            <p class="mt-6 text-sm text-gray-500">No spam, ever. Unsubscribe anytime.</p>
-          </div>
+            <div id="pricing-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto"></div>
         </div>
-      </div>
     </section>
-  </main>
 
-  <footer class="bg-surface border-t border-surface-hover py-16">
-    <div class="container mx-auto px-4">
-      <div class="grid md:grid-cols-4 gap-12 mb-16">
-        <div>
-          <div class="flex items-center gap-2 font-bold text-xl mb-6">
-            <i data-lucide="video" class="text-primary h-6 w-6"></i>
-            <span>CreatorFlow</span>
-          </div>
-          <p class="text-gray-400 text-sm mb-6">AI tools built for TikTok creators who want to grow, not guess.</p>
-          <div class="flex gap-4">
-            <a href="#" class="p-3 rounded-lg bg-surface-hover hover:bg-primary transition text-gray-400 hover:text-white">
-              <i class="fab fa-twitter text-lg"></i>
-            </a>
-            <a href="#" class="p-3 rounded-lg bg-surface-hover hover:bg-primary transition text-gray-400 hover:text-white">
-              <i class="fab fa-github text-lg"></i>
-            </a>
-            <a href="#" class="p-3 rounded-lg bg-surface-hover hover:bg-primary transition text-gray-400 hover:text-white">
-              <i class="fab fa-instagram text-lg"></i>
-            </a>
-          </div>
+    <!-- FAQ -->
+    <section class="py-24 lg:py-32">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">Frequently asked <span class="text-gradient">questions</span></h2>
+            </div>
+            
+            <div id="faq-container" class="space-y-4"></div>
         </div>
-        
-        <div>
-          <h5 class="font-bold mb-6">Product</h5>
-          <ul class="space-y-4">
-            <li><a href="#" class="text-gray-400 hover:text-primary transition">Features</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition">Templates</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition">Pricing</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition">API</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h5 class="font-bold mb-6">Company</h5>
-          <ul class="space-y-4">
-            <li><a href="#" class="text-gray-400 hover:text-primary transition">About</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition">Careers</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition">Blog</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition">Contact</a></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h5 class="font-bold mb-6">Legal</h5>
-          <ul class="space-y-4">
-            <li><a href="#" class="text-gray-400 hover:text-primary transition">Privacy Policy</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition">Terms of Service</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition">Cookie Policy</a></li>
-            <li><a href="#" class="text-gray-400 hover:text-primary transition">GDPR</a></li>
-          </ul>
-        </div>
-      </div>
-      
-      <div class="pt-8 border-t border-surface-hover flex flex-col md:flex-row justify-between items-center gap-4">
-        <p class="text-gray-500 text-sm">© 2023 CreatorFlow. All rights reserved.</p>
-        <div class="flex gap-6 text-sm text-gray-500">
-          <a href="#" class="hover:text-white transition">Status</a>
-          <a href="#" class="hover:text-white transition">Help Center</a>
-        </div>
-      </div>
-    </div>
-  </footer>
+    </section>
 
-  <script>
-    lucide.createIcons();
-    
-    // Mobile Menu
-    const mobileMenuBtn = document.getElementById('mobile-menu');
-    const mobileNav = document.getElementById('mobile-nav');
-    
-    mobileMenuBtn.addEventListener('click', () => {
-      mobileNav.classList.toggle('hidden');
-    });
-    
-    // FAQ Accordion
-    function toggleFAQ(button) {
-      const content = button.nextElementSibling;
-      const icon = button.querySelector('i:last-child');
-      
-      if (content.classList.contains('hidden')) {
-        content.classList.remove('hidden');
-        icon.classList.replace('rotate-0', 'rotate-180');
-        button.classList.add('text-primary');
-      } else {
-        content.classList.add('hidden');
-        icon.classList.replace('rotate-180', 'rotate-0');
-        button.classList.remove('text-primary');
-      }
-    }
-    
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    <!-- CTA Section -->
+    <section class="py-24 lg:py-32 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-r from-primary/20 to-secondary/20"></div>
+        <div class="absolute inset-0 bg-darker/80"></div>
+        <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6">Ready to scale your <br><span class="text-gradient">creator program?</span></h2>
+            <p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">Join thousands of brands using Euka to turn TikTok creators into their most profitable acquisition channel.</p>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button class="w-full sm:w-auto bg-primary hover:bg-primary/90 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all hover:scale-105 glow">
+                    Get Started Free
+                </button>
+                <button class="w-full sm:w-auto bg-white/10 hover:bg-white/20 text-white px-10 py-4 rounded-full font-semibold text-lg transition-all backdrop-blur-sm border border-white/20">
+                    Talk to Sales
+                </button>
+            </div>
+            
+            <p class="mt-6 text-sm text-gray-400">Free 14-day trial • No credit card required • Setup in 2 minutes</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-surface border-t border-white/10 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8 mb-12">
+                <div class="col-span-2 lg:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center">
+                            <i class="fas fa-bolt text-white text-sm"></i>
+                        </div>
+                        <span class="text-xl font-bold">Euka</span>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-6 max-w-xs">The intelligence platform for TikTok creator marketing. Discover, connect, and scale authentic partnerships.</p>
+                    <div class="flex gap-4" id="social-links"></div>
+                </div>
+                
+                <div id="footer-product"></div>
+                <div id="footer-company"></div>
+                <div id="footer-resources"></div>
+            </div>
+            
+            <div class="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+                <p class="text-sm text-gray-500">&copy; 2024 Euka AI. All rights reserved.</p>
+                <div id="footer-legal" class="flex gap-6 text-sm text-gray-500"></div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Data Layer
+        const navigationData = [
+            { label: "Product", href: "#features" },
+            { label: "Pricing", href: "#pricing" },
+            { label: "Customers", href: "#testimonials" },
+            { label: "Resources", href: "#faq" }
+        ];
+
+        const trustLogos = [
+            { name: "Sephora", icon: "fa-spa" },
+            { name: "Glossier", icon: "fa-magic" },
+            { name: "Kylie Cosmetics", icon: "fa-star" },
+            { name: "Rare Beauty", icon: "fa-heart" },
+            { name: "Fenty Beauty", icon: "fa-crown" },
+            { name: "Tarte", icon: "fa-leaf" }
+        ];
+
+        const featuresData = [
+            {
+                icon: "fa-search",
+                title: "AI Discovery",
+                description: "Find perfect-fit creators with our proprietary matching algorithm analyzing engagement, audience fit, and content quality.",
+                color: "from-pink-500 to-rose-500"
+            },
+            {
+                icon: "fa-users",
+                title: "Relationship Management",
+                description: "Centralize all creator communications, contracts, and content approvals in one collaborative workspace.",
+                color: "from-blue-500 to-cyan-500"
+            },
+            {
+                icon: "fa-chart-line",
+                title: "Performance Analytics",
+                description: "Track real-time ROI, attribution, and sales impact with TikTok Shop and pixel integration.",
+                color: "from-green-500 to-emerald-500"
+            },
+            {
+                icon: "fa-bolt",
+                title: "Automated Outreach",
+                description: "Scale personalized outreach with AI-generated pitches and automated follow-up sequences.",
+                color: "from-yellow-500 to-orange-500"
+            },
+            {
+                icon: "fa-shield-alt",
+                title: "Fraud Detection",
+                description: "Identify fake followers and engagement manipulation with our advanced authenticity scoring.",
+                color: "from-purple-500 to-violet-500"
+            },
+            {
+                icon: "fa-coins",
+                title: "Payment Automation",
+                description: "Streamline creator payments, tax forms, and commission tracking with integrated financial tools.",
+                color: "from-red-500 to-pink-500"
+            }
+        ];
+
+        const processSteps = [
+            {
+                number: "01",
+                title: "Discover",
+                description: "Search our database of 10M+ TikTok creators using 50+ filters including audience demographics, engagement rates, and content themes."
+            },
+            {
+                number: "02",
+                title: "Connect",
+                description: "Reach out with personalized AI-generated pitches. Our templates see 3x higher response rates than industry average."
+            },
+            {
+                number: "03",
+                title: "Collaborate",
+                description: "Manage contracts, content briefs, and approvals in a shared workspace. Keep your team and creators aligned."
+            },
+            {
+                number: "04",
+                title: "Scale",
+                description: "Track performance, optimize spend, and automate payments. Double down on what drives real revenue."
+            }
+        ];
+
+        const statsData = [
+            { value: "10M+", label: "Creator Profiles" },
+            { value: "$500M+", label: "GMV Generated" },
+            { value: "50K+", label: "Active Brands" },
+            { value: "4.9/5", label: "Customer Rating" }
+        ];
+
+        const testimonialsData = [
+            {
+                quote: "Euka helped us scale from 50 to 500 active creators in 3 months. Our TikTok Shop revenue increased 400%.",
+                author: "Sarah Chen",
+                role: "Head of Growth",
+                company: "Glow Beauty Co",
+                image: "https://picsum.photos/100/100?random=3"
+            },
+            {
+                quote: "The AI discovery tool found creators we never would have found manually. Game changer for our affiliate program.",
+                author: "Marcus Johnson",
+                role: "CMO",
+                company: "FitLife Brands",
+                image: "https://picsum.photos/100/100?random=4"
+            },
+            {
+                quote: "Finally, a platform that understands TikTok. The analytics alone saved us 20 hours per week.",
+                author: "Emily Rodriguez",
+                role: "Influencer Manager",
+                company: "StyleHouse",
+                image: "https://picsum.photos/100/100?random=5"
+            }
+        ];
+
+        const pricingData = [
+            {
+                name: "Starter",
+                description: "For small teams getting started with creator marketing",
+                monthlyPrice: 99,
+                yearlyPrice: 79,
+                features: ["Up to 50 creator contacts/month", "Basic analytics", "Email support", "1 team member", "Standard search filters"],
+                cta: "Start Free Trial",
+                popular: false
+            },
+            {
+                name: "Growth",
+                description: "For scaling brands ready to invest in creator partnerships",
+                monthlyPrice: 299,
+                yearlyPrice: 239,
+                features: ["Unlimited creator contacts", "Advanced analytics & ROI tracking", "Priority support", "5 team members", "AI discovery tools", "TikTok Shop integration"],
+                cta: "Start Free Trial",
+                popular: true
+            },
+            {
+                name: "Enterprise",
+                description: "For large organizations with custom needs",
+                monthlyPrice: null,
+                yearlyPrice: null,
+                features: ["Everything in Growth", "Unlimited team members", "Dedicated account manager", "Custom API access", "White-label options", "SSO & advanced security"],
+                cta: "Contact Sales",
+                popular: false
+            }
+        ];
+
+        const faqData = [
+            {
+                question: "How does Euka find TikTok creators?",
+                answer: "Our AI analyzes millions of TikTok profiles daily, tracking engagement rates, audience demographics, content performance, and brand safety metrics. We index over 10 million creator profiles and update data in real-time."
+            },
+            {
+                question: "Can I integrate with my existing e-commerce platform?",
+                answer: "Yes! Euka integrates seamlessly with Shopify, WooCommerce, TikTok Shop, and major e-commerce platforms. We also offer API access for custom integrations on Enterprise plans."
+            },
+            {
+                question: "How accurate is the ROI tracking?",
+                answer: "Our attribution model tracks sales through unique discount codes, affiliate links, and TikTok Shop integration. Most customers see 95%+ accuracy in revenue attribution compared to their internal analytics."
+            },
+            {
+                question: "What makes Euka different from other influencer platforms?",
+                answer: "Euka is built specifically for TikTok and TikTok Shop. Unlike generic platforms, we understand TikTok's unique algorithm, content formats, and shopping features. Our AI is trained exclusively on TikTok data."
+            },
+            {
+                question: "Is there a contract or can I cancel anytime?",
+                answer: "All plans are month-to-month with no long-term contracts. You can cancel anytime from your account settings. Annual plans offer a 20% discount but can still be cancelled with prorated refunds."
+            }
+        ];
+
+        const footerLinks = {
+            product: {
+                title: "Product",
+                links: [
+                    { label: "Features", href: "#features" },
+                    { label: "Pricing", href: "#pricing" },
+                    { label: "Integrations", href: "#" },
+                    { label: "API", href: "#" },
+                    { label: "Security", href: "#" }
+                ]
+            },
+            company: {
+                title: "Company",
+                links: [
+                    { label: "About", href: "#" },
+                    { label: "Blog", href: "#" },
+                    { label: "Careers", href: "#" },
+                    { label: "Press", href: "#" },
+                    { label: "Partners", href: "#" }
+                ]
+            },
+            resources: {
+                title: "Resources",
+                links: [
+                    { label: "Documentation", href: "#" },
+                    { label: "Help Center", href: "#" },
+                    { label: "Community", href: "#" },
+                    { label: "Webinars", href: "#" },
+                    { label: "Case Studies", href: "#" }
+                ]
+            },
+            social: [
+                { icon: "fa-twitter", href: "#", label: "Twitter" },
+                { icon: "fa-linkedin", href: "#", label: "LinkedIn" },
+                { icon: "fa-instagram", href: "#", label: "Instagram" },
+                { icon: "fa-youtube", href: "#", label: "YouTube" }
+            ],
+            legal: [
+                { label: "Privacy Policy", href: "#" },
+                { label: "Terms of Service", href: "#" },
+                { label: "Cookie Policy", href: "#" }
+            ]
+        };
+
+        // Render Functions
+        function renderNavItems(items) {
+            return items.map(item => 
+                `<a href="${item.href}" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">${item.label}</a>`
+            ).join("");
         }
-        // Close mobile menu if open
-        if (!mobileNav.classList.contains('hidden')) {
-          mobileNav.classList.add('hidden');
+
+        function renderMobileNavItems(items) {
+            return items.map(item => 
+                `<a href="${item.href}" class="block text-base font-medium text-gray-300 hover:text-white transition-colors py-2">${item.label}</a>`
+            ).join("");
         }
-      });
-    });
-  </script>
+
+        function renderTrustLogos(logos) {
+            return logos.map(logo => 
+                `<div class="flex items-center gap-2 text-gray-400 hover:text-gray-300 transition-colors">
+                    <i class="fas ${logo.icon} text-2xl"></i>
+                    <span class="font-semibold text-lg">${logo.name}</span>
+                </div>`
+            ).join("");
+        }
+
+        function renderFeatures(features) {
+            return features.map(feature => 
+                `<div class="group p-6 rounded-2xl bg-surface border border-white/5 hover:border-primary/50 transition-all hover:-translate-y-1">
+                    <div class="w-12 h-12 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fas ${feature.icon} text-white text-xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3 text-white">${feature.title}</h3>
+                    <p class="text-gray-400 leading-relaxed">${feature.description}</p>
+                </div>`
+            ).join("");
+        }
+
+        function renderProcessSteps(steps) {
+            return steps.map((step, index) => 
+                `<div class="flex gap-6 group">
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full bg-surface border border-white/10 flex items-center justify-center text-primary font-bold text-sm group-hover:bg-primary group-hover:text-white transition-all">
+                            ${step.number}
+                        </div>
+                        ${index < steps.length - 1 ? '<div class="w-px h-full bg-white/10 my-2"></div>' : ''}
+                    </div>
+                    <div class="pb-8">
+                        <h3 class="text-xl font-semibold mb-2 text-white">${step.title}</h3>
+                        <p class="text-gray-400 leading-relaxed">${step.description}</p>
+                    </div>
+                </div>`
+            ).join("");
+        }
+
+        function renderStats(stats) {
+            return stats.map(stat => 
+                `<div class="text-center">
+                    <div class="text-4xl lg:text-5xl font-bold text-gradient mb-2">${stat.value}</div>
+                    <div class="text-sm text-gray-400 uppercase tracking-wider">${stat.label}</div>
+                </div>`
+            ).join("");
+        }
+
+        function renderTestimonials(testimonials) {
+            return testimonials.map(t => 
+                `<div class="p-6 rounded-2xl bg-surface border border-white/5 hover:border-white/10 transition-all">
+                    <div class="flex gap-1 mb-4">
+                        ${Array(5).fill('<i class="fas fa-star text-yellow-500 text-sm"></i>').join("")}
+                    </div>
+                    <p class="text-gray-300 mb-6 leading-relaxed">"${t.quote}"</p>
+                    <div class="flex items-center gap-3">
+                        <img src="${t.image}" alt="${t.author}" class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <div class="font-semibold text-white text-sm">${t.author}</div>
+                            <div class="text-gray-500 text-xs">${t.role}, ${t.company}</div>
+                        </div>
+                    </div>
+                </div>`
+            ).join("");
+        }
+
+        function renderPricing(plans, isYearly) {
+            return plans.map(plan => {
+                const price = isYearly ? plan.yearlyPrice : plan.monthlyPrice;
+                const period = isYearly ? '/month, billed annually' : '/month';
+                
+                return `
+                <div class="relative p-6 rounded-2xl ${plan.popular ? 'bg-surface border-2 border-primary' : 'bg-surface/50 border border-white/10'} flex flex-col">
+                    ${plan.popular ? '<div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">MOST POPULAR</div>' : ''}
+                    <div class="mb-6">
+                        <h3 class="text-xl font-bold text-white mb-2">${plan.name}</h3>
+                        <p class="text-gray-400 text-sm">${plan.description}</p>
+                    </div>
+                    
+                    <div class="mb-6">
+                        ${price ? `
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-4xl font-bold text-white">$${price}</span>
+                                <span class="text-gray-500">${period}</span>
+                            </div>
+                        ` : '<div class="text-2xl font-bold text-white">Custom</div>'}
+                    </div>
+                    
+                    <button class="w-full py-3 rounded-full font-semibold mb-6 transition-all ${plan.popular ? 'bg-primary hover:bg-primary/90 text-white' : 'bg-white/10 hover:bg-white/20 text-white'}">
+                        ${plan.cta}
+                    </button>
+                    
+                    <ul class="space-y-3 flex-1">
+                        ${plan.features.map(f => `
+                            <li class="flex items-start gap-3 text-sm text-gray-300">
+                                <i class="fas fa-check text-primary mt-0.5"></i>
+                                <span>${f}</span>
+                            </li>
+                        `).join("")}
+                    </ul>
+                </div>`;
+            }).join("");
+        }
+
+        function renderFAQ(faqs) {
+            return faqs.map((item, index) => 
+                `<div class="border border-white/10 rounded-xl overflow-hidden bg-surface/30">
+                    <button class="faq-toggle w-full px-6 py-4 flex items-center justify-between text-left hover:bg-surface/50 transition-colors" data-index="${index}">
+                        <span class="font-semibold text-white pr-4">${item.question}</span>
+                        <i class="fas fa-chevron-down text-gray-400 transition-transform duration-200"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4 text-gray-400 leading-relaxed" data-index="${index}">
+                        ${item.answer}
+                    </div>
+                </div>`
+            ).join("");
+        }
+
+        function renderFooterColumn(data) {
+            return `
+                <div>
+                    <h4 class="font-semibold text-white mb-4">${data.title}</h4>
+                    <ul class="space-y-3">
+                        ${data.links.map(link => `
+                            <li><a href="${link.href}" class="text-sm text-gray-400 hover:text-white transition-colors">${link.label}</a></li>
+                        `).join("")}
+                    </ul>
+                </div>
+            `;
+        }
+
+        function renderSocialLinks(links) {
+            return links.map(link => 
+                `<a href="${link.href}" class="w-10 h-10 rounded-full bg-white/5 hover:bg-primary flex items-center justify-center text-gray-400 hover:text-white transition-all" aria-label="${link.label}">
+                    <i class="fab ${link.icon}"></i>
+                </a>`
+            ).join("");
+        }
+
+        function renderLegalLinks(links) {
+            return links.map(link => 
+                `<a href="${link.href}" class="hover:text-white transition-colors">${link.label}</a>`
+            ).join("");
+        }
+
+        // Initialize
+        document.addEventListener("DOMContentLoaded", function() {
+            // Render navigation
+            document.getElementById("nav-links").innerHTML = renderNavItems(navigationData);
+            document.getElementById("mobile-nav-links").innerHTML = renderMobileNavItems(navigationData);
+            
+            // Render trust logos
+            document.getElementById("trust-logos").innerHTML = renderTrustLogos(trustLogos);
+            
+            // Render features
+            document.getElementById("features-grid").innerHTML = renderFeatures(featuresData);
+            
+            // Render process steps
+            document.getElementById("process-steps").innerHTML = renderProcessSteps(processSteps);
+            
+            // Render stats
+            document.getElementById("stats-grid").innerHTML = renderStats(statsData);
+            
+            // Render testimonials
+            document.getElementById("testimonials-grid").innerHTML = renderTestimonials(testimonialsData);
+            
+            // Render pricing (default monthly)
+            let isYearly = false;
+            const pricingContainer = document.getElementById("pricing-grid");
+            pricingContainer.innerHTML = renderPricing(pricingData, isYearly);
+            
+            // Pricing toggle
+            document.getElementById("monthly-btn").addEventListener("click", function() {
+                isYearly = false;
+                this.classList.add("bg-primary", "text-white");
+                this.classList.remove("text-gray-400");
+                document.getElementById("yearly-btn").classList.remove("bg-primary", "text-white");
+                document.getElementById("yearly-btn").classList.add("text-gray-400");
+                pricingContainer.innerHTML = renderPricing(pricingData, isYearly);
+            });
+            
+            document.getElementById("yearly-btn").addEventListener("click", function() {
+                isYearly = true;
+                this.classList.add("bg-primary", "text-white");
+                this.classList.remove("text-gray-400");
+                document.getElementById("monthly-btn").classList.remove("bg-primary", "text-white");
+                document.getElementById("monthly-btn").classList.add("text-gray-400");
+                pricingContainer.innerHTML = renderPricing(pricingData, isYearly);
+            });
+            
+            // Render FAQ
+            document.getElementById("faq-container").innerHTML = renderFAQ(faqData);
+            
+            // FAQ Accordion
+            document.getElementById("faq-container").addEventListener("click", function(e) {
+                const toggle = e.target.closest(".faq-toggle");
+                if (!toggle) return;
+                
+                const index = toggle.getAttribute("data-index");
+                const content = document.querySelector(`.faq-content[data-index="${index}"]`);
+                const icon = toggle.querySelector(".fa-chevron-down");
+                
+                // Close others
+                document.querySelectorAll(".faq-content").forEach(c => {
+                    if (c !== c) c.classList.add("hidden");
+                });
+                document.querySelectorAll(".faq-toggle .fa-chevron-down").forEach(i => {
+                    if (i !== icon) i.style.transform = "rotate(0deg)";
+                });
+                
+                // Toggle current
+                content.classList.toggle("hidden");
+                icon.style.transform = content.classList.contains("hidden") ? "rotate(0deg)" : "rotate(180deg)";
+            });
+            
+            // Render footer
+            document.getElementById("footer-product").innerHTML = renderFooterColumn(footerLinks.product);
+            document.getElementById("footer-company").innerHTML = renderFooterColumn(footerLinks.company);
+            document.getElementById("footer-resources").innerHTML = renderFooterColumn(footerLinks.resources);
+            document.getElementById("social-links").innerHTML = renderSocialLinks(footerLinks.social);
+            document.getElementById("footer-legal").innerHTML = renderLegalLinks(footerLinks.legal);
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+            const mobileMenu = document.getElementById("mobile-menu");
+            
+            mobileMenuBtn.addEventListener("click", function() {
+                mobileMenu.classList.toggle("hidden");
+            });
+            
+            // Smooth scroll for anchor links
+            document.addEventListener("click", function(e) {
+                const link = e.target.closest("a[href^='#']");
+                if (!link) return;
+                
+                e.preventDefault();
+                const target = document.querySelector(link.getAttribute("href"));
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                    mobileMenu.classList.add("hidden");
+                }
+            });
+            
+            // Intersection Observer for animations
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: "0px 0px -50px 0px"
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = "1";
+                        entry.target.style.transform = "translateY(0)";
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe sections for fade-in
+            document.querySelectorAll("section > div").forEach(section => {
+                section.style.opacity = "0";
+                section.style.transform = "translateY(20px)";
+                section.style.transition = "opacity 0.6s ease-out, transform 0.6s ease-out";
+                observer.observe(section);
+            });
+        });
+    </script>
 </body>
 </html>
-
-
-
-
-
-   
