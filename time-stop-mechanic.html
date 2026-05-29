@@ -121,8 +121,9 @@ class GameScene extends Phaser.Scene {
     this.score = 0;
     this.stasisActive = false; // a field is committed & cannot be cancelled
     this.stasisTimer = 0;
-    this.stasisDur = 2200;     // ms of slow before irreversible detonation
-    this.stasisRadius = 70;
+    this.baseStasisDur = 3000; // base ms of tracing per charge (early-kill chains extend it)
+    this.stasisDur = this.baseStasisDur;
+    this.traceRadius = 70;     // AI uses this to size its enclosing loop
 
     // --- the cell: a "locked in" shrinking arena ---
     this.cell = { x:0, y:46, w:GAME_WIDTH, h:GAME_HEIGHT-46, shrink:0 };
@@ -156,6 +157,12 @@ class GameScene extends Phaser.Scene {
         if (this.gameOver) { this.scene.start('TitleScene'); return; }
         // CA button hit-test handled separately (it's a fixed UI rect)
         if (this.caHit(p.x, p.y)) { this.fireStasis(); return; }
+        // While tracing, tapping INSIDE the closing loop detonates it early (chain).
+        if (this.stasisActive && this.trail && this.trail.length >= 3
+            && this.pointInPoly(p.worldX, p.worldY, this.trail)) {
+          this.detonate(true);   // early = true -> reward + keep tracing
+          return;
+        }
         this.dragging = true; this.aimTo(p);
       });
       this.input.on('pointermove', (p) => { if(this.dragging) this.aimTo(p); });
@@ -220,6 +227,11 @@ class GameScene extends Phaser.Scene {
       {fontFamily:'Courier New', fontSize:'8px', color:'#36c5b0'});
     this.hud.add(this.statusTxt);
 
+    // trace countdown that floats near the player's pen-head during a CA trace
+    this.traceTimeTxt = this.add.text(0,0,'',
+      {fontFamily:'Courier New', fontSize:'9px', color:'#e0a33a', fontStyle:'bold'})
+      .setOrigin(0.5).setDepth(22).setVisible(false);
+
     // charge pips (permanent-decision resource)
     this.pips = this.add.graphics();
     this.hud.add(this.pips);
@@ -275,43 +287,133 @@ class GameScene extends Phaser.Scene {
     this.charges--; this.drawPips();
     this.stasisActive = true;
     this.stasisTimer = 0;
-    this.field = { x:this.player.x, y:this.player.y, r:0, targetR:this.stasisRadius };
+    this.stasisDur = this.baseStasisDur;   // each new charge starts at base time
+
+    // 1) Clear every bullet on screen the instant CA is committed.
+    for(const s of this.shots){ s.dead = true; }
+
+    // 2) Begin TRACING the player's path. The trail is recorded until the timer
+    //    ends, at which point it closes back to the start and detonates the
+    //    enclosed area. This is a permanent decision — it can't be cancelled.
+    this.trail = [{ x:this.player.x, y:this.player.y }];
+    this.trailSampleAcc = 0;
+
     this.snd('stasis');
-    this.statusTxt.setText('STASIS — COMMITTED').setColor('#e0a33a');
+    this.statusTxt.setText('TRACING — COMMITTED').setColor('#e0a33a');
   }
 
-  detonate(){
-    const f = this.field;
+  detonate(early=false){
     this.snd('detonate');
-    this.cameras.main.shake(220, 0.012);
+    this.cameras.main.shake(early?160:260, early?0.010:0.014);
 
-    // expanding detonation rings (placeholder for SP/CA explosion grid)
-    let ring = 0;
-    const rings = 3;
-    const doRing = () => {
-      this.tweens.addCounter({
-        from:0, to:1, duration:380,
-        onUpdate:(tw)=>{ this._detRing = {x:f.x,y:f.y,p:tw.getValue(),max:f.r+24}; },
-      });
-    };
-    doRing();
-    this._detFlash = 1;
+    // Close the loop: trail points + implicit segment from last back to first.
+    const poly = this.trail.slice();
+    if(poly.length < 3){
+      // Degenerate trace (player barely moved): fall back to a small blast disc.
+      const f = poly[0] || { x:this.player.x, y:this.player.y };
+      this._detRing = null;
+      this.tweens.addCounter({ from:0, to:1, duration:380,
+        onUpdate:(tw)=>{ this._detRing = {x:f.x,y:f.y,p:tw.getValue(),max:40}; } });
+      const r2 = 40*40;
+      for(const d of this.drones){ const dx=d.x-f.x, dy=d.y-f.y;
+        if(!d.dead && dx*dx+dy*dy<=r2){ d.dead=true; this.score+=100; this.burst(d.x,d.y); } }
+      this._endStasis(); return;
+    }
 
-    // destroy everything within the field radius
-    const r2 = (f.r+18)*(f.r+18);
+    // Centroid (for shockwave origin + score popup).
+    let cxs=0, cys=0;
+    for(const p of poly){ cxs+=p.x; cys+=p.y; }
+    const cx=cxs/poly.length, cy=cys/poly.length;
+
+    // Destroy every drone whose center is INSIDE the enclosed polygon.
+    let killed=0;
     for(const d of this.drones){
-      const dx=d.x-f.x, dy=d.y-f.y;
-      if(dx*dx+dy*dy <= r2){ d.dead = true; this.score += 100; this.burst(d.x,d.y); }
+      if(d.dead) continue;
+      if(this.pointInPoly(d.x, d.y, poly)){
+        d.dead = true; killed++; this.score += 100; this.burst(d.x, d.y);
+      }
     }
+    // Bullets inside the shape die too (in case any spawned during the trace).
     for(const s of this.shots){
-      const dx=s.x-f.x, dy=s.y-f.y;
-      if(dx*dx+dy*dy <= r2) s.dead = true;
+      if(!s.dead && this.pointInPoly(s.x, s.y, poly)) s.dead = true;
     }
 
+    // Flash-fill the captured shape, then expanding shockwave from its centroid.
+    this._detPoly = { pts:poly, p:0 };
+    this.tweens.addCounter({ from:0, to:1, duration:420, ease:'Quad.easeOut',
+      onUpdate:(tw)=>{ this._detPoly.p = tw.getValue(); },
+      onComplete:()=>{ this._detPoly = null; } });
+    this.tweens.addCounter({ from:0, to:1, duration:420,
+      onUpdate:(tw)=>{ this._detRing = {x:cx,y:cy,p:tw.getValue(),max:Math.max(this.cell.w,this.cell.h)*0.7}; } });
+
+    if(early){
+      // EARLY DETONATION (player tapped inside the loop):
+      // The reward is a brand-NEW CA that begins immediately and lasts a number of
+      // seconds equal to the enemies just destroyed. No kills -> the charge ends.
+      this.score += killed * 150;                 // chain bonus on top of base
+      this.scoreTxt.setText('SCORE '+this.score);
+      if(killed > 0){
+        this.popup(cx, cy, 'NEW C.A.  '+killed+'s  (x'+killed+')');
+        this.snd('stasis');
+        // fresh trace, fresh anchor at the player, duration = killed seconds
+        this.stasisTimer = 0;
+        this.stasisDur = killed * 1000;
+        this.trail = [{ x:this.player.x, y:this.player.y }];
+        this.trailSampleAcc = 0;
+        this.statusTxt.setText('NEW C.A. — '+killed+'s').setColor('#e0a33a');
+        return;   // keep stasisActive = true; a new CA is now running
+      }
+      // tapped an empty loop: no reward, the charge is spent
+      this.popup(cx, cy, 'EMPTY');
+      this._endStasis();
+      return;
+    }
+
+    this._endStasis();
+  }
+
+  // floating text popup (chain rewards)
+  popup(x, y, txt){
+    const t = this.add.text(x, y, txt,
+      {fontFamily:'Courier New', fontSize:'10px', color:'#e0a33a', fontStyle:'bold'})
+      .setOrigin(0.5).setDepth(70);
+    this.tweens.add({ targets:t, y:y-22, alpha:0, duration:700, ease:'Quad.easeOut',
+      onComplete:()=>t.destroy() });
+  }
+
+  _endStasis(){
     this.stasisActive = false;
-    this.field = null;
+    this.trail = null;
+    this.stasisDur = this.baseStasisDur;   // reset extension for the next charge
     this.statusTxt.setText('CONTAINED').setColor('#36c5b0');
     this.scoreTxt.setText('SCORE '+this.score);
+  }
+
+  // Ray-casting point-in-polygon test.
+  pointInPoly(x, y, pts){
+    let inside = false;
+    for(let i=0, j=pts.length-1; i<pts.length; j=i++){
+      const xi=pts[i].x, yi=pts[i].y, xj=pts[j].x, yj=pts[j].y;
+      const hit = ((yi>y)!==(yj>y)) && (x < (xj-xi)*(y-yi)/(yj-yi)+xi);
+      if(hit) inside = !inside;
+    }
+    return inside;
+  }
+
+  // dashed line on a Graphics object
+  dashLine(g, x1, y1, x2, y2, dash, gap, color, alpha){
+    const dx=x2-x1, dy=y2-y1, len=Math.hypot(dx,dy);
+    if(len<1) return;
+    const ux=dx/len, uy=dy/len; let d=0;
+    g.lineStyle(2, color, alpha);
+    while(d < len){
+      const s=d, e=Math.min(d+dash, len);
+      g.beginPath();
+      g.moveTo(x1+ux*s, y1+uy*s);
+      g.lineTo(x1+ux*e, y1+uy*e);
+      g.strokePath();
+      d += dash+gap;
+    }
   }
 
   burst(x,y){
@@ -373,10 +475,40 @@ class GameScene extends Phaser.Scene {
     else this.flash('CONTAINED','DEMO', 1500);
   }
 
-  /* ----- attract-mode AI: dodge threats, detonate when surrounded ----- */
+  /* ----- attract-mode AI: dodge, then trace an enclosing loop on commit ----- */
   aiThink(delta){
     const c = this.cell;
     const px = this.player.x, py = this.player.y;
+
+    // While a trace is active, ORBIT the target cluster so the loop encloses it.
+    if(this.stasisActive){
+      const ctr = this.aiLoopCenter || { x:c.x+c.w/2, y:c.y+c.h/2 };
+      // track sweep against the angle we started at, independent of timer extensions
+      this.aiSweep = (this.aiSweep||0) + (delta/1000) * 2.4 * this.aiLoopDir; // rad
+      const ang = this.aiLoopStart + this.aiSweep;
+      const R = this.aiLoopR;
+      this.target.x = Phaser.Math.Clamp(ctr.x + Math.cos(ang)*R, c.x+10, c.x+c.w-10);
+      this.target.y = Phaser.Math.Clamp(ctr.y + Math.sin(ang)*R, c.y+10, c.y+c.h-10);
+
+      // Once we've swept ~a full loop and the trace can be closed, chain-bomb early
+      // if any drone is currently enclosed — showcasing the +1s reward loop.
+      if(Math.abs(this.aiSweep) > Math.PI*1.9 && this.trail && this.trail.length>=3){
+        const enclosed = this.drones.some(d=>!d.dead && this.pointInPoly(d.x,d.y,this.trail));
+        if(enclosed){
+          this.detonate(true);                 // early chain bomb (+time)
+          // re-seed the orbit around the next densest cluster (or recenter)
+          const nc = this.bestCluster(80);
+          this.aiLoopCenter = nc.count>=2 ? {x:nc.x,y:nc.y} : {x:c.x+c.w/2,y:c.y+c.h/2};
+          this.aiLoopR = Phaser.Math.Clamp((nc.count>=2?nc.spread:30)+22, 30, 90);
+          this.aiLoopStart = ang;              // continue smoothly from current angle
+          this.aiSweep = 0;
+        } else {
+          // nothing left to gain — let the timer close it out naturally soon
+          this.aiSweep = Math.PI*1.7*this.aiLoopDir; // hold near closure
+        }
+      }
+      return;
+    }
 
     // Repel from every nearby threat (inverse-square steering).
     let rx = 0, ry = 0, nearCount = 0, nearest = 1e9;
@@ -408,12 +540,36 @@ class GameScene extends Phaser.Scene {
     this.target.x = Phaser.Math.Clamp(tx, c.x+10, c.x+c.w-10);
     this.target.y = Phaser.Math.Clamp(ty, c.y+10, c.y+c.h-10);
 
-    // Commit a stasis field when cornered: many threats close, or one about to hit,
-    // and we still hold a charge. Mirrors the "permanent decision" tension visually.
-    const cornered = (nearCount >= 3 || nearest < 26);
-    if(cornered && this.charges>0 && !this.stasisActive){
+    // Commit a trace when a worthwhile cluster of drones has formed (3+ within a
+    // radius we can loop around), or when genuinely cornered. Then set up the orbit
+    // so the demo visibly encloses and detonates them.
+    const cluster = this.bestCluster(80);
+    const cornered = (nearest < 24);
+    if(this.charges>0 && !this.stasisActive && (cluster.count>=3 || cornered)){
+      const ctr = cluster.count>=3 ? {x:cluster.x, y:cluster.y} : {x:px, y:py};
+      this.aiLoopCenter = ctr;
+      this.aiLoopR = Phaser.Math.Clamp((cluster.count>=3?cluster.spread:30)+22, 30, 90);
+      // start the orbit from the player's current angle around the center
+      this.aiLoopStart = Math.atan2(py-ctr.y, px-ctr.x);
+      this.aiLoopDir = Math.random()<0.5 ? 1 : -1;
+      this.aiSweep = 0;
       this.fireStasis();
     }
+  }
+
+  // Find the densest cluster of live drones; returns center, count, spread radius.
+  bestCluster(reach){
+    const live = this.drones.filter(d=>!d.dead);
+    let best = {count:0, x:0, y:0, spread:0};
+    for(const a of live){
+      let n=0, sx=0, sy=0, maxd=0;
+      for(const b of live){
+        const d=Math.hypot(a.x-b.x, a.y-b.y);
+        if(d<reach){ n++; sx+=b.x; sy+=b.y; if(d>maxd)maxd=d; }
+      }
+      if(n>best.count) best={count:n, x:sx/n, y:sy/n, spread:maxd/2};
+    }
+    return best;
   }
 
   /* ============================== UPDATE ============================== */
@@ -432,18 +588,15 @@ class GameScene extends Phaser.Scene {
     // ---- DEMO AI: drives the player so the title screen shows real gameplay ----
     if(this.demo) this.aiThink(delta);
 
-    // global time scale: stasis slows the WORLD (drones/shots), not the player
-    let worldScale = 1;
+    // During CA the world runs at FULL speed — the tension is now spatial
+    // (enclose enemies), not temporal. The trace timer counts down to detonation.
     if(this.stasisActive){
       this.stasisTimer += delta;
-      const k = this.stasisTimer/this.stasisDur;
-      worldScale = 0.08; // near-frozen inside committed stasis
-      // grow bubble then hold
-      this.field.r = Phaser.Math.Linear(this.field.r, this.field.targetR, 0.18);
       if(this.stasisTimer >= this.stasisDur) this.detonate();
     }
+    const worldScale = 1;
     const wdt = (delta/1000) * worldScale;
-    const pdt = delta/1000; // player unaffected by stasis
+    const pdt = delta/1000;
 
     // --- shrink the cell over time: you are increasingly LOCKED IN ---
     if(this.cell.w > this.minCellW) this.cell.w -= 0.45 * (delta/16.67);
@@ -467,6 +620,19 @@ class GameScene extends Phaser.Scene {
     this.player.x = Phaser.Math.Linear(this.player.x, this.target.x, 0.35);
     this.player.y = Phaser.Math.Linear(this.player.y, this.target.y, 0.35);
 
+    // --- record the trace while CA is active ---
+    if(this.stasisActive && this.trail){
+      this.trailSampleAcc += delta;
+      const last = this.trail[this.trail.length-1];
+      const dx = this.player.x-last.x, dy = this.player.y-last.y;
+      // sample on time interval OR when moved enough, to keep the polyline tidy
+      if(this.trailSampleAcc >= 40 || (dx*dx+dy*dy) > 36){
+        this.trailSampleAcc = 0;
+        this.trail.push({ x:this.player.x, y:this.player.y });
+        if(this.trail.length > 400) this.trail.shift(); // safety cap
+      }
+    }
+
     // --- spawning ---
     this.spawnAcc += delta;
     const rate = Math.max(450, this.spawnEvery - this.score*0.4);
@@ -479,9 +645,9 @@ class GameScene extends Phaser.Scene {
       const sp = 38;
       d.x += Math.cos(ang)*sp*wdt;
       d.y += Math.sin(ang)*sp*wdt;
-      // contact = containment breach
+      // contact = containment breach (player is INVINCIBLE while a CA trace is active)
       const dx=d.x-this.player.x, dy=d.y-this.player.y;
-      if(dx*dx+dy*dy <= (d.r+this.player.r)*(d.r+this.player.r)) this.endGame();
+      if(!this.stasisActive && dx*dx+dy*dy <= (d.r+this.player.r)*(d.r+this.player.r)) this.endGame();
       // fire
       d.shotAcc += delta*worldScale;
       if(d.shotAcc > 1700){ d.shotAcc=0; this.spawnShot(d); }
@@ -492,7 +658,7 @@ class GameScene extends Phaser.Scene {
       if(s.dead) continue;
       s.x += s.vx*wdt; s.y += s.vy*wdt;
       const dx=s.x-this.player.x, dy=s.y-this.player.y;
-      if(dx*dx+dy*dy <= (s.r+this.player.r)*(s.r+this.player.r)) this.endGame();
+      if(!this.stasisActive && dx*dx+dy*dy <= (s.r+this.player.r)*(s.r+this.player.r)) this.endGame();
       if(s.x<-10||s.x>GAME_WIDTH+10||s.y<-10||s.y>GAME_HEIGHT+10) s.dead=true;
     }
 
@@ -526,25 +692,68 @@ class GameScene extends Phaser.Scene {
     for(let gx=c.x+16; gx<c.x+c.w; gx+=16) g.lineBetween(gx,c.y,gx,c.y+c.h);
     for(let gy=c.y+16; gy<c.y+c.h; gy+=16) g.lineBetween(c.x,gy,c.x+c.w,gy);
 
-    // stasis bubble
+    // --- TRACE: draw the recorded path + the live closing segment ---
     const fg = this.fieldGfx; fg.clear();
-    if(this.stasisActive && this.field){
-      const f=this.field;
+    if(this.stasisActive && this.trail && this.trail.length){
+      const tr = this.trail;
       const k = this.stasisTimer/this.stasisDur;
-      // warning fill ramps toward detonation
-      fg.fillStyle(COL.teal, 0.08 + 0.12*k);
-      fg.fillCircle(f.x,f.y,f.r);
-      fg.lineStyle(2, k>0.8?COL.gold:COL.teal, 0.7);
-      fg.strokeCircle(f.x,f.y,f.r);
-      // rotating tick marks = countdown to irreversible blast
-      const ticks=24;
-      for(let i=0;i<ticks;i++){
-        if(i/ticks > k) continue;
-        const a = (i/ticks)*Math.PI*2 - this.t/600;
-        fg.lineStyle(2, COL.gold, 0.8);
-        fg.lineBetween(f.x+Math.cos(a)*(f.r-4), f.y+Math.sin(a)*(f.r-4),
-                       f.x+Math.cos(a)*(f.r+3), f.y+Math.sin(a)*(f.r+3));
+      const start = tr[0];
+
+      // faint fill preview of the area enclosed so far (trail + close-back-to-start)
+      if(tr.length >= 3){
+        fg.fillStyle(COL.teal, 0.05 + 0.07*k);
+        fg.beginPath();
+        fg.moveTo(start.x, start.y);
+        for(let i=1;i<tr.length;i++) fg.lineTo(tr[i].x, tr[i].y);
+        fg.closePath();
+        fg.fillPath();
       }
+
+      // the trail itself (solid, glowing)
+      fg.lineStyle(2, COL.teal, 0.95);
+      fg.beginPath();
+      fg.moveTo(start.x, start.y);
+      for(let i=1;i<tr.length;i++) fg.lineTo(tr[i].x, tr[i].y);
+      fg.strokePath();
+
+      // dashed segment from current head back to the start = where it will close
+      const head = tr[tr.length-1];
+      const closeCol = k>0.8 ? COL.gold : COL.teal;
+      this.dashLine(fg, head.x, head.y, start.x, start.y, 5, 4, closeCol, 0.5+0.4*k);
+
+      // mark the anchor (start) point
+      fg.fillStyle(COL.gold, 1); fg.fillCircle(start.x, start.y, 3);
+      fg.lineStyle(1, COL.gold, 0.6+0.4*Math.sin(this.t/120));
+      fg.strokeCircle(start.x, start.y, 5);
+
+      // INVINCIBILITY shield around the player (pulsing) — active for the whole trace
+      const sr = 13 + 2*Math.sin(this.t/90);
+      fg.lineStyle(2, COL.teal, 0.55 + 0.35*Math.sin(this.t/90));
+      fg.strokeCircle(this.player.x, this.player.y, sr);
+      fg.lineStyle(1, COL.ink, 0.25);
+      fg.strokeCircle(this.player.x, this.player.y, sr+3);
+
+      // floating countdown by the pen-head (gold; flashes red in the final second)
+      const remain = Math.max(0, (this.stasisDur - this.stasisTimer)/1000);
+      this.traceTimeTxt.setText(remain.toFixed(1)+'s')
+        .setPosition(head.x, head.y-16).setVisible(true)
+        .setColor(remain<1 ? '#c0432b' : '#e0a33a');
+    } else if(this.traceTimeTxt) {
+      this.traceTimeTxt.setVisible(false);
+    }
+
+    // --- detonation: flash-fill the captured polygon ---
+    if(this._detPoly){
+      const dp = this._detPoly, pts = dp.pts;
+      const a = (1 - dp.p);
+      fg.fillStyle(COL.gold, 0.45*a + 0.1);
+      fg.beginPath(); fg.moveTo(pts[0].x, pts[0].y);
+      for(let i=1;i<pts.length;i++) fg.lineTo(pts[i].x, pts[i].y);
+      fg.closePath(); fg.fillPath();
+      fg.lineStyle(2, COL.gold, a);
+      fg.beginPath(); fg.moveTo(pts[0].x, pts[0].y);
+      for(let i=1;i<pts.length;i++) fg.lineTo(pts[i].x, pts[i].y);
+      fg.closePath(); fg.strokePath();
     }
 
     // detonation ring
@@ -594,13 +803,17 @@ class TitleScene extends Phaser.Scene {
       {fontFamily:'Courier New', fontSize:'12px', color:'#36c5b0', letterSpacing:6})
       .setOrigin(0.5).setDepth(2);
 
-    // tiny mechanic legend
-    this.legend = this.add.text(CENTER_X, CENTER_Y+24,
-      'DRAG TO MOVE   ·   CA = STASIS → DETONATE',
+    // tiny mechanic legend (two lines so it fits the 256px width)
+    this.legend = this.add.text(CENTER_X, CENTER_Y+22,
+      'DRAG TO MOVE   ·   CA = TRACE A LOOP',
+      {fontFamily:'Courier New', fontSize:'7px', color:'#8a93a0'})
+      .setOrigin(0.5).setDepth(2);
+    this.legend2 = this.add.text(CENTER_X, CENTER_Y+33,
+      'TAP INSIDE = EARLY BOMB  ·  KILLS = SECONDS OF A NEW C.A.',
       {fontFamily:'Courier New', fontSize:'7px', color:'#8a93a0'})
       .setOrigin(0.5).setDepth(2);
 
-    this.demoTag = this.add.text(CENTER_X, CENTER_Y+44, '— LIVE DEMO —',
+    this.demoTag = this.add.text(CENTER_X, CENTER_Y+50, '— LIVE DEMO —',
       {fontFamily:'Courier New', fontSize:'7px', color:'#e0a33a'})
       .setOrigin(0.5).setDepth(2);
 
