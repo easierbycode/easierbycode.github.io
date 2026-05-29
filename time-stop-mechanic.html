@@ -799,17 +799,40 @@ class GameScene extends Phaser.Scene {
     g.fillStyle(0x0b0f15, 1);
     g.fillPoints(pts, true);
 
-    // hazard border — the morphing "lock". Double-stroke for a soft glow.
-    // Inner stroke warms from teal toward red as tension rises (or at breach).
+    // hazard border — the morphing "lock".
+    // While a CA trace is active, the border color tracks TIME REMAINING:
+    //   full time -> cool teal,  half -> gold,  almost out -> rust red.
+    // When no CA is active, it falls back to warming with gameplay tension.
     const ten = this.tension || 0;
-    const innerCol = breach ? COL.rust
-      : Phaser.Display.Color.GetColor(
-          Math.round(0x36 + (0xc0-0x36)*ten),   // R: teal -> rust
-          Math.round(0xc5 + (0x43-0xc5)*ten),   // G
-          Math.round(0xb0 + (0x2b-0xb0)*ten));  // B
-    g.lineStyle(3, breach?COL.rust:COL.dim, breach?0.9:(0.4 + 0.4*ten));
+    let innerCol, glowA, glowCol;
+    if(breach){
+      innerCol = COL.rust; glowCol = COL.rust; glowA = 0.9;
+    } else if(this.stasisActive){
+      const frac = Phaser.Math.Clamp(1 - this.stasisTimer/this.stasisDur, 0, 1); // 1->0
+      // two-stop ramp: rust(0) -> gold(0.5) -> teal(1)
+      const lerp=(a,b,u)=>Math.round(a+(b-a)*u);
+      let r,gg,b;
+      if(frac < 0.5){
+        const u = frac/0.5;                       // rust -> gold
+        r=lerp(0xc0,0xe0,u); gg=lerp(0x43,0xa3,u); b=lerp(0x2b,0x3a,u);
+      } else {
+        const u = (frac-0.5)/0.5;                 // gold -> teal
+        r=lerp(0xe0,0x36,u); gg=lerp(0xa3,0xc5,u); b=lerp(0x3a,0xb0,u);
+      }
+      innerCol = Phaser.Display.Color.GetColor(r,gg,b);
+      glowCol = innerCol;
+      // glow brighter as time runs low, and pulse hard in the final stretch
+      glowA = 0.5 + 0.4*(1-frac) + (frac<0.25 ? 0.25*Math.abs(Math.sin(this.t/80)) : 0);
+    } else {
+      innerCol = Phaser.Display.Color.GetColor(
+        Math.round(0x36 + (0xc0-0x36)*ten),
+        Math.round(0xc5 + (0x43-0xc5)*ten),
+        Math.round(0xb0 + (0x2b-0xb0)*ten));
+      glowCol = COL.dim; glowA = 0.4 + 0.4*ten;
+    }
+    g.lineStyle(3, glowCol, glowA);
     g.strokePoints(pts, true, true);
-    g.lineStyle(1.5, innerCol, 0.85 + 0.15*ten);
+    g.lineStyle(1.5, innerCol, this.stasisActive ? 1 : (0.85 + 0.15*ten));
     g.strokePoints(pts, true, true);
 
     // faint inner grid (kept axis-aligned, clipped visually by the fill)
