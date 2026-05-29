@@ -124,10 +124,11 @@ class GameScene extends Phaser.Scene {
     this.baseStasisDur = 3000; // base ms of tracing per charge (early-kill chains extend it)
     this.stasisDur = this.baseStasisDur;
     this.traceRadius = 70;     // AI uses this to size its enclosing loop
+    this.tension = 0;          // smoothed 0..1 gameplay-tension that drives border morph
 
     // --- the cell: a "locked in" shrinking arena ---
     this.cell = { x:0, y:46, w:GAME_WIDTH, h:GAME_HEIGHT-46, shrink:0 };
-    this.minCellW = 120, this.minCellH = 200;
+    this.minCellW = 150, this.minCellH = 260;
 
     this.bg = this.add.graphics().setDepth(0);
     this.fieldGfx = this.add.graphics().setDepth(5);   // stasis bubble
@@ -599,8 +600,8 @@ class GameScene extends Phaser.Scene {
     const pdt = delta/1000;
 
     // --- shrink the cell over time: you are increasingly LOCKED IN ---
-    if(this.cell.w > this.minCellW) this.cell.w -= 0.45 * (delta/16.67);
-    if(this.cell.h > this.minCellH) this.cell.h -= 0.30 * (delta/16.67);
+    if(this.cell.w > this.minCellW) this.cell.w -= 0.14 * (delta/16.67);
+    if(this.cell.h > this.minCellH) this.cell.h -= 0.09 * (delta/16.67);
     this.cell.x = (GAME_WIDTH - this.cell.w)/2;
     this.cell.y = 46 + ( (GAME_HEIGHT-46) - this.cell.h ) * 0.5;
 
@@ -670,27 +671,110 @@ class GameScene extends Phaser.Scene {
     this.score += delta*0.004;
     this.scoreTxt.setText('SCORE '+Math.floor(this.score));
 
+    // --- gameplay TENSION (0..1) that drives the border morph ---
+    this.updateTension(delta);
+
     this.render();
     this.drawCA();
+  }
+
+  // Blend live threat signals into a smoothed tension value. The border reads this
+  // to morph harder when the situation is hot (swarm close, a threat nearly on you,
+  // or an active CA trace) and settle when things are calm.
+  updateTension(delta){
+    const px=this.player.x, py=this.player.y;
+    let near=0, nearest=1e9;
+    for(const d of this.drones){
+      if(d.dead) continue;
+      const dist=Math.hypot(d.x-px, d.y-py);
+      if(dist<90) near++;
+      if(dist<nearest) nearest=dist;
+    }
+    // sub-signals, each 0..1
+    const swarm   = Phaser.Math.Clamp(near/5, 0, 1);                  // crowding
+    const danger  = nearest<120 ? Phaser.Math.Clamp(1-nearest/120,0,1) : 0; // proximity
+    const caBoost = this.stasisActive ? 0.6 : 0;                     // CA agitates the cell
+    const target  = Phaser.Math.Clamp(swarm*0.6 + danger*0.6 + caBoost, 0, 1);
+    // asymmetric smoothing: spikes up fast, eases down slowly
+    const rate = target>this.tension ? 0.12 : 0.04;
+    this.tension += (target - this.tension) * rate * (delta/16.67);
+  }
+
+  // Build a morphing rounded-rectangle outline. Each edge is sampled and pushed
+  // along its inward normal by layered sine waves; corners are pinned so the
+  // gold bolts stay anchored. Amplitude grows as the cell shrinks (more agitated).
+  morphOutline(c){
+    const ten = this.tension || 0;
+    // tension speeds the ripple up so a hot screen visibly churns faster
+    const t = (this.t/1000) * (1 + ten*1.6);
+    const segPerEdge = 10;                 // samples per side
+    const tight = 1 - Phaser.Math.Clamp((c.w-this.minCellW)/(GAME_WIDTH-this.minCellW), 0, 1);
+    // base agitation from shrink-tightness, then a large tension-driven boost
+    const amp = 3 + tight*4 + ten*12;      // morph strength scales with gameplay tension
+    const pts = [];
+
+    // wave displacement as a function of perimeter parameter u (0..1) and normal dir
+    const disp = (u, phase) => {
+      return Math.sin(u*Math.PI*2*3 + t*1.7 + phase) * amp
+           + Math.sin(u*Math.PI*2*5 - t*1.1 + phase*1.7) * amp*0.45
+           + Math.sin(u*Math.PI*2*2 + t*0.6) * amp*0.3;
+    };
+    // taper -> 0 near the corners (s is 0..1 along the edge) so bolts stay fixed
+    const taper = (s) => Math.sin(s*Math.PI);
+
+    const x0=c.x, y0=c.y, x1=c.x+c.w, y1=c.y+c.h;
+    const pushEdge = (ax,ay,bx,by,nx,ny,phase,uBase) => {
+      for(let i=0;i<segPerEdge;i++){
+        const s = i/segPerEdge;
+        const px = ax + (bx-ax)*s, py = ay + (by-ay)*s;
+        const d = disp(uBase + s*0.25, phase) * taper(s);
+        pts.push({ x: px + nx*d, y: py + ny*d });
+      }
+    };
+    // inward normals: top(+y), right(-x), bottom(-y), left(+x)
+    pushEdge(x0,y0, x1,y0,  0, 1, 0.0, 0.00); // top
+    pushEdge(x1,y0, x1,y1, -1, 0, 1.3, 0.25); // right
+    pushEdge(x1,y1, x0,y1,  0,-1, 2.6, 0.50); // bottom
+    pushEdge(x0,y1, x0,y0,  1, 0, 3.9, 0.75); // left
+    return pts;
   }
 
   /* ----- draw cell + stasis bubble + detonation ----- */
   render(){
     const g = this.bg; g.clear();
     const c = this.cell;
-    // arena fill
-    g.fillStyle(0x0b0f15, 1); g.fillRect(c.x,c.y,c.w,c.h);
-    // hazard border — the "lock"
     const breach = (c.w<=this.minCellW+8 && c.h<=this.minCellH+8);
-    g.lineStyle(2, breach?COL.rust:COL.dim, 1);
-    g.strokeRect(c.x,c.y,c.w,c.h);
-    // corner bolts
-    g.fillStyle(COL.gold,1);
-    [[c.x,c.y],[c.x+c.w,c.y],[c.x,c.y+c.h],[c.x+c.w,c.y+c.h]].forEach(([x,y])=>g.fillCircle(x,y,2));
-    // faint inner grid
+
+    // Build a morphing outline: walk the rectangle perimeter and push each sample
+    // in/out along its edge-normal using layered sine waves. The cell "breathes"
+    // and ripples like a living membrane rather than a rigid box.
+    const pts = this.morphOutline(c);
+
+    // arena fill follows the morphed outline (no gap between fill and border)
+    g.fillStyle(0x0b0f15, 1);
+    g.fillPoints(pts, true);
+
+    // hazard border — the morphing "lock". Double-stroke for a soft glow.
+    // Inner stroke warms from teal toward red as tension rises (or at breach).
+    const ten = this.tension || 0;
+    const innerCol = breach ? COL.rust
+      : Phaser.Display.Color.GetColor(
+          Math.round(0x36 + (0xc0-0x36)*ten),   // R: teal -> rust
+          Math.round(0xc5 + (0x43-0xc5)*ten),   // G
+          Math.round(0xb0 + (0x2b-0xb0)*ten));  // B
+    g.lineStyle(3, breach?COL.rust:COL.dim, breach?0.9:(0.4 + 0.4*ten));
+    g.strokePoints(pts, true, true);
+    g.lineStyle(1.5, innerCol, 0.85 + 0.15*ten);
+    g.strokePoints(pts, true, true);
+
+    // faint inner grid (kept axis-aligned, clipped visually by the fill)
     g.lineStyle(1, 0x141b24, 1);
     for(let gx=c.x+16; gx<c.x+c.w; gx+=16) g.lineBetween(gx,c.y,gx,c.y+c.h);
     for(let gy=c.y+16; gy<c.y+c.h; gy+=16) g.lineBetween(c.x,gy,c.x+c.w,gy);
+
+    // corner bolts — pinned to the true (un-morphed) corners, "locked in"
+    g.fillStyle(COL.gold,1);
+    [[c.x,c.y],[c.x+c.w,c.y],[c.x,c.y+c.h],[c.x+c.w,c.y+c.h]].forEach(([x,y])=>g.fillCircle(x,y,2.5));
 
     // --- TRACE: draw the recorded path + the live closing segment ---
     const fg = this.fieldGfx; fg.clear();
