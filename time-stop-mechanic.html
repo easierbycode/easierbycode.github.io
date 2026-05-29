@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>STASIS // Locked In</title>
+<style>
+  :root{
+    --ink:#e9e2cf;        /* bone */
+    --rust:#c0432b;       /* danger red */
+    --teal:#36c5b0;       /* time / stasis cyan */
+    --gold:#e0a33a;       /* charge gold */
+    --void:#0a0c10;
+  }
+  @font-face{font-family:"DSEG";src:local("Courier New");}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html,body{height:100%;background:#05060a;overflow:hidden;
+    font-family:"Courier New",ui-monospace,monospace;
+    -webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;}
+  #wrap{
+    position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+    background:
+      radial-gradient(120% 80% at 50% 0%, #11161f 0%, #05060a 60%),
+      repeating-linear-gradient(0deg, transparent 0 3px, rgba(255,255,255,.012) 3px 4px);
+  }
+  #canvas{
+    box-shadow:0 0 0 1px rgba(54,197,176,.25), 0 0 60px rgba(54,197,176,.08), 0 30px 80px rgba(0,0,0,.7);
+    image-rendering:pixelated;
+  }
+  /* film grain + vignette overlay above the canvas */
+  #wrap::after{
+    content:"";position:fixed;inset:0;pointer-events:none;
+    background:radial-gradient(120% 120% at 50% 50%, transparent 55%, rgba(0,0,0,.55) 100%);
+    mix-blend-mode:multiply;
+  }
+  .tag{
+    position:fixed;left:50%;transform:translateX(-50%);
+    bottom:14px;color:#4a5563;letter-spacing:.32em;font-size:10px;text-transform:uppercase;
+    pointer-events:none;
+  }
+  .tag b{color:var(--teal);font-weight:400;}
+</style>
+</head>
+<body>
+  <div id="wrap"><div id="canvas"></div></div>
+  <div class="tag">MAJOR JAM · WONDER &nbsp;//&nbsp; LIMITATION&nbsp; <b>LOCKED&nbsp;IN</b></div>
+
+<script src="https://cdn.jsdelivr.net/npm/phaser@4.1.0/dist/phaser.min.js"></script>
+<script>
+/* ============================================================================
+   STASIS // LOCKED IN — Time Stop Mechanic prototype
+   Engine: Phaser 4.1.0  (conventions ported from easierbycode/2019-pixi)
+
+   CORE LOOP
+   - You are sealed inside a shrinking containment cell. You cannot leave.
+   - Drag anywhere to move the core in ANY direction (follows your finger).
+   - The walls close in. Drones spawn and home toward you.
+
+   REPURPOSED "CA" BUTTON  ->  STASIS FIELD  (was: SP explosion)
+   - Tap CA to deploy a stasis bubble centered on you. Time inside slows to a crawl
+     (drones + their shots are dragged to near-zero speed).
+   - The field is a PERMANENT DECISION: once tapped it CANNOT be cancelled. It runs
+     its full timer, then DETONATES — everything caught in the radius is destroyed.
+   - You hold a finite number of charges per run. Spend them wrong and you're locked
+     in with no way out. Every detonation is irreversible.
+
+   GAME_WIDTH/HEIGHT mirror the reference (256x480), pixelArt + FIT scaling.
+   ============================================================================ */
+
+const GAME_WIDTH = 256;
+const GAME_HEIGHT = 480;
+const CENTER_X = GAME_WIDTH / 2;
+const CENTER_Y = GAME_HEIGHT / 2;
+
+const COL = {
+  ink:0xe9e2cf, rust:0xc0432b, teal:0x36c5b0, gold:0xe0a33a,
+  void:0x0a0c10, dim:0x2a3340, drone:0xc0432b, droneCore:0xffd9c2,
+};
+
+// ---- tiny audio (WebAudio beeps; no external assets, matches "placeholder art") ----
+const Beep = (() => {
+  let ac = null;
+  const ensure = () => { if(!ac) ac = new (window.AudioContext||window.webkitAudioContext)(); return ac; };
+  function tone(freq, dur, type='square', gain=0.08, slideTo=null){
+    try{
+      const c = ensure(); const t = c.currentTime;
+      const o = c.createOscillator(), g = c.createGain();
+      o.type = type; o.frequency.setValueAtTime(freq, t);
+      if(slideTo) o.frequency.exponentialRampToValueAtTime(slideTo, t+dur);
+      g.gain.setValueAtTime(gain, t);
+      g.gain.exponentialRampToValueAtTime(0.0001, t+dur);
+      o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+dur);
+    }catch(e){}
+  }
+  return {
+    resume(){ try{ensure().resume();}catch(e){} },
+    move(){},
+    stasis(){ tone(880,0.5,'sawtooth',0.05,120); tone(440,0.5,'sine',0.05,90); },
+    detonate(){ tone(140,0.45,'square',0.12,40); tone(70,0.5,'sawtooth',0.10,30); },
+    hit(){ tone(200,0.12,'square',0.10,80); },
+    spawn(){ tone(330,0.06,'triangle',0.04); },
+    deny(){ tone(120,0.12,'square',0.06,90); },
+    over(){ tone(220,0.8,'sawtooth',0.10,40); },
+  };
+})();
+
+/* ============================== GAME SCENE ============================== */
+class GameScene extends Phaser.Scene {
+  constructor(){ super('GameScene'); }
+
+  create(data){
+    this.demo = !!(data && data.demo);   // attract-mode: AI plays, no real input
+    this.W = GAME_WIDTH; this.H = GAME_HEIGHT;
+    this.gameOver = false;
+    this.t = 0;
+    this.demoEndAt = 0;                   // when current demo run should reset
+
+    // --- run state / "permanent decisions" resource ---
+    this.charges = 3;          // finite stasis charges per run
+    this.maxCharges = 3;
+    this.score = 0;
+    this.stasisActive = false; // a field is committed & cannot be cancelled
+    this.stasisTimer = 0;
+    this.stasisDur = 2200;     // ms of slow before irreversible detonation
+    this.stasisRadius = 70;
+
+    // --- the cell: a "locked in" shrinking arena ---
+    this.cell = { x:0, y:46, w:GAME_WIDTH, h:GAME_HEIGHT-46, shrink:0 };
+    this.minCellW = 120, this.minCellH = 200;
+
+    this.bg = this.add.graphics().setDepth(0);
+    this.fieldGfx = this.add.graphics().setDepth(5);   // stasis bubble
+    this.fx = this.add.graphics().setDepth(40);        // detonation rings
+
+    // --- player core ---
+    this.player = this.add.container(CENTER_X, GAME_HEIGHT-90).setDepth(20);
+    const pg = this.add.graphics();
+    this.drawPlayer(pg, 1);
+    this.player.add(pg);
+    this.player.pg = pg;
+    this.player.r = 8;
+    this.player.alive = true;
+    this.target = { x:this.player.x, y:this.player.y };
+
+    // --- groups ---
+    this.drones = [];
+    this.shots = [];
+
+    // --- input: drag anywhere -> move in any direction ---
+    // In demo (attract) mode the AI drives; user input is ignored here so taps
+    // are handled by the TitleScene overlay to start a real run.
+    this.dragging = false;
+    if(!this.demo){
+      this.input.on('pointerdown', (p) => {
+        Beep.resume();
+        if (this.gameOver) { this.scene.start('TitleScene'); return; }
+        // CA button hit-test handled separately (it's a fixed UI rect)
+        if (this.caHit(p.x, p.y)) { this.fireStasis(); return; }
+        this.dragging = true; this.aimTo(p);
+      });
+      this.input.on('pointermove', (p) => { if(this.dragging) this.aimTo(p); });
+      this.input.on('pointerup', () => { this.dragging = false; });
+
+      // keyboard fallback for desktop testing
+      this.input.keyboard.on('keydown-SPACE', () => this.fireStasis());
+      this.cursors = this.input.keyboard.createCursorKeys();
+    }
+
+    // AI state for demo mode
+    this.aiRepathAcc = 0;
+    this.aiWander = { x: CENTER_X, y: GAME_HEIGHT-90 };
+
+    this.buildHUD();
+
+    // spawn cadence
+    this.spawnEvery = 1100;
+    this.spawnAcc = 0;
+
+    // title flash (skipped in demo — the title screen shows its own card)
+    if(!this.demo) this.flash('STASIS', 'LOCKED IN', 1400);
+  }
+
+  // map a screen pointer to a world target, clamped to current cell
+  snd(name){ if(!this.demo && Beep[name]) Beep[name](); }
+
+  aimTo(p){
+    const c = this.cell;
+    this.target.x = Phaser.Math.Clamp(p.worldX, c.x+10, c.x+c.w-10);
+    this.target.y = Phaser.Math.Clamp(p.worldY, c.y+10, c.y+c.h-10);
+  }
+
+  drawPlayer(g, a){
+    g.clear();
+    g.lineStyle(2, COL.teal, a);
+    g.strokeCircle(0,0,8);
+    g.fillStyle(COL.ink, a);
+    g.fillCircle(0,0,3);
+    // four little "bolts" — locked in
+    for(let i=0;i<4;i++){
+      const ang = i*Math.PI/2 + Math.PI/4;
+      g.fillStyle(COL.gold, a);
+      g.fillCircle(Math.cos(ang)*8, Math.sin(ang)*8, 1.6);
+    }
+  }
+
+  /* ----- HUD: top bar + CA button (repurposed to stasis) ----- */
+  buildHUD(){
+    this.hud = this.add.container(0,0).setDepth(60);
+
+    const bar = this.add.graphics();
+    bar.fillStyle(0x0d1117, 0.92); bar.fillRect(0,0,GAME_WIDTH,40);
+    bar.lineStyle(1, COL.dim, 1); bar.lineBetween(0,40,GAME_WIDTH,40);
+    this.hud.add(bar);
+
+    this.scoreTxt = this.add.text(8,6,'SCORE 0',
+      {fontFamily:'Courier New', fontSize:'10px', color:'#e9e2cf'});
+    this.hud.add(this.scoreTxt);
+
+    this.statusTxt = this.add.text(8,22,'CONTAINED',
+      {fontFamily:'Courier New', fontSize:'8px', color:'#36c5b0'});
+    this.hud.add(this.statusTxt);
+
+    // charge pips (permanent-decision resource)
+    this.pips = this.add.graphics();
+    this.hud.add(this.pips);
+    this.drawPips();
+
+    // CA button — fixed bottom-right, like the reference HUD's caBtn
+    this.ca = { x: GAME_WIDTH-30, y: GAME_HEIGHT-30, r: 22 };
+    this.caGfx = this.add.graphics().setDepth(61);
+    this.hud.add(this.caGfx);
+    this.caLabel = this.add.text(this.ca.x, this.ca.y, 'CA',
+      {fontFamily:'Courier New', fontSize:'11px', color:'#0a0c10', fontStyle:'bold'})
+      .setOrigin(0.5).setDepth(62);
+    this.hud.add(this.caLabel);
+    this.drawCA();
+  }
+
+  drawPips(){
+    this.pips.clear();
+    for(let i=0;i<this.maxCharges;i++){
+      const x = GAME_WIDTH-12 - i*12, y=10;
+      if(i < this.charges){ this.pips.fillStyle(COL.gold,1); this.pips.fillCircle(x,y,4); }
+      else { this.pips.lineStyle(1,COL.dim,1); this.pips.strokeCircle(x,y,4); }
+    }
+  }
+
+  drawCA(){
+    const {x,y,r} = this.ca; const g = this.caGfx; g.clear();
+    const ready = this.charges>0 && !this.stasisActive;
+    const pulse = 0.5 + 0.5*Math.sin(this.t/180);
+    // glow ring
+    g.lineStyle(2, ready?COL.teal:COL.dim, ready?(0.4+0.4*pulse):0.3);
+    g.strokeCircle(x,y,r+4);
+    // face
+    g.fillStyle(ready?COL.teal:0x1b2530, 1);
+    g.fillCircle(x,y,r);
+    g.lineStyle(2, ready?COL.ink:COL.dim, 1);
+    g.strokeCircle(x,y,r);
+    this.caLabel.setColor(ready?'#0a0c10':'#46525e');
+  }
+
+  caHit(x,y){
+    const {x:cx,y:cy,r} = this.ca;
+    return (x-cx)*(x-cx)+(y-cy)*(y-cy) <= (r+6)*(r+6);
+  }
+
+  /* ----- THE STASIS FIELD : repurposed CA -----
+     Commit -> slow time in bubble -> irreversible detonation. */
+  fireStasis(){
+    if(this.gameOver) return;
+    if(this.stasisActive){ this.snd('deny'); return; }     // cannot stack / cannot cancel
+    if(this.charges<=0){ this.snd('deny'); this.flash('NO CHARGES','LOCKED IN',700); return; }
+
+    this.charges--; this.drawPips();
+    this.stasisActive = true;
+    this.stasisTimer = 0;
+    this.field = { x:this.player.x, y:this.player.y, r:0, targetR:this.stasisRadius };
+    this.snd('stasis');
+    this.statusTxt.setText('STASIS — COMMITTED').setColor('#e0a33a');
+  }
+
+  detonate(){
+    const f = this.field;
+    this.snd('detonate');
+    this.cameras.main.shake(220, 0.012);
+
+    // expanding detonation rings (placeholder for SP/CA explosion grid)
+    let ring = 0;
+    const rings = 3;
+    const doRing = () => {
+      this.tweens.addCounter({
+        from:0, to:1, duration:380,
+        onUpdate:(tw)=>{ this._detRing = {x:f.x,y:f.y,p:tw.getValue(),max:f.r+24}; },
+      });
+    };
+    doRing();
+    this._detFlash = 1;
+
+    // destroy everything within the field radius
+    const r2 = (f.r+18)*(f.r+18);
+    for(const d of this.drones){
+      const dx=d.x-f.x, dy=d.y-f.y;
+      if(dx*dx+dy*dy <= r2){ d.dead = true; this.score += 100; this.burst(d.x,d.y); }
+    }
+    for(const s of this.shots){
+      const dx=s.x-f.x, dy=s.y-f.y;
+      if(dx*dx+dy*dy <= r2) s.dead = true;
+    }
+
+    this.stasisActive = false;
+    this.field = null;
+    this.statusTxt.setText('CONTAINED').setColor('#36c5b0');
+    this.scoreTxt.setText('SCORE '+this.score);
+  }
+
+  burst(x,y){
+    for(let i=0;i<6;i++){
+      const a = Math.random()*Math.PI*2, sp = 30+Math.random()*60;
+      const p = this.add.circle(x,y,2,COL.gold).setDepth(45);
+      this.tweens.add({targets:p, x:x+Math.cos(a)*sp, y:y+Math.sin(a)*sp, alpha:0,
+        duration:300+Math.random()*200, onComplete:()=>p.destroy()});
+    }
+  }
+
+  /* ----- spawning ----- */
+  spawnDrone(){
+    const c = this.cell;
+    const edge = Phaser.Math.Between(0,3);
+    let x,y;
+    if(edge===0){ x=c.x+8; y=Phaser.Math.Between(c.y+8,c.y+c.h-8); }
+    else if(edge===1){ x=c.x+c.w-8; y=Phaser.Math.Between(c.y+8,c.y+c.h-8); }
+    else if(edge===2){ x=Phaser.Math.Between(c.x+8,c.x+c.w-8); y=c.y+8; }
+    else { x=Phaser.Math.Between(c.x+8,c.x+c.w-8); y=c.y+c.h-8; }
+
+    const cont = this.add.container(x,y).setDepth(18);
+    const g = this.add.graphics();
+    g.lineStyle(2, COL.drone,1); g.strokeCircle(0,0,6);
+    g.fillStyle(COL.droneCore,1); g.fillCircle(0,0,2.5);
+    cont.add(g);
+    cont.r=6; cont.dead=false; cont.shotAcc=Phaser.Math.Between(0,1500);
+    this.drones.push(cont);
+    this.snd('spawn');
+  }
+
+  spawnShot(d){
+    const ang = Math.atan2(this.player.y-d.y, this.player.x-d.x);
+    const s = this.add.circle(d.x,d.y,2.5,COL.rust).setDepth(16);
+    s.vx = Math.cos(ang)*70; s.vy = Math.sin(ang)*70; s.r=2.5; s.dead=false;
+    this.shots.push(s);
+  }
+
+  flash(big, small, dur){
+    const a = this.add.text(CENTER_X, CENTER_Y-10, big,
+      {fontFamily:'Courier New', fontSize:'26px', color:'#e9e2cf', fontStyle:'bold'})
+      .setOrigin(0.5).setDepth(80);
+    const b = this.add.text(CENTER_X, CENTER_Y+16, small,
+      {fontFamily:'Courier New', fontSize:'11px', color:'#36c5b0'})
+      .setOrigin(0.5).setDepth(80);
+    [a,b].forEach((o,i)=>this.tweens.add({targets:o, alpha:0, y:o.y-8, delay:dur-400+i*40,
+      duration:400, onComplete:()=>o.destroy()}));
+  }
+
+  endGame(){
+    if(this.gameOver) return;
+    this.gameOver = true;
+    this.player.alive = false;
+    this.snd('over');
+    this.cameras.main.shake(300,0.02);
+    this.burst(this.player.x, this.player.y);
+    this.player.pg.clear();
+    if(!this.demo) this.flash('CONTAINED','TAP TO RETURN · SCORE '+this.score, 999999);
+    else this.flash('CONTAINED','DEMO', 1500);
+  }
+
+  /* ----- attract-mode AI: dodge threats, detonate when surrounded ----- */
+  aiThink(delta){
+    const c = this.cell;
+    const px = this.player.x, py = this.player.y;
+
+    // Repel from every nearby threat (inverse-square steering).
+    let rx = 0, ry = 0, nearCount = 0, nearest = 1e9;
+    const consider = (o, reach) => {
+      const dx = px-o.x, dy = py-o.y;
+      const d2 = dx*dx+dy*dy, d = Math.sqrt(d2)||1;
+      if(d < reach){ const w = (reach-d)/reach; rx += (dx/d)*w; ry += (dy/d)*w; }
+      if(d < 60) nearCount++;
+      if(d < nearest) nearest = d;
+    };
+    for(const dn of this.drones){ if(!dn.dead) consider(dn, 90); }
+    for(const s of this.shots){ if(!s.dead) consider(s, 70); }
+
+    // Drift back toward cell center when calm (keeps it on-screen & lively).
+    const cx = c.x + c.w/2, cy = c.y + c.h/2;
+    const towardC = 0.12;
+    let tx = px + rx*46 + (cx-px)*towardC;
+    let ty = py + ry*46 + (cy-py)*towardC;
+
+    // occasional wander so it isn't robotic when the field is empty
+    this.aiRepathAcc += delta;
+    if(this.aiRepathAcc > 1400){
+      this.aiRepathAcc = 0;
+      this.aiWander.x = c.x + 20 + Math.random()*(c.w-40);
+      this.aiWander.y = c.y + 20 + Math.random()*(c.h-40);
+    }
+    if(rx===0 && ry===0){ tx = px + (this.aiWander.x-px)*0.08; ty = py + (this.aiWander.y-py)*0.08; }
+
+    this.target.x = Phaser.Math.Clamp(tx, c.x+10, c.x+c.w-10);
+    this.target.y = Phaser.Math.Clamp(ty, c.y+10, c.y+c.h-10);
+
+    // Commit a stasis field when cornered: many threats close, or one about to hit,
+    // and we still hold a charge. Mirrors the "permanent decision" tension visually.
+    const cornered = (nearCount >= 3 || nearest < 26);
+    if(cornered && this.charges>0 && !this.stasisActive){
+      this.fireStasis();
+    }
+  }
+
+  /* ============================== UPDATE ============================== */
+  update(time, delta){
+    this.t += delta;
+    if(this.gameOver){
+      this.drawCA();
+      // In attract mode, loop the demo: brief pause on the CONTAINED card, then replay.
+      if(this.demo){
+        if(!this.demoEndAt) this.demoEndAt = this.t + 1600;
+        else if(this.t >= this.demoEndAt) this.scene.restart({ demo:true });
+      }
+      return;
+    }
+
+    // ---- DEMO AI: drives the player so the title screen shows real gameplay ----
+    if(this.demo) this.aiThink(delta);
+
+    // global time scale: stasis slows the WORLD (drones/shots), not the player
+    let worldScale = 1;
+    if(this.stasisActive){
+      this.stasisTimer += delta;
+      const k = this.stasisTimer/this.stasisDur;
+      worldScale = 0.08; // near-frozen inside committed stasis
+      // grow bubble then hold
+      this.field.r = Phaser.Math.Linear(this.field.r, this.field.targetR, 0.18);
+      if(this.stasisTimer >= this.stasisDur) this.detonate();
+    }
+    const wdt = (delta/1000) * worldScale;
+    const pdt = delta/1000; // player unaffected by stasis
+
+    // --- shrink the cell over time: you are increasingly LOCKED IN ---
+    if(this.cell.w > this.minCellW) this.cell.w -= 0.45 * (delta/16.67);
+    if(this.cell.h > this.minCellH) this.cell.h -= 0.30 * (delta/16.67);
+    this.cell.x = (GAME_WIDTH - this.cell.w)/2;
+    this.cell.y = 46 + ( (GAME_HEIGHT-46) - this.cell.h ) * 0.5;
+
+    // --- keyboard fallback movement ---
+    if(this.cursors){
+      const sp = 120*pdt;
+      if(this.cursors.left.isDown) this.target.x -= sp;
+      if(this.cursors.right.isDown) this.target.x += sp;
+      if(this.cursors.up.isDown) this.target.y -= sp;
+      if(this.cursors.down.isDown) this.target.y += sp;
+    }
+
+    // --- player follows target (any direction) ---
+    const c = this.cell;
+    this.target.x = Phaser.Math.Clamp(this.target.x, c.x+10, c.x+c.w-10);
+    this.target.y = Phaser.Math.Clamp(this.target.y, c.y+10, c.y+c.h-10);
+    this.player.x = Phaser.Math.Linear(this.player.x, this.target.x, 0.35);
+    this.player.y = Phaser.Math.Linear(this.player.y, this.target.y, 0.35);
+
+    // --- spawning ---
+    this.spawnAcc += delta;
+    const rate = Math.max(450, this.spawnEvery - this.score*0.4);
+    if(this.spawnAcc >= rate){ this.spawnAcc = 0; this.spawnDrone(); }
+
+    // --- drones home toward player (slowed inside stasis) ---
+    for(const d of this.drones){
+      if(d.dead) continue;
+      const ang = Math.atan2(this.player.y-d.y, this.player.x-d.x);
+      const sp = 38;
+      d.x += Math.cos(ang)*sp*wdt;
+      d.y += Math.sin(ang)*sp*wdt;
+      // contact = containment breach
+      const dx=d.x-this.player.x, dy=d.y-this.player.y;
+      if(dx*dx+dy*dy <= (d.r+this.player.r)*(d.r+this.player.r)) this.endGame();
+      // fire
+      d.shotAcc += delta*worldScale;
+      if(d.shotAcc > 1700){ d.shotAcc=0; this.spawnShot(d); }
+    }
+
+    // --- shots ---
+    for(const s of this.shots){
+      if(s.dead) continue;
+      s.x += s.vx*wdt; s.y += s.vy*wdt;
+      const dx=s.x-this.player.x, dy=s.y-this.player.y;
+      if(dx*dx+dy*dy <= (s.r+this.player.r)*(s.r+this.player.r)) this.endGame();
+      if(s.x<-10||s.x>GAME_WIDTH+10||s.y<-10||s.y>GAME_HEIGHT+10) s.dead=true;
+    }
+
+    // --- cleanup ---
+    this.drones = this.drones.filter(d=>{ if(d.dead){d.destroy();return false;} return true; });
+    this.shots  = this.shots.filter(s=>{ if(s.dead){s.destroy();return false;} return true; });
+
+    // --- score drift (survival) ---
+    this.score += delta*0.004;
+    this.scoreTxt.setText('SCORE '+Math.floor(this.score));
+
+    this.render();
+    this.drawCA();
+  }
+
+  /* ----- draw cell + stasis bubble + detonation ----- */
+  render(){
+    const g = this.bg; g.clear();
+    const c = this.cell;
+    // arena fill
+    g.fillStyle(0x0b0f15, 1); g.fillRect(c.x,c.y,c.w,c.h);
+    // hazard border — the "lock"
+    const breach = (c.w<=this.minCellW+8 && c.h<=this.minCellH+8);
+    g.lineStyle(2, breach?COL.rust:COL.dim, 1);
+    g.strokeRect(c.x,c.y,c.w,c.h);
+    // corner bolts
+    g.fillStyle(COL.gold,1);
+    [[c.x,c.y],[c.x+c.w,c.y],[c.x,c.y+c.h],[c.x+c.w,c.y+c.h]].forEach(([x,y])=>g.fillCircle(x,y,2));
+    // faint inner grid
+    g.lineStyle(1, 0x141b24, 1);
+    for(let gx=c.x+16; gx<c.x+c.w; gx+=16) g.lineBetween(gx,c.y,gx,c.y+c.h);
+    for(let gy=c.y+16; gy<c.y+c.h; gy+=16) g.lineBetween(c.x,gy,c.x+c.w,gy);
+
+    // stasis bubble
+    const fg = this.fieldGfx; fg.clear();
+    if(this.stasisActive && this.field){
+      const f=this.field;
+      const k = this.stasisTimer/this.stasisDur;
+      // warning fill ramps toward detonation
+      fg.fillStyle(COL.teal, 0.08 + 0.12*k);
+      fg.fillCircle(f.x,f.y,f.r);
+      fg.lineStyle(2, k>0.8?COL.gold:COL.teal, 0.7);
+      fg.strokeCircle(f.x,f.y,f.r);
+      // rotating tick marks = countdown to irreversible blast
+      const ticks=24;
+      for(let i=0;i<ticks;i++){
+        if(i/ticks > k) continue;
+        const a = (i/ticks)*Math.PI*2 - this.t/600;
+        fg.lineStyle(2, COL.gold, 0.8);
+        fg.lineBetween(f.x+Math.cos(a)*(f.r-4), f.y+Math.sin(a)*(f.r-4),
+                       f.x+Math.cos(a)*(f.r+3), f.y+Math.sin(a)*(f.r+3));
+      }
+    }
+
+    // detonation ring
+    const dg = this.fx; dg.clear();
+    if(this._detRing){
+      const r = this._detRing;
+      const rad = r.p*r.max;
+      dg.lineStyle(3, COL.gold, 1-r.p);
+      dg.strokeCircle(r.x,r.y,rad);
+      dg.lineStyle(2, COL.teal, 0.8*(1-r.p));
+      dg.strokeCircle(r.x,r.y,rad*0.6);
+      if(r.p>=0.99) this._detRing=null;
+    }
+  }
+}
+
+/* ============================== TITLE SCENE ==============================
+   Runs GameScene in attract/demo mode as a live background, dims it, and
+   overlays the title card + START prompt. Tapping starts a real run. */
+class TitleScene extends Phaser.Scene {
+  constructor(){ super('TitleScene'); }
+
+  create(){
+    this.t = 0;
+
+    // Launch the demo game underneath, then bring this scene above it.
+    this.scene.launch('GameScene', { demo:true });
+    this.scene.bringToTop();
+
+    // Dim veil so UI reads clearly over live gameplay.
+    this.veil = this.add.graphics().setDepth(0);
+    this.veil.fillStyle(0x05060a, 0.55); this.veil.fillRect(0,0,GAME_WIDTH,GAME_HEIGHT);
+
+    // scanline strip behind the title
+    const strip = this.add.graphics().setDepth(1);
+    strip.fillStyle(0x0a0c10, 0.85); strip.fillRect(0, CENTER_Y-78, GAME_WIDTH, 150);
+    strip.lineStyle(1, COL.teal, 0.5);
+    strip.lineBetween(0, CENTER_Y-78, GAME_WIDTH, CENTER_Y-78);
+    strip.lineBetween(0, CENTER_Y+72, GAME_WIDTH, CENTER_Y+72);
+
+    this.title = this.add.text(CENTER_X, CENTER_Y-44, 'STASIS',
+      {fontFamily:'Courier New', fontSize:'40px', color:'#e9e2cf', fontStyle:'bold'})
+      .setOrigin(0.5).setDepth(2);
+    this.title.setShadow(0,0,'#36c5b0',12,false,true);
+
+    this.sub = this.add.text(CENTER_X, CENTER_Y-8, 'L O C K E D   I N',
+      {fontFamily:'Courier New', fontSize:'12px', color:'#36c5b0', letterSpacing:6})
+      .setOrigin(0.5).setDepth(2);
+
+    // tiny mechanic legend
+    this.legend = this.add.text(CENTER_X, CENTER_Y+24,
+      'DRAG TO MOVE   ·   CA = STASIS → DETONATE',
+      {fontFamily:'Courier New', fontSize:'7px', color:'#8a93a0'})
+      .setOrigin(0.5).setDepth(2);
+
+    this.demoTag = this.add.text(CENTER_X, CENTER_Y+44, '— LIVE DEMO —',
+      {fontFamily:'Courier New', fontSize:'7px', color:'#e0a33a'})
+      .setOrigin(0.5).setDepth(2);
+
+    this.start = this.add.text(CENTER_X, GAME_HEIGHT-60, 'TAP TO START',
+      {fontFamily:'Courier New', fontSize:'13px', color:'#e9e2cf'})
+      .setOrigin(0.5).setDepth(2);
+
+    // Any tap/key starts the real game.
+    const go = () => {
+      Beep.resume();
+      this.scene.stop('GameScene');     // tear down the demo run
+      this.scene.start('GameScene', { demo:false });
+    };
+    this.input.once('pointerdown', go);
+    this.input.keyboard.once('keydown', go);
+  }
+
+  update(_, delta){
+    this.t += delta;
+    // pulse the START prompt + title glow
+    this.start.setAlpha(0.45 + 0.55*Math.abs(Math.sin(this.t/450)));
+    this.demoTag.setAlpha(0.4 + 0.6*Math.abs(Math.sin(this.t/600)));
+  }
+}
+
+const config = {
+  type: Phaser.AUTO,
+  width: GAME_WIDTH,
+  height: GAME_HEIGHT,
+  parent: 'canvas',
+  backgroundColor: '#0a0c10',
+  pixelArt: true,
+  roundPixels: true,
+  scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+  scene: [TitleScene, GameScene],
+};
+new Phaser.Game(config);
+</script>
+</body>
+</html>
