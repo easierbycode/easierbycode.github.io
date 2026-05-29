@@ -92,14 +92,36 @@ const Beep = (() => {
       o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+dur);
     }catch(e){}
   }
+  // A major scale (semitone offsets) — chain steps walk up this for a key-change feel.
+  const SCALE = [0,2,4,5,7,9,11];
+  const semis = (n) => Math.pow(2, n/12);
   return {
     resume(){ try{ensure().resume();}catch(e){} },
     move(){},
     stasis(){ tone(880,0.5,'sawtooth',0.05,120); tone(440,0.5,'sine',0.05,90); },
     detonate(){ tone(140,0.45,'square',0.12,40); tone(70,0.5,'sawtooth',0.10,30); },
+    // chain detonation: pitch rises melodically with each successive chain `step`.
+    // The low boom is transposed up the scale, and a bright triad rings on top.
+    detonateChain(step){
+      const deg = SCALE[step % SCALE.length];
+      const oct = Math.floor(step / SCALE.length);     // wrap up an octave each lap
+      const mult = semis(deg + 12*oct);
+      // body: the explosion boom, key-shifted
+      tone(150*mult, 0.42, 'square',  0.12, 45*mult);
+      tone(75*mult,  0.5,  'sawtooth',0.10, 30*mult);
+      // melodic sparkle: root + major third + fifth, one octave up
+      const root = 330*mult;
+      tone(root,            0.28, 'triangle', 0.05);
+      tone(root*semis(4),   0.30, 'triangle', 0.045);
+      tone(root*semis(7),   0.34, 'sine',     0.04);
+    },
     hit(){ tone(200,0.12,'square',0.10,80); },
     spawn(){ tone(330,0.06,'triangle',0.04); },
     deny(){ tone(120,0.12,'square',0.06,90); },
+    perfect(){ // sweet-spot early bomb: bright rising arpeggio
+      const r=523; tone(r,0.12,'triangle',0.06); tone(r*semis(4),0.12,'triangle',0.06);
+      tone(r*semis(7),0.14,'triangle',0.06); tone(r*semis(12),0.22,'sine',0.06);
+    },
     over(){ tone(220,0.8,'sawtooth',0.10,40); },
   };
 })();
@@ -189,7 +211,7 @@ class GameScene extends Phaser.Scene {
   }
 
   // map a screen pointer to a world target, clamped to current cell
-  snd(name){ if(!this.demo && Beep[name]) Beep[name](); }
+  snd(name, ...args){ if(!this.demo && Beep[name]) Beep[name](...args); }
 
   aimTo(p){
     const c = this.cell;
@@ -289,6 +311,7 @@ class GameScene extends Phaser.Scene {
     this.stasisActive = true;
     this.stasisTimer = 0;
     this.stasisDur = this.baseStasisDur;   // each new charge starts at base time
+    this.chainStep = 0;                    // melodic chain index (resets per charge)
 
     // 1) Clear every bullet on screen the instant CA is committed.
     for(const s of this.shots){ s.dead = true; }
@@ -303,14 +326,18 @@ class GameScene extends Phaser.Scene {
     this.statusTxt.setText('TRACING — COMMITTED').setColor('#e0a33a');
   }
 
-  detonate(early=false){
-    this.snd('detonate');
-    this.cameras.main.shake(early?160:260, early?0.010:0.014);
+  // Scale a polygon about its centroid (used to enlarge the blast on perfect timing).
+  scalePoly(pts, factor, cx, cy){
+    return pts.map(p => ({ x: cx + (p.x-cx)*factor, y: cy + (p.y-cy)*factor }));
+  }
 
+  detonate(early=false){
     // Close the loop: trail points + implicit segment from last back to first.
-    const poly = this.trail.slice();
+    let poly = this.trail.slice();
     if(poly.length < 3){
       // Degenerate trace (player barely moved): fall back to a small blast disc.
+      this.snd('detonate');
+      this.cameras.main.shake(160, 0.010);
       const f = poly[0] || { x:this.player.x, y:this.player.y };
       this._detRing = null;
       this.tweens.addCounter({ from:0, to:1, duration:380,
@@ -321,50 +348,68 @@ class GameScene extends Phaser.Scene {
       this._endStasis(); return;
     }
 
-    // Centroid (for shockwave origin + score popup).
+    // Centroid (for shockwave origin + scaling pivot).
     let cxs=0, cys=0;
     for(const p of poly){ cxs+=p.x; cys+=p.y; }
     const cx=cxs/poly.length, cy=cys/poly.length;
 
-    // Destroy every drone whose center is INSIDE the enclosed polygon.
+    // PERFECT-TIMING bonus: tapping the early bomb inside a sweet-spot window of the
+    // trace timer enlarges the blast area. The window sits late in the countdown.
+    let perfect = false, blastScale = 1;
+    if(early){
+      const k = this.stasisTimer / this.stasisDur;   // 0..1 progress
+      const lo = 0.68, hi = 0.86, mid = (lo+hi)/2;
+      if(k >= lo && k <= hi){
+        perfect = true;
+        // closeness to the center of the window -> up to 1.8x blast radius
+        const closeness = 1 - Math.abs(k-mid)/((hi-lo)/2);  // 0..1
+        blastScale = 1.4 + 0.4*closeness;                   // 1.4x .. 1.8x
+      }
+    }
+    const blastPoly = blastScale>1 ? this.scalePoly(poly, blastScale, cx, cy) : poly;
+
+    // sound: chain detonations walk up a musical scale; perfect adds a sparkle.
+    if(early){ this.snd('detonateChain', this.chainStep); if(perfect) this.snd('perfect'); }
+    else { this.snd('detonate'); }
+    this.cameras.main.shake(early?(perfect?220:160):260, early?(perfect?0.016:0.010):0.014);
+
+    // Destroy every drone whose center is INSIDE the (possibly enlarged) polygon.
     let killed=0;
     for(const d of this.drones){
       if(d.dead) continue;
-      if(this.pointInPoly(d.x, d.y, poly)){
+      if(this.pointInPoly(d.x, d.y, blastPoly)){
         d.dead = true; killed++; this.score += 100; this.burst(d.x, d.y);
       }
     }
-    // Bullets inside the shape die too (in case any spawned during the trace).
     for(const s of this.shots){
-      if(!s.dead && this.pointInPoly(s.x, s.y, poly)) s.dead = true;
+      if(!s.dead && this.pointInPoly(s.x, s.y, blastPoly)) s.dead = true;
     }
 
     // Flash-fill the captured shape, then expanding shockwave from its centroid.
-    this._detPoly = { pts:poly, p:0 };
+    this._detPoly = { pts:blastPoly, p:0, gold:perfect };
     this.tweens.addCounter({ from:0, to:1, duration:420, ease:'Quad.easeOut',
-      onUpdate:(tw)=>{ this._detPoly.p = tw.getValue(); },
+      onUpdate:(tw)=>{ if(this._detPoly) this._detPoly.p = tw.getValue(); },
       onComplete:()=>{ this._detPoly = null; } });
     this.tweens.addCounter({ from:0, to:1, duration:420,
-      onUpdate:(tw)=>{ this._detRing = {x:cx,y:cy,p:tw.getValue(),max:Math.max(this.cell.w,this.cell.h)*0.7}; } });
+      onUpdate:(tw)=>{ this._detRing = {x:cx,y:cy,p:tw.getValue(),
+        max:Math.max(this.cell.w,this.cell.h)*0.7*blastScale}; } });
 
     if(early){
-      // EARLY DETONATION (player tapped inside the loop):
-      // The reward is a brand-NEW CA that begins immediately and lasts a number of
-      // seconds equal to the enemies just destroyed. No kills -> the charge ends.
       this.score += killed * 150;                 // chain bonus on top of base
       this.scoreTxt.setText('SCORE '+this.score);
       if(killed > 0){
-        this.popup(cx, cy, 'NEW C.A.  '+killed+'s  (x'+killed+')');
+        this.chainStep++;                          // step up the melodic scale
+        this.popup(cx, cy, (perfect?'PERFECT! ':'NEW C.A.  ')+killed+'s  (x'+killed+')');
         this.snd('stasis');
         // fresh trace, fresh anchor at the player, duration = killed seconds
         this.stasisTimer = 0;
         this.stasisDur = killed * 1000;
         this.trail = [{ x:this.player.x, y:this.player.y }];
         this.trailSampleAcc = 0;
-        this.statusTxt.setText('NEW C.A. — '+killed+'s').setColor('#e0a33a');
+        this.statusTxt.setText((perfect?'PERFECT C.A. — ':'NEW C.A. — ')+killed+'s')
+          .setColor(perfect?'#36c5b0':'#e0a33a');
         return;   // keep stasisActive = true; a new CA is now running
       }
-      // tapped an empty loop: no reward, the charge is spent
       this.popup(cx, cy, 'EMPTY');
       this._endStasis();
       return;
@@ -811,11 +856,44 @@ class GameScene extends Phaser.Scene {
       fg.strokeCircle(start.x, start.y, 5);
 
       // INVINCIBILITY shield around the player (pulsing) — active for the whole trace
-      const sr = 13 + 2*Math.sin(this.t/90);
-      fg.lineStyle(2, COL.teal, 0.55 + 0.35*Math.sin(this.t/90));
-      fg.strokeCircle(this.player.x, this.player.y, sr);
-      fg.lineStyle(1, COL.ink, 0.25);
-      fg.strokeCircle(this.player.x, this.player.y, sr+3);
+      const sr = 16 + 2*Math.sin(this.t/90);
+      fg.lineStyle(2, COL.teal, 0.35 + 0.25*Math.sin(this.t/90));
+      fg.strokeCircle(this.player.x, this.player.y, sr-4);
+
+      // CA DURATION RING: a ring around the player that depletes as the timer runs.
+      // Full ring at start, shrinking arc to empty at detonation. Gold normally,
+      // flashes red in the last 25%.
+      const frac = Phaser.Math.Clamp(1 - this.stasisTimer/this.stasisDur, 0, 1);
+      const px=this.player.x, py=this.player.y;
+      // faint full-circle track
+      fg.lineStyle(3, 0x223040, 0.8);
+      fg.strokeCircle(px, py, sr);
+      // remaining-time arc (starts at top, sweeps clockwise)
+      const a0 = -Math.PI/2;
+      const a1 = a0 + Math.PI*2*frac;
+      fg.lineStyle(3, frac<0.25 ? COL.rust : COL.gold, 1);
+      fg.beginPath(); fg.arc(px, py, sr, a0, a1, false); fg.strokePath();
+
+      // PERFECT-TIMING window marker on the ring (the sweet spot to tap the bomb).
+      // window is k in [0.68,0.86] of elapsed -> remaining-fraction band the arc head
+      // passes through. Drawn as a bright teal segment so players learn the timing.
+      const wLo = 1-0.86, wHi = 1-0.68;       // remaining-fraction bounds
+      const ws = a0 + Math.PI*2*wLo, we = a0 + Math.PI*2*wHi;
+      fg.lineStyle(4, COL.teal, 0.9);
+      fg.beginPath(); fg.arc(px, py, sr+4, ws, we, false); fg.strokePath();
+      // tiny ticks at window edges
+      fg.lineStyle(1, COL.teal, 0.7);
+      [ws, we].forEach(an=>{
+        fg.beginPath();
+        fg.moveTo(px+Math.cos(an)*(sr+1), py+Math.sin(an)*(sr+1));
+        fg.lineTo(px+Math.cos(an)*(sr+8), py+Math.sin(an)*(sr+8));
+        fg.strokePath();
+      });
+      // glow when the arc head is inside the perfect window
+      if(frac>=wLo && frac<=wHi){
+        fg.lineStyle(2, COL.teal, 0.4+0.4*Math.sin(this.t/60));
+        fg.strokeCircle(px, py, sr+8);
+      }
 
       // floating countdown by the pen-head (gold; flashes red in the final second)
       const remain = Math.max(0, (this.stasisDur - this.stasisTimer)/1000);
@@ -830,11 +908,12 @@ class GameScene extends Phaser.Scene {
     if(this._detPoly){
       const dp = this._detPoly, pts = dp.pts;
       const a = (1 - dp.p);
-      fg.fillStyle(COL.gold, 0.45*a + 0.1);
+      const fillCol = dp.gold ? COL.teal : COL.gold;   // perfect hits flash teal-bright
+      fg.fillStyle(fillCol, (dp.gold?0.6:0.45)*a + 0.1);
       fg.beginPath(); fg.moveTo(pts[0].x, pts[0].y);
       for(let i=1;i<pts.length;i++) fg.lineTo(pts[i].x, pts[i].y);
       fg.closePath(); fg.fillPath();
-      fg.lineStyle(2, COL.gold, a);
+      fg.lineStyle(dp.gold?3:2, fillCol, a);
       fg.beginPath(); fg.moveTo(pts[0].x, pts[0].y);
       for(let i=1;i<pts.length;i++) fg.lineTo(pts[i].x, pts[i].y);
       fg.closePath(); fg.strokePath();
