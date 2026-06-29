@@ -1,0 +1,747 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>04/14/26</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="34204b9d-4ca9-80e4-b13d-dd0343fa78c5" class="page sans"><header><h1 class="page-title" dir="auto">04/14/26</h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-person"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/friends_gray.svg" style="width:14px;height:14px;display:block"/></span>Owner</th><td><span class="user"><img src="https://lh3.googleusercontent.com/a-/AOh14Ggy0FcyX-X6EW32d0jOd5HNUZl3VcBq7Msx_b4mPQ=s100" class="icon user-icon"/>Daniel Johnson</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>Tags</th><td></td></tr></tbody></table></header><div class="page-body"><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80b6-a8f9-f9c0e70bd522" class="">
+</p></div><div style="display:contents" dir="ltr"><div id="34204b9d-4ca9-8070-82fc-d862d0d46086" class="transcription"><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Summary<br/></div><div style="display:contents" dir="auto"><h3 id="34204b9d-4ca9-8179-a55c-c9fc5621127a" class="">Action Items</h3></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-814b-a389-ced6e1cbf72a" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Team member to review API documentation to determine correct app category ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-813d-9913-d7478663dc45" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Investigate connector app requirements and determine if signup is needed ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8165-8a41-ce7bc0fc7732" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Explore bookmarklet solution for extracting seller center data ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8140-908d-cdd6b1ca849e" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Consider automating browser for data extraction ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-816b-8ca0-cd3a632b6ba6" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Daniel Johnson to provide team member access to developer portal (invitation email sent) ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="34204b9d-4ca9-817e-b46e-dbd930b8c031" class="">Webhook Implementation Complete</h3></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8111-afa9-e26fc8c16182" class="bulleted-list"><li style="list-style-type:disc">Webhook functionality has been successfully implemented ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8120-b45c-ce7addbd5957" class="bulleted-list"><li style="list-style-type:disc">All necessary URLs for login kit and webhooks are now configured ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34204b9d-4ca9-8131-82ea-e2a4b1f7f9de" class="">Login Kit &amp; User Data</h3></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-811b-9574-d202adcdbbda" class="bulleted-list"><li style="list-style-type:disc">Login kit provides avatar and user data, not authentication functionality ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-81c7-aed1-c44a621ab9c0" class="bulleted-list"><li style="list-style-type:disc">Enabling login kit provides union ID in addition to existing data ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-81a7-8cdb-fb98292f0311" class="bulleted-list"><li style="list-style-type:disc">TikTok provides two types of IDs: open ID and union ID ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-816b-a1ff-cfa1ce569b5d" class="bulleted-list"><li style="list-style-type:disc">Device ID may be useful for identifying account ban patterns — if device ID is the same across banned and new accounts, this could explain why bans occur ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-81a7-86aa-de480be1f05d" class="bulleted-list"><li style="list-style-type:disc">Follower information is now accessible but has limited utility ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34204b9d-4ca9-8147-b8f3-c6730b780d2b" class="">TikTok API Research &amp; Challenges</h3></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8154-8cbb-d5e4686d9b45" class="bulleted-list"><li style="list-style-type:disc">Applied for 10 different APIs, with 1 rejection ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-811b-8a34-f214e7b14281" class="bulleted-list"><li style="list-style-type:disc">App category selection is critical — wrong category prevents access to specific APIs, and categories cannot be added after app creation ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-81ad-b91e-fb94a903aae3" class="bulleted-list"><li style="list-style-type:disc">Current app is in draft status and limited to sandbox mode with specific test accounts ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-81dc-a659-ce1e94c4d4c9" class="bulleted-list"><li style="list-style-type:disc">To move beyond sandbox, app must go through submission and review process ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-81ed-bbac-f0d0527946df" class="bulleted-list"><li style="list-style-type:disc">APIs are filtered during review — team will only receive access to APIs that make sense for the app&#x27;s use case ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34204b9d-4ca9-81e7-aa6e-db88a066c79b" class="">API Types &amp; Data Access</h3></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-815e-818f-e15411cc9755" class="bulleted-list"><li style="list-style-type:disc">Discovery of partner API v2 and connector app type ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-810a-a2f5-dbb9500b9406" class="bulleted-list"><li style="list-style-type:disc">Connector apps are designed for integrations like Salesforce to TikTok ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8144-bafe-faab4c78a046" class="bulleted-list"><li style="list-style-type:disc">Partner center API may not be available in US region — some features appear UK/EU only ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8163-b3ad-dca1c19fad52" class="bulleted-list"><li style="list-style-type:disc">Likely approach: combining official API with scraping and seller center exports ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34204b9d-4ca9-81ed-a054-e9c224c59ad6" class="">Desired Data &amp; Use Cases</h3></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8140-a6eb-f1b5612d4340" class="bulleted-list"><li style="list-style-type:disc">Need access to comprehensive seller/partner center data including: ‣ ‣ ‣<div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8119-8741-fa507fd3666c" class="bulleted-list"><li style="list-style-type:circle">Video performance metrics (views, completion rate)</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8123-9441-dbdcb0d03ba1" class="bulleted-list"><li style="list-style-type:circle">Sales data per video (units sold, revenue)</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8153-a3c3-f2d6544b5252" class="bulleted-list"><li style="list-style-type:circle">Direct links to videos</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8109-b06f-d01d4acb6747" class="bulleted-list"><li style="list-style-type:circle">Correlation between posting frequency and sales</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-81d5-aeb5-d85396e8fa7b" class="bulleted-list"><li style="list-style-type:disc">Example: video with 12,000 views and ~50% completion rate generated 27 sales ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-818d-8ee1-f5032bf56d9a" class="bulleted-list"><li style="list-style-type:disc">This data would enable video breakdown analysis to identify successful content patterns ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34204b9d-4ca9-8170-bca1-eb5dce101bdd" class="">Potential Solutions</h3></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8179-a29f-dafb684a7a2d" class="bulleted-list"><li style="list-style-type:disc">Bookmarklet approach could extract seller center data manually ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8128-8b28-edd28c893418" class="bulleted-list"><li style="list-style-type:disc">Browser automation could update data automatically, though initial manual process needs to work first ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8165-bb7b-d63ff7805b14" class="bulleted-list"><li style="list-style-type:disc">Analytics data access has been granted to team member ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34204b9d-4ca9-81d3-975e-c0340a545bd2" class="">Access &amp; Authentication Issues</h3></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-81ec-91b8-e74a0b907f2b" class="bulleted-list"><li style="list-style-type:disc">Team member invitation process is non-standard — requires clicking &quot;Login with Code&quot; rather than following email link directly ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-81a6-9082-eec05908c7af" class="bulleted-list"><li style="list-style-type:disc">Some team members experiencing verification code delivery issues ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8100-8d68-fbc02628e778" class="bulleted-list"><li style="list-style-type:disc">Access code for current session: 6100 ‣</li></ul></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Notes<br/></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8041-9211-c5f863c57730" class="">
+</p></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Transcript<br/></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80fd-ba63-fdf92a35815e" class="">Yeah. Let&#x27;s see. Went over some things we wanted to get some resolution on yesterday. Got the webhook stuff working. So that&#x27;s implemented.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80e9-acc2-d5a0634adb7f" class="">So this has all the urls it needs now for login kit for webhooks. Login kit doesn&#x27;t It&#x27;s all the login stuff. It actually has nothing to do with that. It&#x27;s just the avatar, the... It&#x27;s the data about you.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8040-8e40-f3d9d674bf38" class="">So is it the author is it?</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80de-a49b-d3e63f1891d4" class="">I added it, I enabled it, and all it really got me was... More information about. So I now have a union ID. A little bit extra context. But the adding the TikTok account, I&#x27;m just doing that manually.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8059-9936-ec75c32f0265" class="">I think that information might be useful. I did find out when it&#x27;s enabled that we have two IDs, open and union.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8078-b5c1-c715b907e6be" class="">Yeah, that looks different. So if you go to your phone, Yeah, so there&#x27;s something. There&#x27;s something if you&#x27;d like tap the bottom under settings a lot. They want information from here if you ever use your account.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-808a-abcd-f7408a79ff11" class="">Probably the top two are the really useful ones. &#x27;Cause this is new and this is probably the specific.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80b2-accb-db77dfd3bcde" class="">The device ID though, now that I&#x27;m looking at it,might actually be something that might identify why people are getting bans. Because if the device ID is the same, And then you have a band account associated with that device.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80fc-b692-cf199e0bb029" class="">I was just seeing if that matched it, but that looks different.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80dc-984b-ef6f41d7fce1" class="">Oh, these are for me, Code Monkey games.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80d1-ba5d-fa7535ae8193" class="">Yeah, but you-Oh, as far as the length and everything? Yeah. They&#x27;re just numbers. It looks like it might be. Looks like it might have been this one. No, that&#x27;s a software developer kit.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80f7-91d8-dc919bfd5884" class="">That&#x27;s not you at all. That&#x27;s the software.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80e7-b353-d5bbff9bb6b6" class="">I mean, maybe mine just numbers and yours is different.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8019-b934-f199a33aa18a" class="">But it also gives you the follower stuff.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-808d-84a8-cec0d8c6c16b" class="">Yeah, which, like I said, is helpful, but not really.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-808c-99df-f90d0d017101" class="">I think what I kind of... What I found out is that the, The likeliness, what AI is telling me is that they&#x27;re using for Calidata and stuff like that, Calidata. You&#x27;ve got-Supplement the official API with Scraping. So it. Typically looks like partner API v2. I want to see if that&#x27;s the API we have access to.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-803b-951d-e8a99f9c682b" class="">Yeah, I did a little more research into it, but it looks like I have to do a lot of There&#x27;s a developer kit here and then the API stuff. There&#x27;s 46. Different APIs. I have to apply for them. So I applied for 10 of them and one of them didn&#x27;t get approved. But its explanation was that I guess So now it looks like it&#x27;s so if I I&#x27;ll go back to App Insert. Nervous. Create an app. Apparently this category, this matters.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8045-b477-d7a7ad43282e" class="">That&#x27;s important, absolutely.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8090-a96e-d995c27590fa" class="">So if I chose the wrong category, then I can&#x27;t apply for specific APIs, but I can&#x27;t add more categories to my application.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80c9-8d16-f1b2afd9fbb0" class="">So I have to make five, six, seven, eight.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8051-aca3-f5499bae147b" class="">Yeah, so I have to look more into this to try to figure that out. I&#x27;m not sure if I can give you access to just those in here, but that&#x27;s something I&#x27;ll look at. So I can add team members in here.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80c2-9905-f07cd407945d" class="">So you should get that. This one, we found it was weird when logging in. The email you&#x27;re going to get is going to tell you to just click it and log in. I&#x27;m going to take you to the login page. What we did is we just clicked Login with Code. It sends you a code. It&#x27;s really weird because it says that you already have an account because I invitedDid you? Oh, okay. Do you still need to set up an account?</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8041-9c96-ed8b93185256" class="">you don&#x27;t go through the normal setup process. So it&#x27;s just a weird-But now you should hopefully get access to this, which Again, it&#x27;s the same thing. If you can figure out I guess by looking, it probably explains it in the documentation.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80fe-aa73-d1e52a13c89a" class="">the type of app category we need. But all I did was just, it&#x27;s weird, I could have sworn I made a lot more. Trying to figure this out. Do you think it&#x27;s a draft? No, it says all, no, it&#x27;s still a draft because that&#x27;s the other thing with this one. Like the developer one, when I click into this one, I don&#x27;t know. It won&#x27;t be like actually published until this is done.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80c8-82d3-ff04909080d9" class="">We can go past Sandbox.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-809b-80b1-f9b4b17bdfc4" class="">without completing this, that&#x27;s my question.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80d7-86bd-dcfbcc02b985" class="">Maybe.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80dd-a57d-fd9ac250e4c7" class="">Because Sandbox right now, we&#x27;re kind of limited to these accounts. So if I want to try a second login, it has to be one One that I add specifically. I&#x27;m not sure if we can go to production. Let&#x27;s see. Oh yeah, submit for review. So we&#x27;ll have to go to that step.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8034-bb38-c9b7c4ccc9ae" class="">That was the issue. It doesn&#x27;t look like there&#x27;s a sandbox here. You should just be able to. Do stuff.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80b6-a0d7-f677744d0ba8" class="">Hopefully this stuff works There&#x27;s stuff that you just get automatically.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80b2-813b-d3b3fa2c2184" class="">This one a little bit better live performance. So I thought this was like going Live stream sessions So I think if you were live right now, it would give me-That&#x27;s what I&#x27;m thinking. click on the API docs and see what this is. But the thing is, is also, I don&#x27;t know if you can take it because the waiting Submission. It says It won&#x27;t be filtered out. It&#x27;ll be filtered out if we don&#x27;t get it During the review process. So the way that I took these ones is that you can apply for it, but you&#x27;re not going to actually like get it.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8056-a82a-dfdedcd9c50e" class="">Yeah, it&#x27;s going to review everything and the stuff that they mostly give to people, if it makes sense for your app, then they&#x27;ll give it to you is the way that I&#x27;m taking this.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-809a-bdf0-e4b9c2c64bee" class="">I don&#x27;t know if you&#x27;re different stuff it&#x27;s inside I just don&#x27;t know what you&#x27;ll-be able to do with it because I don&#x27;t see like the scopes or anything else.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-805e-9adb-c80573842f0b" class="">Hopefully you&#x27;ll get access to this and you can look at it. But again, like it says, seller management, like this stuff looks like it&#x27;s more like... I&#x27;m running someone shop now Being able to pull it. Yeah. But I mean, there&#x27;s more stuff here, more developments. Awesome. See if you can see if this is what we want. I mean it. It should be. Should be able to.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-804a-9668-e15fb8cae80f" class="">I don&#x27;t think unless it says partner center, I don&#x27;t think, or maybe connectors.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80c0-af1b-f72c046eca23" class="">Those were the only two that seemed kind of-But I don&#x27;t think partner center has a-Number of sellers.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80ad-8209-db92834528b0" class="">Yes, it says sellers to number of sellers that currently have this app.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-806b-b0e8-e390fc6b2e0e" class="">well there&#x27;s this too I don&#x27;t know So I&#x27;m not exactly sure where they&#x27;re I thinkAI was right.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80c6-8817-ddb024aa05f0" class="">I think the original thing I threw out a couple months ago, we&#x27;re just gonna have to bookmark lit, we&#x27;re gonna have to do something out of the normal, pipe they give us, we have to build our own. I&#x27;m really starting to believe what Scraping I guess they&#x27;re having They&#x27;re getting those exports and they&#x27;re using that data as well. Yeah, so the partner API v2 scraping plus seller center exports.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80f5-a649-f053d2ea4692" class="">But the API v2-I mean, that should be the partner center AP. So that&#x27;s this.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80df-9f38-c21b02141ef5" class="">So this is for like a connector type of app.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8061-91c2-c8146d72bc21" class="">I know I just found this yesterday. But this references partner center. This is a different type of Type of app called a connector app. So if you wanted to connect Salesforce. To TikTok. It seems like that would be the pipe that would have that data.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80c7-8537-f83b4afd9e84" class="">So essentially they&#x27;re making you go through this Flash hat to essentially pull data. Well, it&#x27;s funny.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8049-811b-cb1f82177e02" class="">You would think, oh, splashthat.com. This is some third-party bullshit. No, it&#x27;s not. You actually click into it, and it&#x27;s the real... TikTokshop.com/docv2 That&#x27;s the real thing. I was absolutely surprised. Here&#x27;s the different types of apps you can fall into.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8000-810c-d248e9eaa4e4" class="">Connector is So do we need to sign up for this then or how does this work?</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80e7-8198-c2f3775276ba" class="">I think possibly. I think possibly. I just found this last night and that was afterMention that. Three, two, one.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-807f-8ebd-cc39d134a3ea" class="">Yeah, the partner would be too.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80d9-9a17-d5223f0d835b" class="">Yeah, I&#x27;m like, hmm.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-804c-ba73-fa9770931ed4" class="">I don&#x27;t think that&#x27;s the way we&#x27;re at.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80bb-900e-eb98cd6d0b2b" class="">So I started looking into it, got here, and said alright, let&#x27;s go see what that&#x27;s about.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8023-83c1-eacdd1528ea0" class="">Here&#x27;s this connector app. Affiliate integration, it talks about a lot of the stuff that... We&#x27;re looking for. We just got to kind of figure out, like you&#x27;re saying, each app has a very narrow purpose. So you gotta define like what am I gonna be doing and specifically have a use case ID.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8006-9c49-cb4628c0a53e" class="">Yeah, &#x27;cause partner.tiktokshop.com is what I log into. Like that&#x27;s what this is. So that&#x27;s why it&#x27;s got to be in here somewhere.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8014-b59a-cb87b526c0c8" class="">Yeah, if you had doc v2 at the end of that, I think. Where did that actually go? This is...</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80a1-8648-effd58d9bf9d" class="">Yeah, changing this doesn&#x27;t change anything. If I go here, like it&#x27;s still partner.us.tiktokshop. So maybe it&#x27;s, it could be something that they&#x27;re not offering it to the U.S. Because we have seen stuff where it&#x27;s like UK, EU. Yeah, whatever. There&#x27;s also this other thing in here.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-801d-866a-ff47e438cbd2" class="">called solution guidance if you&#x27;re able to access this page and it just has all this stuff but this didn&#x27;t look like It just says quickly score API solutions at TikTok shop. So maybe something is in here. And then they got API documents and testing tools as well. So it&#x27;s just three different links You should be able to see this I need a different type of account.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8024-b542-d9cad8843f5c" class="">Log in with code.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-808d-b74a-ddd39d8dca6b" class="">And then it should just send the code. And then you should be able to log in with it once you get that. I don&#x27;t know why. I don&#x27;t know why that happened. The only way we realized that was that&#x27;s how Chris logs into MostyPers. stuff. Jesus accounts.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80f6-95e5-d530909c578b" class="">Which is unfortunate.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80cf-8330-e22e94cf3972" class="">I think that&#x27;s very possible just because I&#x27;ve looked with their CSP headers.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80c4-bd54-c62b8343b9f4" class="">The other domains that they give permissions to, the same permissions they give their own domain.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8071-91c1-dcb40d589514" class="">Are lots of other dot, Yeah, but again, this is this is.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80fe-9732-de36ba07442e" class="">going seller side. So the seller, but that&#x27;s why it&#x27;s confusing because it says partner.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80ea-bf21-e27e082823b1" class="">Thank you. but you know it says partner center here the app the stuff that they&#x27;re taking you to but it all I mean, even their video shows seller center. So maybe it&#x27;s just learning more into this. Like if it really is, you&#x27;re just talking to a seller. Which again is possible. It&#x27;s possible for us to reach out to these brands and get this information.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8032-877e-e29c378e8a5f" class="">But that only really helps us run campaigns. It doesn&#x27;t really, it doesn&#x27;t help us with what, Initially we want So we just need the outcome of that raw partner center that thing that you guys did with JC you hit okay you get the This one&#x27;s not as helpful, but it&#x27;s still a decent amount of stuff. I can go and I can see how many videos he&#x27;s posted, stuff like that.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80a1-bfdc-f90bf436a7bc" class="">This is the stuff that...</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80b8-a1be-dab2518c5b61" class="">You want this right here.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8079-a35d-e7456095f872" class="">This stuff.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80ae-ab66-d9021c09e17b" class="">on the last March This is the stuff that we want. Which, I mean, this is Brian.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-800c-b1bc-e7c916195dda" class="">But again, go here to JC. Same thing. If it is just a bookmarklet, which to then just pull this down before us.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80b1-893a-f38c503b8c34" class="">I don&#x27;t want just this though, this is nice.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-801d-b649-e363ed6deb7b" class="">I want this stuff too. I want to be able to see the link to it. I want to be able to go to the video to be able to look at if that was what was actually selling for me.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80ba-9049-d8ca8ba34178" class="">Can you do a save page as and see if it will just drop the HTML or even just screenshot including the top portion? I can...</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80ff-a7e6-dc709af76e16" class="">Probably work for those two pieces Oh God 35 items sold. Oh wow, $500 ruined everything. This is too funny. Yeah, this is the stuff to be able to... Nick, can you scroll up also and just take a screenshot of all the stuff so I can see like... Yeah. shooting for.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80fe-8edb-e737441353d3" class="">And as you click, those are adding the lines, right? Yeah. OK.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80f8-aa4b-d660b59cfa38" class="">Cool. I wish they colored these things so you could tell which. You can only do two. Oh, there we go. Okay.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-808f-a010-d9d934dbfeb1" class="">Yeah, you can only do two at a time.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80e0-a77b-faf8e24db71b" class="">I mean, this is kind of a cool.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8013-a2b6-e46a43e3ee01" class="">Going to your videos,You can see if there&#x27;s a lag time Essentially, yeah. I mean, if you look at it, there is.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8078-9a49-d156b18a7c86" class="">It&#x27;s showing you essentially that.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-808d-9cbd-f64021acc190" class="">If he was more consistent than yet, I would say...</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8012-8029-c81d4ce084e2" class="">There essentially is as it goes up this way. I mean there again.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8086-a93b-d9a30458d302" class="">here this If this is accurate, essentially you&#x27;ve flipped. So I don&#x27;t know.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8070-a552-f7fa589c044e" class="">to do with the data, but-Again, this data, but this stuff is helpful for.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8015-b069-e7cac6445aeb" class="">I think it could be really good with this over a long period of time.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80de-a196-ff608a511d3f" class="">Yeah 12,000 views and almost 50% watched it all the way to the end.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80ef-8b4f-dd8578fa7f56" class="">And he got it.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80fb-bfea-e31e8535b082" class="">How many sales from this? 27. So like that&#x27;s the data that then we can use to be like, These are the type of things to break down the video, essentially, for them. This is probably why...</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8058-9130-d4512b511fdc" class="">Yeah, but this is what we want. It might just be that bookmark of the thing, which There&#x27;s a manual process. Right, so you&#x27;d only get updated data We could automate it.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-802d-b5a5-dddc78429d49" class="">But we&#x27;d want to get to the first step of it working. Yeah.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8078-b8b6-f500db084dee" class="">We could automate the browser pretty easily. OK. Yeah, it might be just this then. I&#x27;m pretty sure I gave you analytics data.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80f9-b0d1-dc4f7f60b785" class="">So you should be able to see this.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80ef-b38a-e3b937ee8456" class="">It&#x27;s amazing.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8095-8ea6-f99d4ca1d3e2" class="">I was just wondering if that would get me past this.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8002-8239-e6307f2ddacb" class="">Is that a subject or code? Verification code. Damn, both accounts get that original activate, but then the next one just...</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8096-b200-ebb722527417" class="">Maybe it&#x27;s something, &#x27;cause if you&#x27;re getting that, You should get the other one. For sure. Yeah. Maybe it&#x27;s not in spam or junk or anything like that.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80b8-8bc7-c2a893ca5880" class="">I need to try to keep them to a schedule. We&#x27;re supposed to be in a business meeting right now. Gotcha. But feel free, you can go in there. The code is 6100. Open.</p></div></div></div><div style="display:contents" dir="ltr"><div id="35904b9d-4ca9-8024-a08d-edeaf1302109" class="transcription"><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Notes<br/></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-805d-a61d-de3c394ba6ff" class="">
+</p></div></div></div><div style="display:contents" dir="ltr"><div id="35904b9d-4ca9-80c5-8687-ef1e37d27306" class="transcription"><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Notes<br/></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80c5-9693-dcf23fa97ce8" class="">
+</p></div></div></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

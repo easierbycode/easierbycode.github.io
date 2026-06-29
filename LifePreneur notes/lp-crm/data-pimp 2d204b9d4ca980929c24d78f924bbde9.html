@@ -1,0 +1,3252 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>data-pimp</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2d204b9d-4ca9-8092-9c24-d78f924bbde9" class="page sans"><header><h1 class="page-title" dir="auto">data-pimp</h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-person"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/friends_gray.svg" style="width:14px;height:14px;display:block"/></span>Owner</th><td><span class="user"><img src="https://lh3.googleusercontent.com/a-/AOh14Ggy0FcyX-X6EW32d0jOd5HNUZl3VcBq7Msx_b4mPQ=s100" class="icon user-icon"/>Daniel Johnson</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>Tags</th><td></td></tr></tbody></table></header><div class="page-body"><div style="display:contents" dir="auto"><p id="2d204b9d-4ca9-808f-a044-e5765685e617" class=""><a href="https://data-pimp.easierbycode.deno.net/">https://data-pimp.easierbycode.deno.net/</a></p></div><div style="display:contents" dir="auto"><p id="2d204b9d-4ca9-8095-9d8e-c550f0f4660b" class=""><a href="https://data-pimp.easierbycode.deno.net/">https://data-pimp.easierbycode.deno.net</a></p></div><div style="display:contents" dir="auto"><p id="2d804b9d-4ca9-80eb-8a51-fd04d4455422" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2d804b9d-4ca9-809d-bdc6-dbc16234b219" class="">
+</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-bash.min.js" integrity="sha512-whYhDwtTmlC/NpZlCr6PSsAaLOrfjVg/iXAnC4H/dtiHawpShhT2SlIMbpIhT/IL/NrpdMm+Hq2C13+VKpHTYw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="2d804b9d-4ca9-80a3-9e01-d9d31581e1cd" class="code code-wrap"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">&#x27;postgresql://neondb_owner:npg_hBWbu6xNorm7@ep-red-resonance-afsg8r6h-pooler.c-2.us-west-2.aws.neon.tech/d7223c-production?sslmode=require&amp;channel_binding=require&#x27;</code></pre></div><div style="display:contents" dir="auto"><p id="2d304b9d-4ca9-809c-80d1-ea556cc271c5" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2d304b9d-4ca9-8082-9284-e522bdbaa3e4" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2d304b9d-4ca9-80f9-b06c-e6d0f99e14da" class="">Inventory System UI</p></div><div style="display:contents" dir="auto"><p id="2d304b9d-4ca9-8069-bc78-dd94c0dd2e75" class=""><a href="https://sample-trackr-3e78d153.base44.app/">https://sample-trackr-3e78d153.base44.app/</a></p></div><div style="display:contents" dir="auto"><p id="2d304b9d-4ca9-8010-adfe-f879244559ef" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2d304b9d-4ca9-8097-a130-d0223f8a7296" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2d304b9d-4ca9-80c8-8ecc-de58848d74af" class="">Database studio</p></div><div style="display:contents" dir="auto"><p id="2d304b9d-4ca9-8096-a8db-daa9a07b2d18" class=""><a href="https://console.neon.tech/app/projects/summer-shape-14704664/branches/br-billowing-frost-afjc786f/tables?database=d7223c-production">https://console.neon.tech/app/projects/summer-shape-14704664/branches/br-billowing-frost-afjc786f/tables?database=d7223c-production</a></p></div><div style="display:contents" dir="auto"><p id="2d304b9d-4ca9-802a-ac59-c7dc0c4200f8" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2d304b9d-4ca9-8057-997c-e769756bffb8" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2d304b9d-4ca9-8074-9c58-f68076c0292c" class=""><a href="https://preview-sandbox--4dc54c2921536156cd7cbc3f589be01c.base44.app/api/apps/69485b0c5a1926a33e78d153/entities/Sample?sort=-created_date">https://preview-sandbox--4dc54c2921536156cd7cbc3f589be01c.base44.app/api/apps/69485b0c5a1926a33e78d153/entities/Sample?sort=-created_date</a></p></div><div style="display:contents" dir="auto"><pre id="2d304b9d-4ca9-801b-8872-dd40a3395ad9" class="code code-wrap"><code class="language-bash" style="white-space:pre-wrap;word-break:break-all">[
+    {
+        &quot;name&quot;: &quot;Concealer - Light&quot;,
+        &quot;brand&quot;: &quot;Luxe Beauty&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-059&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1557205465-f3762edea6d3?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/concealer-059&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 26.0,
+        &quot;best_price&quot;: 21.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad9190&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Blush - Coral&quot;,
+        &quot;brand&quot;: &quot;Luxe Beauty&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-060&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/blush-060&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;reserved&quot;,
+        &quot;current_price&quot;: 22.0,
+        &quot;best_price&quot;: 18.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad9191&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Highlighter - Gold&quot;,
+        &quot;brand&quot;: &quot;Luxe Beauty&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-061&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/highlighter-061&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 32.0,
+        &quot;best_price&quot;: 24.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad9192&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Hair Serum&quot;,
+        &quot;brand&quot;: &quot;Hair Luxe&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-062&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/hairserum-062&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 35.0,
+        &quot;best_price&quot;: 28.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad9193&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Scalp Treatment&quot;,
+        &quot;brand&quot;: &quot;Hair Luxe&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-063&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/scalp-063&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 42.0,
+        &quot;best_price&quot;: 35.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad9194&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Leave-In Conditioner&quot;,
+        &quot;brand&quot;: &quot;Hair Luxe&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-064&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/leavein-064&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;checked_out&quot;,
+        &quot;current_price&quot;: 24.0,
+        &quot;best_price&quot;: 19.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: &quot;James Miller&quot;,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad9195&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Hair Mask - Keratin&quot;,
+        &quot;brand&quot;: &quot;Hair Luxe&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-065&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1522338242042-6a3e97b98568?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/hairmask-065&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 32.0,
+        &quot;best_price&quot;: 24.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad9196&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Dry Shampoo&quot;,
+        &quot;brand&quot;: &quot;Hair Luxe&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-066&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/dryshampoo-066&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 18.0,
+        &quot;best_price&quot;: 14.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad9197&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Texturizing Spray&quot;,
+        &quot;brand&quot;: &quot;Hair Luxe&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-067&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/texture-067&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 22.0,
+        &quot;best_price&quot;: 17.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad9198&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Face Mist - Rose&quot;,
+        &quot;brand&quot;: &quot;Spa Retreat&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-068&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/facemist-068&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 16.0,
+        &quot;best_price&quot;: 12.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad9199&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Body Lotion - Vanilla&quot;,
+        &quot;brand&quot;: &quot;Spa Retreat&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-069&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/bodylotion-069&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 24.0,
+        &quot;best_price&quot;: 19.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad919a&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Hand Cream - Lavender&quot;,
+        &quot;brand&quot;: &quot;Spa Retreat&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-070&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1570194065650-d99fb4b38b15?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/handcream-070&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 12.0,
+        &quot;best_price&quot;: 8.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad919b&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Foot Cream&quot;,
+        &quot;brand&quot;: &quot;Spa Retreat&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-071&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/footcream-071&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 14.0,
+        &quot;best_price&quot;: 11.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad919c&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Body Oil - Jasmine&quot;,
+        &quot;brand&quot;: &quot;Spa Retreat&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-072&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/bodyoil-072&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 28.0,
+        &quot;best_price&quot;: 22.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad919d&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Clay Face Mask&quot;,
+        &quot;brand&quot;: &quot;Pure Skin&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-073&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/claymask-073&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;discontinued&quot;,
+        &quot;current_price&quot;: 18.0,
+        &quot;best_price&quot;: 14.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad919e&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Pore Minimizing Serum&quot;,
+        &quot;brand&quot;: &quot;Clear Skin&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-074&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/poreserum-074&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 38.0,
+        &quot;best_price&quot;: 30.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad919f&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Blackhead Remover Strips&quot;,
+        &quot;brand&quot;: &quot;Clear Skin&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-075&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/blackhead-075&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 8.99,
+        &quot;best_price&quot;: 5.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91a0&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Tea Tree Oil&quot;,
+        &quot;brand&quot;: &quot;Nature&#x27;s Best&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-076&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/teatree-076&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 12.0,
+        &quot;best_price&quot;: 9.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91a1&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Jojoba Oil&quot;,
+        &quot;brand&quot;: &quot;Nature&#x27;s Best&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-077&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/jojoba-077&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 14.0,
+        &quot;best_price&quot;: 11.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91a2&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Argan Oil&quot;,
+        &quot;brand&quot;: &quot;Nature&#x27;s Best&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-078&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/argan-078&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;checked_out&quot;,
+        &quot;current_price&quot;: 22.0,
+        &quot;best_price&quot;: 18.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: &quot;Lisa Park&quot;,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91a3&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Squalane Oil&quot;,
+        &quot;brand&quot;: &quot;Glow Labs&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-079&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/squalane-079&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 28.0,
+        &quot;best_price&quot;: 20.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91a4&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Propolis Ampoule&quot;,
+        &quot;brand&quot;: &quot;Seoul Glow&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-080&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/propolis-080&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 35.0,
+        &quot;best_price&quot;: 28.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91a5&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Mugwort Essence&quot;,
+        &quot;brand&quot;: &quot;Seoul Glow&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-081&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/mugwort-081&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 28.0,
+        &quot;best_price&quot;: 22.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91a6&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Cica Balm&quot;,
+        &quot;brand&quot;: &quot;Seoul Glow&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-082&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/cicabalm-082&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 24.0,
+        &quot;best_price&quot;: 19.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91a7&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Double Cleansing Set&quot;,
+        &quot;brand&quot;: &quot;Seoul Glow&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-083&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/doublecleanse-083&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 45.0,
+        &quot;best_price&quot;: 35.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91a8&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Fermented Essence&quot;,
+        &quot;brand&quot;: &quot;Seoul Glow&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-084&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/fermented-084&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;reserved&quot;,
+        &quot;current_price&quot;: 52.0,
+        &quot;best_price&quot;: 42.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91a9&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Pomade - Matte&quot;,
+        &quot;brand&quot;: &quot;Gentleman&#x27;s Choice&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-085&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1621607512214-68297480165e?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/pomade-085&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 18.0,
+        &quot;best_price&quot;: 14.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91aa&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Hair Clay&quot;,
+        &quot;brand&quot;: &quot;Gentleman&#x27;s Choice&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-086&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1621607512214-68297480165e?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/hairclay-086&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 20.0,
+        &quot;best_price&quot;: 16.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91ab&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Face Wash for Men&quot;,
+        &quot;brand&quot;: &quot;Gentleman&#x27;s Choice&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-087&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1585751119414-ef2636f8aede?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/menfacewash-087&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 16.0,
+        &quot;best_price&quot;: 11.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91ac&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Cologne - Sandalwood&quot;,
+        &quot;brand&quot;: &quot;Essence&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-088&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/cologne-088&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 65.0,
+        &quot;best_price&quot;: 52.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91ad&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Perfume - Jasmine&quot;,
+        &quot;brand&quot;: &quot;Essence&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-089&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1594035910387-fea47794261f?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/perfume-jasmine-089&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 85.0,
+        &quot;best_price&quot;: 70.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91ae&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Body Mist - Coconut&quot;,
+        &quot;brand&quot;: &quot;Essence&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-090&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1592945403244-b3fbabd7f539?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/bodymist-090&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 25.0,
+        &quot;best_price&quot;: 18.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91af&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Nail Strengthener&quot;,
+        &quot;brand&quot;: &quot;Nail Pro&quot;,
+        &quot;location&quot;: &quot;Warehouse F - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-091&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/nailstrength-091&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 14.0,
+        &quot;best_price&quot;: 11.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91b0&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Base Coat&quot;,
+        &quot;brand&quot;: &quot;Nail Pro&quot;,
+        &quot;location&quot;: &quot;Warehouse F - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-092&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-519014816548-bf5fe059798b?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/basecoat-092&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 10.0,
+        &quot;best_price&quot;: 7.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91b1&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Top Coat - Glossy&quot;,
+        &quot;brand&quot;: &quot;Nail Pro&quot;,
+        &quot;location&quot;: &quot;Warehouse F - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-093&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/topcoat-093&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;checked_out&quot;,
+        &quot;current_price&quot;: 10.0,
+        &quot;best_price&quot;: 7.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: &quot;Sophie Brown&quot;,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91b2&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Nail Art Kit&quot;,
+        &quot;brand&quot;: &quot;Nail Pro&quot;,
+        &quot;location&quot;: &quot;Warehouse F - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-094&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/nailart-094&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 35.0,
+        &quot;best_price&quot;: 25.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91b3&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Mineral Sunscreen SPF 50&quot;,
+        &quot;brand&quot;: &quot;SunShield&quot;,
+        &quot;location&quot;: &quot;Warehouse F - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-095&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1556228852-80b6e5eeff06?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/mineralsun-095&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 32.0,
+        &quot;best_price&quot;: 26.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91b4&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Tinted Sunscreen&quot;,
+        &quot;brand&quot;: &quot;SunShield&quot;,
+        &quot;location&quot;: &quot;Warehouse F - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-096&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/tintedsun-096&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 36.0,
+        &quot;best_price&quot;: 29.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91b5&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Sunscreen Stick&quot;,
+        &quot;brand&quot;: &quot;SunShield&quot;,
+        &quot;location&quot;: &quot;Warehouse F - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-097&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1556228852-80b6e5eeff06?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/sunstick-097&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 18.0,
+        &quot;best_price&quot;: 12.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91b6&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Neck Cream&quot;,
+        &quot;brand&quot;: &quot;Age Defy&quot;,
+        &quot;location&quot;: &quot;Warehouse F - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-098&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/neckcream-098&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 58.0,
+        &quot;best_price&quot;: 48.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91b7&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Hand Rejuvenating Cream&quot;,
+        &quot;brand&quot;: &quot;Age Defy&quot;,
+        &quot;location&quot;: &quot;Warehouse F - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-099&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1570194065650-d99fb4b38b15?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/handrejuv-099&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;discontinued&quot;,
+        &quot;current_price&quot;: 42.0,
+        &quot;best_price&quot;: 35.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91b8&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;LED Face Mask Device&quot;,
+        &quot;brand&quot;: &quot;Glow Labs&quot;,
+        &quot;location&quot;: &quot;Warehouse F - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-100&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/ledmask-100&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 189.0,
+        &quot;best_price&quot;: 149.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad91b9&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.227000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Rosehip Seed Oil&quot;,
+        &quot;brand&quot;: &quot;Nature&#x27;s Best&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-051&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/rosehip-051&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 18.99,
+        &quot;best_price&quot;: 14.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad9188&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Bakuchiol Serum&quot;,
+        &quot;brand&quot;: &quot;Age Defy&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-052&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/bakuchiol-052&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 48.0,
+        &quot;best_price&quot;: 40.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad9189&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Jade Roller&quot;,
+        &quot;brand&quot;: &quot;Spa Retreat&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-053&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1590156546946-ce55a12a6a5e?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/jaderoller-053&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 25.0,
+        &quot;best_price&quot;: 18.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad918a&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Gua Sha Tool&quot;,
+        &quot;brand&quot;: &quot;Spa Retreat&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 6&quot;,
+        &quot;qr_code&quot;: &quot;SMP-054&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1590156546946-ce55a12a6a5e?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/guasha-054&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 22.0,
+        &quot;best_price&quot;: 18.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad918b&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Lip Plumping Gloss&quot;,
+        &quot;brand&quot;: &quot;Luxe Beauty&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-055&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/lipgloss-055&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;checked_out&quot;,
+        &quot;current_price&quot;: 24.0,
+        &quot;best_price&quot;: 19.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: &quot;Rachel Kim&quot;,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad918c&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Brow Gel - Brunette&quot;,
+        &quot;brand&quot;: &quot;Luxe Beauty&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-056&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1631214500115-598fc2cb8d47?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/browgel-056&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 18.0,
+        &quot;best_price&quot;: 14.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad918d&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Setting Spray&quot;,
+        &quot;brand&quot;: &quot;Luxe Beauty&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-057&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/settingspray-057&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 28.0,
+        &quot;best_price&quot;: 20.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad918e&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Contour Palette&quot;,
+        &quot;brand&quot;: &quot;Luxe Beauty&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-058&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/contour-058&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 45.0,
+        &quot;best_price&quot;: 38.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485e1237ff8a8e50ad918f&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:52:34.226000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Hydrating Face Serum&quot;,
+        &quot;brand&quot;: &quot;Glow Labs&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-001&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/hydrating-serum-001&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 45.99,
+        &quot;best_price&quot;: 39.99,
+        &quot;best_price_source&quot;: &quot;https://amazon.com/glow-serum&quot;,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9112&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad913a&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Vitamin C Brightening Cream&quot;,
+        &quot;brand&quot;: &quot;Glow Labs&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-002&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/vitc-cream-002&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 38.5,
+        &quot;best_price&quot;: 28.0,
+        &quot;best_price_source&quot;: &quot;https://walmart.com/vitc-cream&quot;,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9112&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad913b&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;SPF 50 Sunscreen&quot;,
+        &quot;brand&quot;: &quot;SunShield&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-003&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1556228852-80b6e5eeff06?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/spf50-003&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 24.99,
+        &quot;best_price&quot;: 19.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9112&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad913c&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Gentle Cleanser&quot;,
+        &quot;brand&quot;: &quot;Pure Skin&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-004&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/cleanser-004&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 18.99,
+        &quot;best_price&quot;: 15.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9113&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad913d&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Moisturizing Toner&quot;,
+        &quot;brand&quot;: &quot;Pure Skin&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-005&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/toner-005&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;checked_out&quot;,
+        &quot;current_price&quot;: 22.0,
+        &quot;best_price&quot;: 18.5,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9113&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: &quot;Sarah Johnson&quot;,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad913e&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Niacinamide Serum&quot;,
+        &quot;brand&quot;: &quot;Pure Skin&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-006&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1617897903246-719242758050?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/niacinamide-006&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 32.0,
+        &quot;best_price&quot;: 24.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9113&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad913f&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Matte Lipstick - Ruby Red&quot;,
+        &quot;brand&quot;: &quot;Luxe Beauty&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-007&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/lipstick-ruby-007&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 28.0,
+        &quot;best_price&quot;: 24.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9114&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9140&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Volumizing Mascara&quot;,
+        &quot;brand&quot;: &quot;Luxe Beauty&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-008&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1631214500115-598fc2cb8d47?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/mascara-008&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;reserved&quot;,
+        &quot;current_price&quot;: 35.0,
+        &quot;best_price&quot;: 29.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9114&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9141&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Eyeshadow Palette - Sunset&quot;,
+        &quot;brand&quot;: &quot;Luxe Beauty&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-009&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/eyeshadow-sunset-009&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 52.0,
+        &quot;best_price&quot;: 38.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9114&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9142&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Foundation - Medium Beige&quot;,
+        &quot;brand&quot;: &quot;Luxe Beauty&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-010&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1557205465-f3762edea6d3?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/foundation-010&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 42.0,
+        &quot;best_price&quot;: 36.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9114&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9143&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Argan Oil Shampoo&quot;,
+        &quot;brand&quot;: &quot;Hair Luxe&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-011&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/shampoo-011&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 26.99,
+        &quot;best_price&quot;: 22.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9115&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9144&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Deep Conditioner&quot;,
+        &quot;brand&quot;: &quot;Hair Luxe&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-012&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1526947425960-945c6e72858f?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/conditioner-012&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 28.99,
+        &quot;best_price&quot;: 24.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9115&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9145&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Heat Protection Spray&quot;,
+        &quot;brand&quot;: &quot;Hair Luxe&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-013&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1522338242042-6a3e97b98568?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/heatspray-013&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;checked_out&quot;,
+        &quot;current_price&quot;: 19.99,
+        &quot;best_price&quot;: 16.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9115&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: &quot;Mike Chen&quot;,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9146&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Beard Oil - Cedar&quot;,
+        &quot;brand&quot;: &quot;Gentleman&#x27;s Choice&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-014&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1621607512214-68297480165e?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/beardoil-014&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 24.0,
+        &quot;best_price&quot;: 20.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9116&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9147&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Shaving Cream&quot;,
+        &quot;brand&quot;: &quot;Gentleman&#x27;s Choice&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-015&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1585751119414-ef2636f8aede?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/shavingcream-015&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 18.0,
+        &quot;best_price&quot;: 12.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9116&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9148&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Aftershave Balm&quot;,
+        &quot;brand&quot;: &quot;Gentleman&#x27;s Choice&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-016&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1590156546946-ce55a12a6a5e?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/aftershave-016&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 22.0,
+        &quot;best_price&quot;: 18.5,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9149&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Lavender Bath Bombs&quot;,
+        &quot;brand&quot;: &quot;Spa Retreat&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-017&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1570194065650-d99fb4b38b15?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/bathbombs-017&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 15.99,
+        &quot;best_price&quot;: 12.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9117&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad914a&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Eucalyptus Body Scrub&quot;,
+        &quot;brand&quot;: &quot;Spa Retreat&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-018&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/bodyscrub-018&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 28.0,
+        &quot;best_price&quot;: 24.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9117&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad914b&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Rose Petal Face Mask&quot;,
+        &quot;brand&quot;: &quot;Spa Retreat&quot;,
+        &quot;location&quot;: &quot;Warehouse B - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-019&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/facemask-019&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 8.99,
+        &quot;best_price&quot;: 5.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9117&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad914c&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Mini Cleanser 50ml&quot;,
+        &quot;brand&quot;: &quot;Pure Skin&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-020&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/mini-cleanser-020&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 9.99,
+        &quot;best_price&quot;: 7.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9118&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad914d&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Travel Size Moisturizer&quot;,
+        &quot;brand&quot;: &quot;Glow Labs&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-021&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/mini-moist-021&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 12.99,
+        &quot;best_price&quot;: 10.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9118&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad914e&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Retinol Night Cream&quot;,
+        &quot;brand&quot;: &quot;Age Defy&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-022&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1570194065650-d99fb4b38b15?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/retinol-022&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 68.0,
+        &quot;best_price&quot;: 55.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9119&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad914f&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Peptide Eye Cream&quot;,
+        &quot;brand&quot;: &quot;Age Defy&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-023&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/eyecream-023&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 54.0,
+        &quot;best_price&quot;: 42.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9119&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9150&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Collagen Booster Serum&quot;,
+        &quot;brand&quot;: &quot;Age Defy&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-024&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/collagen-024&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;discontinued&quot;,
+        &quot;current_price&quot;: 78.0,
+        &quot;best_price&quot;: 65.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9151&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Salicylic Acid Cleanser&quot;,
+        &quot;brand&quot;: &quot;Clear Skin&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-025&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/salicylic-025&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 16.99,
+        &quot;best_price&quot;: 13.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911a&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9152&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Benzoyl Peroxide Spot Treatment&quot;,
+        &quot;brand&quot;: &quot;Clear Skin&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-026&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1617897903246-719242758050?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/benzoyl-026&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 12.99,
+        &quot;best_price&quot;: 9.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911a&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9153&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Oil-Free Moisturizer&quot;,
+        &quot;brand&quot;: &quot;Clear Skin&quot;,
+        &quot;location&quot;: &quot;Warehouse C - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-027&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/oilfree-027&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;checked_out&quot;,
+        &quot;current_price&quot;: 24.99,
+        &quot;best_price&quot;: 19.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911a&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: &quot;Emily Davis&quot;,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9154&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Organic Aloe Vera Gel&quot;,
+        &quot;brand&quot;: &quot;Nature&#x27;s Best&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-028&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/aloevera-028&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 14.99,
+        &quot;best_price&quot;: 11.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911b&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9155&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Coconut Oil Moisturizer&quot;,
+        &quot;brand&quot;: &quot;Nature&#x27;s Best&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-029&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/coconut-029&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 19.99,
+        &quot;best_price&quot;: 14.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911b&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9156&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Snail Mucin Essence&quot;,
+        &quot;brand&quot;: &quot;Seoul Glow&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-030&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/snailmucin-030&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 32.0,
+        &quot;best_price&quot;: 26.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911c&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9157&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Rice Water Toner&quot;,
+        &quot;brand&quot;: &quot;Seoul Glow&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-031&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/ricewater-031&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 24.0,
+        &quot;best_price&quot;: 19.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911c&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9158&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Centella Cream&quot;,
+        &quot;brand&quot;: &quot;Seoul Glow&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-032&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1611930022073-b7a4ba5fcccd?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/centella-032&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;reserved&quot;,
+        &quot;current_price&quot;: 28.0,
+        &quot;best_price&quot;: 20.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911c&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9159&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Ginseng Sheet Masks (5 pack)&quot;,
+        &quot;brand&quot;: &quot;Seoul Glow&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-033&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/sheetmasks-033&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 18.0,
+        &quot;best_price&quot;: 14.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911c&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad915a&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Holiday Lip Set&quot;,
+        &quot;brand&quot;: &quot;Luxe Beauty&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-034&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/holidaylips-034&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 48.0,
+        &quot;best_price&quot;: 40.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911d&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad915b&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Winter Skincare Set&quot;,
+        &quot;brand&quot;: &quot;Glow Labs&quot;,
+        &quot;location&quot;: &quot;Warehouse D - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-035&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1570194065650-d99fb4b38b15?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/winterskin-035&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 85.0,
+        &quot;best_price&quot;: 65.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911d&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad915c&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Eau de Parfum - Rose&quot;,
+        &quot;brand&quot;: &quot;Essence&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-036&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1541643600914-78b084683601?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/parfum-rose-036&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 75.0,
+        &quot;best_price&quot;: 62.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911e&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad915d&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Eau de Parfum - Ocean&quot;,
+        &quot;brand&quot;: &quot;Essence&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-037&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1594035910387-fea47794261f?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/parfum-ocean-037&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 75.0,
+        &quot;best_price&quot;: 62.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911e&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad915e&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Eau de Parfum - Citrus&quot;,
+        &quot;brand&quot;: &quot;Essence&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 1&quot;,
+        &quot;qr_code&quot;: &quot;SMP-038&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1592945403244-b3fbabd7f539?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/parfum-citrus-038&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;checked_out&quot;,
+        &quot;current_price&quot;: 75.0,
+        &quot;best_price&quot;: 55.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911e&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: &quot;Alex Wong&quot;,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad915f&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Gel Polish - Classic Red&quot;,
+        &quot;brand&quot;: &quot;Nail Pro&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-039&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/gelpolish-red-039&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 12.99,
+        &quot;best_price&quot;: 9.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911f&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9160&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Gel Polish - Nude Pink&quot;,
+        &quot;brand&quot;: &quot;Nail Pro&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-040&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/gelpolish-nude-040&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 12.99,
+        &quot;best_price&quot;: 9.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911f&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9161&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Cuticle Oil&quot;,
+        &quot;brand&quot;: &quot;Nail Pro&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 2&quot;,
+        &quot;qr_code&quot;: &quot;SMP-041&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/cuticleoil-041&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 8.99,
+        &quot;best_price&quot;: 6.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad911f&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9162&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;SPF 30 Daily Moisturizer&quot;,
+        &quot;brand&quot;: &quot;SunShield&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-042&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1556228852-80b6e5eeff06?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/spf30-042&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 28.0,
+        &quot;best_price&quot;: 23.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9120&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9163&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;After Sun Gel&quot;,
+        &quot;brand&quot;: &quot;SunShield&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-043&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/aftersun-043&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 16.99,
+        &quot;best_price&quot;: 11.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9120&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9164&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Lip Balm SPF 15&quot;,
+        &quot;brand&quot;: &quot;SunShield&quot;,
+        &quot;location&quot;: &quot;Warehouse E - Shelf 3&quot;,
+        &quot;qr_code&quot;: &quot;SMP-044&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/lipbalm-044&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 6.99,
+        &quot;best_price&quot;: 4.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: &quot;69485d2037ff8a8e50ad9120&quot;,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9165&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Hyaluronic Acid Serum&quot;,
+        &quot;brand&quot;: &quot;Glow Labs&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-045&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1620916566398-39f1143ab7be?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/hyaluronic-045&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 42.0,
+        &quot;best_price&quot;: 35.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9166&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;AHA/BHA Exfoliant&quot;,
+        &quot;brand&quot;: &quot;Clear Skin&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-046&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1617897903246-719242758050?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/exfoliant-046&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 36.0,
+        &quot;best_price&quot;: 28.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9167&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Vitamin E Oil&quot;,
+        &quot;brand&quot;: &quot;Nature&#x27;s Best&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 4&quot;,
+        &quot;qr_code&quot;: &quot;SMP-047&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/vitamine-047&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 15.99,
+        &quot;best_price&quot;: 12.99,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9168&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Charcoal Face Wash&quot;,
+        &quot;brand&quot;: &quot;Pure Skin&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-048&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/charcoal-048&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;reserved&quot;,
+        &quot;current_price&quot;: 18.99,
+        &quot;best_price&quot;: 15.49,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad9169&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Green Tea Toner&quot;,
+        &quot;brand&quot;: &quot;Seoul Glow&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-049&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/greentea-049&quot;,
+        &quot;fire_sale&quot;: false,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 22.0,
+        &quot;best_price&quot;: 18.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad916a&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    },
+    {
+        &quot;name&quot;: &quot;Sleeping Mask&quot;,
+        &quot;brand&quot;: &quot;Seoul Glow&quot;,
+        &quot;location&quot;: &quot;Warehouse A - Shelf 5&quot;,
+        &quot;qr_code&quot;: &quot;SMP-050&quot;,
+        &quot;picture_url&quot;: &quot;https://images.unsplash.com/photo-1596755389378-c31d21fd1273?w=400&amp;h=400&amp;fit=crop&quot;,
+        &quot;tiktok_affiliate_link&quot;: &quot;https://tiktok.com/shop/p/sleepingmask-050&quot;,
+        &quot;fire_sale&quot;: true,
+        &quot;status&quot;: &quot;available&quot;,
+        &quot;current_price&quot;: 26.0,
+        &quot;best_price&quot;: 19.0,
+        &quot;best_price_source&quot;: null,
+        &quot;last_price_checked_at&quot;: null,
+        &quot;bundle_id&quot;: null,
+        &quot;checked_out_at&quot;: null,
+        &quot;checked_in_at&quot;: null,
+        &quot;checked_out_to&quot;: null,
+        &quot;notes&quot;: null,
+        &quot;id&quot;: &quot;69485da637ff8a8e50ad916b&quot;,
+        &quot;created_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;updated_date&quot;: &quot;2025-12-21T20:50:46.375000&quot;,
+        &quot;created_by_id&quot;: &quot;69485b0c5a1926a33e78d154&quot;,
+        &quot;created_by&quot;: &quot;daniel@easierbycode.com&quot;,
+        &quot;is_sample&quot;: false
+    }
+]</code></pre></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -1,0 +1,744 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Chrome extension</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="35204b9d-4ca9-8085-a981-e9e8ad5bd045" class="page sans"><header><h1 class="page-title" dir="auto">Chrome extension</h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-person"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/friends_gray.svg" style="width:14px;height:14px;display:block"/></span>Owner</th><td><span class="user"><img src="https://lh3.googleusercontent.com/a-/AOh14Ggy0FcyX-X6EW32d0jOd5HNUZl3VcBq7Msx_b4mPQ=s100" class="icon user-icon"/>Daniel Johnson</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>Tags</th><td></td></tr></tbody></table></header><div class="page-body"><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80c3-9e7b-c56ff6fdc412" class="">highlight scrapeable / show popover when on tiktok analytics</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8029-a2cb-ff3db75ef51f" class="">push button, data in member-app instantly (PWA/mobile)</p></div><div style="display:contents" dir="ltr"><div id="35204b9d-4ca9-8092-98e0-d2b024c6c0c3" class="transcription"><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Summary<br/></div><div style="display:contents" dir="auto"><h3 id="35204b9d-4ca9-81a4-8960-c2dbe39b6fb9" class="">Action Items</h3></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-8168-b133-e49f2dc06f7e" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Continue building out MVP for data scraping functionality ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81c4-9965-c15bac1c2534" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Test in-app browser compatibility ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81d5-ba06-dc902c67f9ca" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Document complete tech stack once development is finished ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-815a-bf5c-c9f46d83764d" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Request refundable sample for 32-inch Samsung monitor ‣ ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81f4-907a-c3cf08f70c58" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Set up additional accounts with real data for testing ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="35204b9d-4ca9-81b2-b502-fc0e1b0c66af" class="">Content Creation Discussion</h3></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-8104-94db-dc9505cb88f1" class="bulleted-list"><li style="list-style-type:disc">Team discussed concerns about content engagement and TikTok&#x27;s platform dynamics ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81a9-ba3b-f624cfcfcf92" class="bulleted-list"><li style="list-style-type:disc">Content creator has background in cinematic photography and documentaries, which creates a different approach than typical TikTok spam content ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-815b-9b96-fd15787ea746" class="bulleted-list"><li style="list-style-type:disc">Goal is to make cinematography engaging for the platform ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81cd-9c56-c3f8e0ef6171" class="bulleted-list"><li style="list-style-type:disc">Creator experiencing challenges adapting documentary-style content to TikTok format ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35204b9d-4ca9-8126-94f2-d8784963d66a" class="">Data Scraping Development Progress</h3></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81e7-9e4b-fc81912510b7" class="bulleted-list"><li style="list-style-type:disc">Successfully scraped data including viewers, items sold, GMV, product links, live sessions, and video metrics ‣ ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-8124-abeb-fc7d2ce9a45c" class="bulleted-list"><li style="list-style-type:disc">Real-time scraping capability being developed - users will be able to see live updates ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-814d-af3f-feded01d35dd" class="bulleted-list"><li style="list-style-type:disc">No limitations identified on data access - all required data can be obtained without API ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-814d-ba1a-ee7bcb007574" class="bulleted-list"><li style="list-style-type:disc">Building piece by piece, focusing on MVP and core functionality first ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-8134-a334-db7524fc6139" class="bulleted-list"><li style="list-style-type:disc">Data available from both website (via live manager) and potentially from mobile app ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35204b9d-4ca9-81f4-950c-eedc453b42e2" class="">User Experience &amp; Workflow Discussion</h3></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-8175-b62b-d4f05042dfbc" class="bulleted-list"><li style="list-style-type:disc">Discussed end-user workflow for brand new users accessing TikTok data ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-817a-b7da-c133f26d24fd" class="bulleted-list"><li style="list-style-type:disc">Access will be available via app or website, with users logged into TikTok ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81c9-929a-f6db82738877" class="bulleted-list"><li style="list-style-type:disc">Second app in development that can scrape data directly from phone app ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-811b-84dd-fefcf3bdf796" class="bulleted-list"><li style="list-style-type:disc">Functionality being prioritized over user experience design at this stage ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35204b9d-4ca9-81fe-818f-fee820adfee0" class="">Data Safety &amp; TikTok Detection Concerns</h3></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-8163-a004-d4086d9e42ad" class="bulleted-list"><li style="list-style-type:disc">Approach mimics normal user behavior by pulling page data without making external API calls ‣ ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-8160-8d33-cba9ed5e6cdb" class="bulleted-list"><li style="list-style-type:disc">No server hits beyond normal user browsing - no faster-than-human requests ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-810e-9289-d3d96f978cd9" class="bulleted-list"><li style="list-style-type:disc">Page navigation and button clicks will appear as normal user activity to TikTok ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81db-862f-c457624f5a7f" class="bulleted-list"><li style="list-style-type:disc">Not using any agent spoofing ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-819b-895c-df52d307614e" class="bulleted-list"><li style="list-style-type:disc">Similar approach to Yuka&#x27;s method, which uses partner API or user self-exported data without account bans ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81d9-b263-cf3f166a560c" class="bulleted-list"><li style="list-style-type:disc">Method is more user-friendly than requiring manual exports ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81cc-aeb6-df90f1ffb1d5" class="bulleted-list"><li style="list-style-type:disc">No significant fingerprint or detection risk identified ‣ ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35204b9d-4ca9-817c-b257-d4ec3179e769" class="">Product Sales Updates</h3></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-819e-b2d2-f28ce1a5dc4c" class="bulleted-list"><li style="list-style-type:disc">Hoverboards currently priced at $700 due to supply chain issues, previously $360 on sale ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81ce-8b1d-c5a4f3d09695" class="bulleted-list"><li style="list-style-type:disc">Samsung product sales reached $100,000 GMV (phones and buds combined) ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-8187-9d60-c8089f18c562" class="bulleted-list"><li style="list-style-type:disc">Receiving $200 Galaxy Buds Pro as gift from Samsung for sales performance ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-8155-9dc1-e58e713958cc" class="bulleted-list"><li style="list-style-type:disc">Connected buds to phone after confirming return extension ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81cb-ae71-e23327864bb7" class="bulleted-list"><li style="list-style-type:disc">Exploring refundable sample opportunity for 32-inch Samsung monitor ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81f5-8093-f6a06022ea24" class="bulleted-list"><li style="list-style-type:disc">Current monitors are 27-inch ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35204b9d-4ca9-81f9-bd5f-ef911934c13a" class="">Technical Testing</h3></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-819c-90c7-f0e3e401b375" class="bulleted-list"><li style="list-style-type:disc">Successfully installed and tested data collection ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81d1-8e14-dd468164cc93" class="bulleted-list"><li style="list-style-type:disc">Wizard deals account showing no data in last 24 hours (inactive account) ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-812d-b177-e39bb8919f58" class="bulleted-list"><li style="list-style-type:disc">Plan to test with additional accounts containing real data ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35204b9d-4ca9-81ea-b5c5-cf2f0de54ef2" class="">Account Issues</h3></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-8192-8d06-f229213f06be" class="bulleted-list"><li style="list-style-type:disc">TikTok account violation case being re-escalated for additional review ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-814a-80b3-d7895ce4a0f9" class="bulleted-list"><li style="list-style-type:disc">Original decision has been maintained so far ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35204b9d-4ca9-81ea-b3a1-c0ce037c1621" class="bulleted-list"><li style="list-style-type:disc">Response received after week and a half wait ‣</li></ul></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Notes<br/></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8034-91cb-f063ede04e8e" class="">
+</p></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Transcript<br/></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8088-aad0-fc5a1cc4ff01" class="">It&#x27;s just all small stuff we&#x27;d have to look at.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8051-a34c-cfe15288807b" class="">It&#x27;s in discussion but not decided.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8052-8fea-cac1e48abd64" class="">No one took off? To work from home? Yeah. No, he has a short day.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-808e-89bb-cb9cc3ae94e1" class="">Plus, he has no other footage. So he&#x27;s exported everything that he has.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-800c-a7c7-e59f60887e9d" class="">I imagine my answer wasn&#x27;t super exciting to him. Yeah, fill a lot more of that same fucking bottle.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-808f-aa43-d0548721dbb0" class="">I mean, that&#x27;s kind of the job, though. It just his thing is I think he&#x27;s more worried that the content isn&#x27;t engaging. But like again, I think it&#x27;s a misunderstanding of what is actually on TikTok. He&#x27;s not an affiliate. He&#x27;s not like a creator on TikTok, so he doesn&#x27;t know that it is just spam. He&#x27;s more of a cinematic photographer and videographer.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80ea-95bc-fb34079e9a4f" class="">Well, I&#x27;d like for him to make this cinematography engaging.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8008-b42a-c1eb94ac1e77" class="">That sounds like exactly what I want.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8063-af03-d09aecac37a0" class="">Yeah, like he likes doing documentaries and stuff like that.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8066-90aa-c97755b21979" class="">He likes doing documentaries. I don&#x27;t know.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80c0-a2be-c43b10a8add7" class="">Stuff like that, so.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80f4-81cb-c57073705f24" class="">That&#x27;s where I like the... The words and the content, what is having your mind do is different. Yeah, that&#x27;s right.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80c2-bc32-da2798412da6" class="">That&#x27;s why I think he&#x27;s having like a slight issue with it. Yeah.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8075-a065-c7092b8eac12" class="">That sounds like they have issues. Sounds like I got a sticker stuck on me. Either a sticker or it&#x27;s just the ground. Every...</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80f2-81f6-ef8508cfe00c" class="">Manal. Maybe, because now I&#x27;m not hearing it. It&#x27;s either a sticker, something with the belt, or... Maybe the motor. Because it sounded like it was catching something. in a repeated fashion. I don&#x27;t see anything weird here.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8087-b68a-e584dafdc44a" class="">But yeah, it did kind of only happen like you heard it more when I was fast.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-802f-9fc6-d9a62ccea55c" class="">What&#x27;s going on? What is it doing?</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80ff-a02e-d62744b55f63" class="">Did you turn it around on accident? No, it was just like... Its equilibrium was off. That was weird. I&#x27;ve never had to do that.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8012-a961-e77aba5452fd" class="">Oh yeah, a couple of scrapes this morning. So, here&#x27;s some of the data.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-809a-997b-c1687dafda0e" class="">Viewers, item sold, GMV.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8016-aa57-dd592c3c0732" class="">Or is it just happening over there? Let me go find out. Like it actually builds another sheet for all that stuff. Product link. What was the top one? Yeah, the women&#x27;s... Whatever the bra was, jelly bra. Videos, I guess videos doesn&#x27;t apply to that one. Yeah, so depending on which you&#x27;re scraping, those two apply to the one. lives And is it blank?</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8071-a9db-dbdc5a1f7a5f" class="">You accidentally pressed the button and it cleared it.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80e5-a873-fec8dd5a2d95" class="">Oh, it must have been empty to start because I hit undo and it was clear. Yeah. Live sessions, products. And I guess for videos it would just be metrics and videos. Um... as far as what it grabs. But yeah, it worked. Something about this wheel and this corner. Let me see. Is that a sap or I&#x27;m sure it is.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80b0-bf25-c2399af18db2" class="">Well, all that shit&#x27;s pretty exciting with the app and the... It looks like you&#x27;re slowly, piece by piece, building it out. So I love it. Let me talk to you for a second though when you get a break.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80a0-b070-ff41356de676" class="">I can talk now.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-801c-bdc5-ca811356c2f4" class="">Well, what do you see as the final, like now that you know a bit more about what&#x27;s possible, how do you see like a final workflow for brand new grandma? Gets on TikTok. What do we tell them to do and then what does she do and what is she able to actually use? What&#x27;s the benefit?</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80cd-92cf-c6b80e3b5667" class="">I would just be spitballing. Honestly, I&#x27;m so focused on MVP, you know, make kind of the pieces work, the plumbing. Then as far as the how to deliver it.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80df-967d-dc8ce9e78311" class="">So I guess from what you&#x27;ve heard me communicate and what you know JC wants, what pieces do you think we&#x27;re not gonna be able to get with this limitation?</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8000-a3d1-d6469102a3f2" class="">There&#x27;s no limitation.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80f4-bf3f-d04420ff0da8" class="">So we&#x27;ll be able to get everything.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-802b-99a4-da5fdced2663" class="">It&#x27;s just not going to be an API.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8074-948e-e768bef8ab86" class="">It&#x27;s just not going to be, oh shit, it sounds like it&#x27;s going to be real time too since it&#x27;s scraping. It&#x27;s just an API.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80b0-8cf1-f163dd5b2a3d" class="">Yeah, and that&#x27;s the crazy part. I&#x27;m basically going to have it to where you can hit the button, you know, you&#x27;ll just see it live.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-802e-acbd-c24b01f9c95b" class="">So the button is a button on a computer though.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-803e-9ef8-d2ba4d99a2f7" class="">That&#x27;s why I hate saying the word button. I mean, you&#x27;re going to do the thing and it&#x27;s going to...</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80e5-9a9d-d1926a3ee6d1" class="">It can happen mobile. Yeah. Through an app or through?</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80dd-b619-e1b7d0e507f1" class="">Well, that part&#x27;s still, you know, until I have something I can show you.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-804b-ba2f-d5ded179480f" class="">You don&#x27;t know? You have to test it first or what?</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80bb-a2b1-e4154a2ca2ca" class="">So I&#x27;ve tested it. I need to make sure the in-app browsers, just some technical stuff, but yeah. Yeah.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80b6-b9d2-efbcfd4d1c13" class="">Okay, so I&#x27;m just trying to think of like experience whether we&#x27;d be able to sell it. Essentially, they would either download an app or go to a website. Login to TikTok. Through a lot probably or really actually no not even through that they would have to actually just be logged in to tick-tock the app on their phone and You&#x27;re not gonna scrape the app off their phone, right? Or like, is that... Is that possible?</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80e1-9ef6-c02f72d5073a" class="">Huh? It is. I do have a second app that does that. That&#x27;s the thing I alluded to this morning. Okay. That&#x27;s cooking still. Okay.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-805b-b028-eaae76d9a3ff" class="">So this one would be more like only the data that&#x27;s available through the website because it&#x27;s different than the data available on the phone, I think.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80d3-ab82-c2798202f53f" class="">I think this will definitely help us determine those things too. We&#x27;ll have the data from everywhere and a place where we canYeah. Cool.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80a7-8a44-caf2992b5b61" class="">Okay. From what I&#x27;m gathering, it seems like the data that comes from the website through the live manager, both video and live.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8004-957b-cd9fa9b33b53" class="">It&#x27;s easier to gather from there because like, you know, obviously on our phones I think that he has a way to where you could maybe clarify the time, but where you can Even if they&#x27;re on their phone, they would still be able to Get the data. off with the lab manager or with the data that&#x27;s in there even though that&#x27;s accessed typically through a website Yeah, I mean, again, you know, that&#x27;s that second app where...</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-806d-b499-f244e2d4c6b2" class="">Functionality first, what that experience looks like to the end user. I gotta get to step one. I gotta get the data, get the piping there.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80a7-9bdc-cf56878c4353" class="">Yeah, I&#x27;m just trying to like... Are we going to have enough data to where it&#x27;s worth it? But it sounds like you&#x27;re not seeing any limitations on any amount of data that we can get.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80bb-93ec-ed83a7fc1b24" class="">Yeah, yeah.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-800f-8ae3-e23fec48955f" class="">And then just with your knowledge, This seems like something that TikTok doesn&#x27;t want to happen. &#x27;cause they&#x27;re specifically not giving API access for this type of stuff. So it seems like we&#x27;re going the route of like exactly what they don&#x27;t want. How, what kind of fingerprint would JC have if he was using this? Would it be something that it just looks like he&#x27;s browsing?</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-802f-8fc6-c5a7a0590bc6" class="">Yeah, like what we talked about before, just kind of reiterate that. You&#x27;re pulling in the page, so...</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8060-a131-d9d421fd70d8" class="">Yeah, just on the page and then from the page, but they&#x27;re not able to see that you&#x27;re clicking this bookmark.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-803a-952f-c441157b5b62" class="">That&#x27;s what I&#x27;m saying.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8071-84be-e8e8a1a38b5c" class="">Like you&#x27;ve pulled all the data down.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80e7-a9e5-d78c938277fa" class="">Whatever you do from that point doesn&#x27;t--Right, it&#x27;s already on your machine.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-800b-9087-e870ebd59613" class="">So it&#x27;s not like, I got it. Okay. So yeah, yeah. There&#x27;s not really any fingerprint other than, I mean, maybe they can find something that tiny.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80fa-a575-ff750c83e35c" class="">But we&#x27;re not like... You&#x27;re not hitting their servers faster than what a human can.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8011-ae6e-f3f84c867419" class="">We&#x27;re not hitting their server at all. You&#x27;re logged in and you&#x27;re clicking. I&#x27;m not making any calls, kind of like we talked about before. You just drive the page.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-809d-9fb1-c2791c516331" class="">Right, now he has to drive the page because not all the data is available on one page.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-804c-8361-c726f997ce6c" class="">He doesn&#x27;t have to. He wouldn&#x27;t have to drive the page.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-804d-a9e1-e4a93b31e0d9" class="">So we can operate the page also, like drive the page. And when we do that, It will still look like he&#x27;s the one driving the page? to TikTok or would that look different? Cool.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-800a-8507-e28b59b282af" class="">Just be button clicks as long as we&#x27;re not doing the calls. We&#x27;re just navigating the page basically.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-805a-aaa3-d8ba196b0c9f" class="">So like normal amount of variable time between button clicks and then it&#x27;s We&#x27;re serving up a Chrome user agent or something that we&#x27;re doing our best to make it look like. I guess it&#x27;s actually on a browser.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8092-adbe-c4f3433cddd2" class="">Oh, no, we&#x27;re not doing any agent spoofing at all.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8054-a2fc-cfc2d4c92eef" class="">Okay.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8007-832f-f3afbb6dd869" class="">Not even on the phone? No. Okay. Once it&#x27;s done, I mean, I can, it&#x27;ll be something we can kind of show and tell, but I&#x27;ll have the whole tech stack, I&#x27;ll have that all documented as well. so we can understand at a technical level.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80d3-94b3-d025b24cff8e" class="">Yeah, so I guess my main question is you&#x27;re thinking there&#x27;s not really any way for, other than watching our marketing, TikTok has no real idea of Wouldn&#x27;t be able to tell that there&#x27;s anything funky going on. Anything they don&#x27;t want happening, they&#x27;re not really going to know without...</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80c3-bff4-cc2933218265" class="">I mean, we&#x27;re doing Yuka in a more friendly way. They have their sellers hit... Yuka what? They have their sellers hit export and give them the export files. We&#x27;re exporting Without them having to they&#x27;re pushing a different button. You know, it&#x27;s yeah, we&#x27;re doing the same thing Awesome. Maybe even more, just depending what&#x27;s in the exports. I don&#x27;t know if it covers everything on the screen, but we may have a broader reach.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-804b-b4a5-f9fe3b981c6b" class="">All right. But we&#x27;re not, yeah, since we&#x27;re not like, I mean, the thing that they don&#x27;t like about scraping is the constant, you know, the DDoS basically, right? I mean, that&#x27;s one of multiple things maybe, but that would be where they would definitely catch us if we, but we&#x27;re not doing anything like that. So, yeah, because I mean, I don&#x27;t want to like roll this out wide and then everybody&#x27;s account gets banned for being associated with it.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80eb-9d7d-f0aadddcf1ab" class="">But it doesn&#x27;t sound right. That would be the opposite of what we&#x27;re wanting to achieve. But it doesn&#x27;t. Yeah, okay. So yeah, just as long as you&#x27;re aware of that, if something, a concern of that being a possibility or whatever comes up, let&#x27;s have a conversation about that. Sounds like you kind of would know what TikTok would know and what they would find out and like where those lines would be. Oh yeah.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-807e-af56-edf622f7eba1" class="">Seems like we&#x27;ll be alright.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-800a-bd13-c45da61857e6" class="">I think so. Awesome. So similar to what you guys do in just different method though?</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-803f-9453-d1025f9d282f" class="">Yeah, I don&#x27;t actually know what you was doing. So they&#x27;re having sellers download and export their data and then upload it to YUKA for the YUKA contests and stuff? Well, I don&#x27;t know definitively.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80a7-9e41-de3741504675" class="">I had him look at it. I signed up my girl&#x27;s account to YUKA. She hadn&#x27;t done it on this new account. And then he looked at it from what he gathered there.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8051-9ccc-ef3c5e1eccdf" class="">Do it with your tummy and you&#x27;re sitting on the--He looked at it and what? Now they&#x27;ve heard her.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8056-a5cf-f67c88c9f90f" class="">So you said they&#x27;re doing partner API to users self-exporting their data and sharing it with them. That&#x27;s something they call bio algorithm AI. So they&#x27;re self-exporting their data and they&#x27;re sharing it with you. That&#x27;s kind of similar, I guess, to what we&#x27;d be doing with this method. Awesome. And Yucca&#x27;s not getting their people banned. Yuka what? Yuka&#x27;s not getting their people banned. Yeah. That&#x27;s a lot of people. Awesome.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80c0-b7d9-d101eb719e1c" class="">Awesome album. Alright. Keep it up.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8029-bf58-cbe15f8c2337" class="">My shit is floating. This is a sample, right? Oh, it just turned off. That&#x27;s why I saw the light off. So I was wondering, I was just balancing on nothing.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80ce-8430-cbfc1bef0f76" class="">Instead of the self-balancing skate, that was my actual balance you got to watch. Who&#x27;s the seller on this? Zoom. Z-U-U-M. When he has them on sale, They&#x27;re like 360 or something He has not had them on sale for a while, so they&#x27;re like $700. He had a supply chain issue and he said, &quot;Well, instead of like taking them down, I do still have a decent amount of them. So if we just Allow it to be retail at $700.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80b7-b83b-fc8d64a5005d" class="">He says he&#x27;s selling them, but like, way, way, way less than before because $700 is a crazy price for these. He&#x27;s like, but that&#x27;s been helping out with the retail issue, bringing in these $700 sales. Yeah, right, right. I had a refundable sample and I got my refund before he raised the price. How many did you have to sell? Uh, I don&#x27;t remember. Three would be my guess, but I don&#x27;t remember. I&#x27;m gonna find out if I can get, I&#x27;m gonna try to get a refundable sample for a Samsung monitor.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8044-b3da-cb0cf7d0aa5a" class="">Could be a fun gadget to have, but more so to sell it. Did you already return the phones? No, I got an extension. Oh, cool.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80f7-a6d6-deed522999a6" class="">How many have you sold?</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80ed-ab00-cf5e7322bd17" class="">Of the phones? I don&#x27;t know, 100,000 in GMV of Samsung. So that&#x27;s phone and the buds. Yeah. Yeah. So as a gift, They&#x27;re giving me a $200 pair of Buds Pro. I said yay, thanks. They&#x27;re not gonna give you the phone? Just give you the phone, that&#x27;s fine. Not gonna give me the phones. That&#x27;s crazy. They&#x27;re gonna give me a $200 pair of buds. I mean, this is like a gift and a thank you, so I really can&#x27;t be like, I was, I didn&#x27;t think they were going to give me anything. So that&#x27;s cool.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8093-8006-d8f47093913f" class="">And also I didn&#x27;t know I did that much, but they reached out to me and said, Hey, yeah, thank you for doing a hundred thousand. We&#x27;re going to ship you a pair of the Buzz Pro. I was like, can you make the rose gold one? Cause a lot of comments are about that. I feel like that&#x27;d be a better, I can sell that one. And I was like, actually, I&#x27;ll finally connect the buds to my phone.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80e9-9092-dfdf390c0c99" class="">I didn&#x27;t want to use them because I knew I was going to return them.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8047-8bbe-efc620e79527" class="">I didn&#x27;t want to get addicted to these things and then have to return them. Yeah, I&#x27;ll see if I can, maybe I could get a refundable sample of the phone.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-805b-aa4c-c0f2d6e238e3" class="">Was that an option?</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80bf-aad6-e22af185267e" class="">Because if that&#x27;s an option...</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8059-85cd-e28b436aa3cf" class="">Probably is for youSo...</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-800e-bf94-c2dbf65566f1" class="">No refundable sample on that, but that&#x27;s what... I&#x27;m going to see if I can get a refundable sample for it. 32 inch Wait, so 32 inch means set an angle, right? Is that what that is you think?</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-802f-9678-f9d7f5b69da9" class="">Hey, Kyle.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80f6-9966-edad0203e96c" class="">Do you know what size monitors these are?</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8077-962f-c1989adf4553" class="">Good point.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8049-b033-d59de0d29407" class="">27. OK. So this is quite a bit bigger. Well, at least not 5 inches, but 5 inches is a lot. That&#x27;s what she said.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80eb-97d6-cee1a91ffb04" class="">Let&#x27;s see if this works.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-805b-b9a3-e5672401089d" class="">All right, I installed the one on there.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80a1-987e-d013237bff92" class="">That&#x27;s where we want to go. Hold that up. Oh, it&#x27;s just in dist. Yay! Thanks for making it easy.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-802b-ace1-d7d262dab794" class="">ADB unknown. Oh. How about install has two L&#x27;s.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80a9-a1b2-f278a3708dfa" class="">Oh, that&#x27;s a real number, 4302944. I recognize that shit. We got dated now.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80e9-86a5-cabba75da38a" class="">Let me see.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-808c-bdde-d9b017291319" class="">That&#x27;s some data. This is all Wizard deals. One more time? We got data now. How&#x27;d she do? Cool. Oh, you got no data in the last 24 hours. Oh, yeah, that&#x27;s right. Because it&#x27;s a dead account. Yeah.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-806d-ae1d-fb836785c94d" class="">We should do the same for your other as well. Just have some more real data.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80d0-a137-d64b37a80db6" class="">I just got a response right here. Huh? Look. You&#x27;ve kind of just given up or what? No, she just sent me this today.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80dd-837f-f93472308d6c" class="">Oh, okay, yeah. I know this is not the news that you&#x27;re hoping to hear. Yeah, okay.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8057-a9b5-f66a2490a036" class="">But she hasn&#x27;t killed it yet. She kind of tried to today. Oh, yeah.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8050-a95f-e3c48eec6fd3" class="">Damn. General regret. I&#x27;m going to re-escalate the violation on your account for additional deterrent. The original decision was made. Please believe me, I truly wish...</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-8065-b6c6-f84a5b2b5442" class="">Yeah, she just copied what they sent me in the ticket, basically. Shhh. I think she&#x27;s mad. She told me. Okay, I don&#x27;t think so because watch. Go to here.</p></div><div style="display:contents" dir="auto"><p id="35204b9d-4ca9-80f4-a383-fcd6dc6bd8e8" class="">Hey, how&#x27;d that take so week and a half? Did what? She takes the weekend off? Yeah, I mean, she&#x27;s trained on, on that kind of data. He thinks everyone&#x27;s an AI at TikTok. The CEO&#x27;s an AI. That&#x27;s their goal.</p></div></div></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

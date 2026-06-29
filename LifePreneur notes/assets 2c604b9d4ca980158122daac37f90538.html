@@ -1,0 +1,1328 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>assets </title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2c604b9d-4ca9-8015-8122-daac37f90538" class="page sans"><header><h1 class="page-title" dir="auto">assets </h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-person"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/friends_gray.svg" style="width:14px;height:14px;display:block"/></span>Owner</th><td><span class="user"><img src="https://lh3.googleusercontent.com/a-/AOh14Ggy0FcyX-X6EW32d0jOd5HNUZl3VcBq7Msx_b4mPQ=s100" class="icon user-icon"/>Daniel Johnson</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>Tags</th><td></td></tr></tbody></table></header><div class="page-body"><div style="display:contents" dir="auto"><div id="2d004b9d-4ca9-803a-a18b-f8cbab1de997" class="column-list"><div style="display:contents" dir="auto"><div id="2d004b9d-4ca9-8043-b974-ce0a32ed70a3" style="width:50%" class="column"><div style="display:contents" dir="auto"><p id="2d004b9d-4ca9-8045-a9fa-d6d448494313" class="">orange</p></div><div style="display:contents" dir="auto"><p id="2d004b9d-4ca9-801c-bdd7-d0831ca92012" class="">orange (badge / button)</p></div><div style="display:contents" dir="auto"><p id="2d004b9d-4ca9-80b1-81ea-dd7a1d9f0d24" class="">blue (.bg-primary, cta button)</p></div><div style="display:contents" dir="auto"><p id="2d004b9d-4ca9-804e-8fe6-c4d8a09d35e6" class="">
+</p></div></div></div><div style="display:contents" dir="auto"><div id="2d004b9d-4ca9-80fb-a13e-d86c103032a4" style="width:50%" class="column"><div style="display:contents" dir="auto"><p id="2d004b9d-4ca9-80d4-96fd-e74783e581dd" class="">#F58634</p></div><div style="display:contents" dir="auto"><p id="2d004b9d-4ca9-806c-a40a-f250c9fe5988" class="">#cf600e</p></div><div style="display:contents" dir="auto"><p id="2d004b9d-4ca9-801a-92c7-e924fc52510a" class="">#1D5DEC</p></div></div></div></div></div><div style="display:contents" dir="ltr"><figure id="2c604b9d-4ca9-803f-a268-f2e179c2cce4" class="image"><a href="assets/17654413290631825009923010859137.png"><img style="width:200px" src="assets/17654413290631825009923010859137.png"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="2df04b9d-4ca9-80e0-8332-c8b2f9e80640" class="image"><a href="assets/image.png"><img style="width:40px" src="assets/image.png"/></a></figure></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><pre id="2df04b9d-4ca9-8040-b22b-f810c8afac9d" class="code code-wrap"><code class="language-css" style="white-space:pre-wrap;word-break:break-all">:root {
+    --lightningcss-light: ;
+    --lightningcss-dark: initial;
+    color-scheme: dark;
+    --lp-background: #0f172a;
+    --lp-foreground: #f8fafc;
+    --lp-surface: #111c32;
+    --lp-surface-foreground: #e2e8f0;
+    --lp-muted: #1e293b;
+    --lp-muted-foreground: #cbd5f5;
+    --lp-border: #1f2937;
+    --lp-input: #1f2937;
+    --lp-ring: #fb923c;
+    --lp-primary: #fb923c;
+    --lp-primary-foreground: #0f172a;
+    --lp-secondary: #f59e0b;
+    --lp-secondary-foreground: #0f172a;
+    --lp-accent: #38bdf8;
+    --lp-accent-foreground: #0f172a;
+    --lp-success: #22c55e;
+    --lp-success-foreground: #022c22;
+    --lp-warning: #facc15;
+    --lp-warning-foreground: #111827;
+    --lp-destructive: #f87171;
+    --lp-destructive-foreground: #450a0a;
+    --lp-card: #111c32;
+    --lp-card-foreground: #f8fafc;
+    --lp-popover: #111c32;
+    --lp-popover-foreground: #f8fafc;
+    --lp-muted-border: #e2e8f029;
+    --background: #0b0e14;
+    --surface: #11151c;
+    --border: #1b2230;
+    --primary: #ff6b00;
+    --foreground: #e6eef8;
+    --muted: #9aa8b6;
+    --primary-foreground: #0b0e14
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --lightningcss-light: ;
+        --lightningcss-dark: initial;
+        color-scheme: dark;
+        --lp-background: #0f172a;
+        --lp-foreground: #f8fafc;
+        --lp-surface: #111c32;
+        --lp-surface-foreground: #e2e8f0;
+        --lp-muted: #1e293b;
+        --lp-muted-foreground: #cbd5f5;
+        --lp-border: #1f2937;
+        --lp-input: #1f2937;
+        --lp-ring: #fb923c;
+        --lp-primary: #fb923c;
+        --lp-primary-foreground: #0f172a;
+        --lp-secondary: #f59e0b;
+        --lp-secondary-foreground: #0f172a;
+        --lp-accent: #38bdf8;
+        --lp-accent-foreground: #0f172a;
+        --lp-success: #22c55e;
+        --lp-success-foreground: #022c22;
+        --lp-warning: #facc15;
+        --lp-warning-foreground: #111827;
+        --lp-destructive: #f87171;
+        --lp-destructive-foreground: #450a0a;
+        --lp-card: #111c32;
+        --lp-card-foreground: #f8fafc;
+        --lp-popover: #111c32;
+        --lp-popover-foreground: #f8fafc;
+        --lp-muted-border: #e2e8f029;
+        --background: #0b0e14;
+        --surface: #11151c;
+        --border: #1b2230;
+        --primary: #ff6b00;
+        --foreground: #e6eef8;
+        --muted: #9aa8b6;
+        --primary-foreground: #0b0e14
+    }
+}
+
+[data-theme=dark] {
+    --lightningcss-light: ;
+    --lightningcss-dark: initial;
+    color-scheme: dark;
+    --lp-background: #0f172a;
+    --lp-foreground: #f8fafc;
+    --lp-surface: #111c32;
+    --lp-surface-foreground: #e2e8f0;
+    --lp-muted: #1e293b;
+    --lp-muted-foreground: #cbd5f5;
+    --lp-border: #1f2937;
+    --lp-input: #1f2937;
+    --lp-ring: #fb923c;
+    --lp-primary: #fb923c;
+    --lp-primary-foreground: #0f172a;
+    --lp-secondary: #f59e0b;
+    --lp-secondary-foreground: #0f172a;
+    --lp-accent: #38bdf8;
+    --lp-accent-foreground: #0f172a;
+    --lp-success: #22c55e;
+    --lp-success-foreground: #022c22;
+    --lp-warning: #facc15;
+    --lp-warning-foreground: #111827;
+    --lp-destructive: #f87171;
+    --lp-destructive-foreground: #450a0a;
+    --lp-card: #111c32;
+    --lp-card-foreground: #f8fafc;
+    --lp-popover: #111c32;
+    --lp-popover-foreground: #f8fafc;
+    --lp-muted-border: #e2e8f029;
+    --background: #0b0e14;
+    --surface: #11151c;
+    --border: #1b2230;
+    --primary: #ff6b00;
+    --foreground: #e6eef8;
+    --muted: #9aa8b6;
+    --primary-foreground: #0b0e14
+}</code></pre></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js" integrity="sha512-m3JYEI6gx5fh9jF10FjGoMzVKcV2N6nchcDcqPCdI1L3R2WQV7br2XVNR8iTLb2daOMRl3zldbcfT40xU2ntVw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="2df04b9d-4ca9-80f9-af2d-d05c4075da07" class="code code-wrap"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">{
+    default: &quot;bg-primary/10 text-primary border-primary/40&quot;,
+    primary: &quot;bg-primary text-primary-foreground border-primary&quot;,
+    success: &quot;bg-accent-success/10 text-accent-success border-accent-success/40&quot;,
+    warning: &quot;bg-accent-warning/10 text-accent-warning border-accent-warning/40&quot;,
+    error: &quot;bg-accent-error/10 text-accent-error border-accent-error/40&quot;,
+    info: &quot;bg-accent-info/10 text-accent-info border-accent-info/40&quot;,
+    muted: &quot;bg-muted/10 text-muted border-muted/40&quot;,
+    active: &quot;border-primary/40 bg-primary/10 text-primary&quot;,
+    inactive: &quot;border-muted/40 bg-muted/10 text-muted&quot;,
+    unknown: &quot;border-muted/40 bg-muted/10 text-muted&quot;
+}</code></pre></div><div style="display:contents" dir="auto"><pre id="2df04b9d-4ca9-8005-9298-c204e98b982d" class="code code-wrap"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">{
+    sm: &quot;px-3 py-1 text-xs font-semibold uppercase tracking-[0.05em]&quot;,
+    md: &quot;px-4 py-1.5 text-base font-medium&quot;,
+    lg: &quot;px-5 py-2 text-lg font-medium&quot;
+}</code></pre></div><div style="display:contents" dir="auto"><p id="2df04b9d-4ca9-8056-9bcd-f499949d92fc" class=""><a href="https://www.lifepreneur.io/_next/static/chunks/3830b6d94bfbf83c.js?dpl=dpl_5afMJCME2B2dmskLouqvzV5NQgYu">https://www.lifepreneur.io/_next/static/chunks/3830b6d94bfbf83c.js?dpl=dpl_5afMJCME2B2dmskLouqvzV5NQgYu</a> (one-time password - Supabase)</p></div><div style="display:contents" dir="auto"><pre id="2df04b9d-4ca9-800b-8476-ec19177441ad" class="code code-wrap"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">(globalThis.TURBOPACK || (globalThis.TURBOPACK = [])).push([&quot;object&quot; == typeof document ? document.currentScript : void 0, 3184, e =&gt; {
+    &quot;use strict&quot;;
+    function t(...e) {
+        return e.filter(Boolean).join(&quot; &quot;)
+    }
+    e.s([&quot;cx&quot;, () =&gt; t])
+}
+, 57383, e =&gt; {
+    &quot;use strict&quot;;
+    var t = e.i(59031)
+      , r = e.i(3184);
+    let i = {
+        success: &quot;border-success/40 bg-success/10 text-success&quot;,
+        warning: &quot;border-warning/40 bg-warning/10 text-warning&quot;,
+        error: &quot;border-destructive/40 bg-destructive/10 text-destructive&quot;,
+        info: &quot;border-primary/40 bg-primary/10 text-primary&quot;
+    };
+    function s({variant: e, children: s, className: a, role: n=&quot;error&quot; === e ? &quot;alert&quot; : &quot;status&quot;, &quot;aria-live&quot;: o=&quot;error&quot; === e ? &quot;assertive&quot; : &quot;polite&quot;, ...l}) {
+        return (0,
+        t.jsx)(&quot;div&quot;, {
+            className: (0,
+            r.cx)(&quot;rounded-md border px-4 py-3 text-sm&quot;, i[e], a),
+            role: n,
+            &quot;aria-live&quot;: o,
+            ...l,
+            children: s
+        })
+    }
+    e.s([&quot;Alert&quot;, () =&gt; s])
+}
+, 65267, e =&gt; {
+    &quot;use strict&quot;;
+    var t = e.i(59031)
+      , r = e.i(27946)
+      , i = e.i(15117)
+      , s = e.i(93177)
+      , a = e.i(46492)
+      , n = e.i(57383);
+    let o = [&quot;test.com&quot;, &quot;test.net&quot;, &quot;test.org&quot;, &quot;example.com&quot;, &quot;example.net&quot;, &quot;example.org&quot;, &quot;fake.com&quot;, &quot;invalid.com&quot;, &quot;localhost&quot;];
+    function l({onSuccess: e, redirectTo: l, title: c=&quot;Sign in&quot;, subtitle: d, className: u, liveRegionId: m=&quot;otp-live-region&quot;}) {
+        let f = (0,
+        i.useRouter)()
+          , g = (0,
+        i.useSearchParams)()
+          , p = (0,
+        i.usePathname)()
+          , {executeRecaptcha: h} = (0,
+        s.useGoogleReCaptcha)()
+          , [x,y] = (0,
+        r.useState)(&quot;email&quot;)
+          , [b,v] = (0,
+        r.useState)(&quot;&quot;)
+          , [j,w] = (0,
+        r.useState)(&quot;&quot;)
+          , [S,k] = (0,
+        r.useState)(!1)
+          , [C,N] = (0,
+        r.useState)(!1)
+          , [P,T] = (0,
+        r.useState)(null)
+          , [R,q] = (0,
+        r.useState)(null)
+          , [E,I] = (0,
+        r.useState)(0)
+          , [L,A] = (0,
+        r.useState)(null)
+          , V = (0,
+        r.useRef)(null)
+          , _ = l || g?.get(&quot;redirectTo&quot;) || (p ? p + (g?.toString() ? `?${g.toString()}` : &quot;&quot;) : &quot;&quot;) || &quot;/account&quot;
+          , B = (0,
+        r.useCallback)(e =&gt; {
+            let t = document.getElementById(m);
+            t &amp;&amp; (t.textContent = e)
+        }
+        , [m]);
+        async function O(e) {
+            if (e.preventDefault(),
+            T(null),
+            q(null),
+            &quot;undefined&quot; != typeof navigator &amp;&amp; !navigator.onLine)
+                return void T(&quot;You appear to be offline. Please check your internet connection.&quot;);
+            let t = Date.now();
+            if (E &gt; 0 &amp;&amp; t - E &lt; 6e4) {
+                let e = Math.ceil((6e4 - (t - E)) / 1e3);
+                T(`Please wait ${e} seconds before requesting another code.`);
+                return
+            }
+            let r = function(e) {
+                let t = e.trim();
+                if (!t)
+                    return {
+                        isValid: !1,
+                        error: &quot;Email is required.&quot;
+                    };
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(t))
+                    return {
+                        isValid: !1,
+                        error: &quot;Please enter a valid email address.&quot;
+                    };
+                let r = t.toLowerCase()
+                  , i = r.split(&quot;@&quot;)[1];
+                return o.includes(i) ? {
+                    isValid: !1,
+                    error: &quot;Please use a real email address, not a test domain.&quot;
+                } : {
+                    isValid: !0,
+                    normalized: r
+                }
+            }(b);
+            if (!r.isValid)
+                return void T(r.error || &quot;Please enter a valid email address.&quot;);
+            let i = r.normalized
+              , s = null;
+            if (!h)
+                return void T(&quot;Security check not ready. Please refresh and try again.&quot;);
+            try {
+                if (!(s = await h(&quot;login&quot;)))
+                    return void T(&quot;Security verification failed. Please refresh and try again.&quot;)
+            } catch (e) {
+                return void T(&quot;Security verification failed. Please refresh and try again.&quot;)
+            }
+            if (!s)
+                return void T(&quot;Security verification required. Please refresh and try again.&quot;);
+            k(!0),
+            B(&quot;Sending verification code...&quot;);
+            try {
+                let e = fetch(&quot;/api/auth/otp&quot;, {
+                    method: &quot;POST&quot;,
+                    headers: {
+                        &quot;Content-Type&quot;: &quot;application/json&quot;
+                    },
+                    body: JSON.stringify({
+                        email: i,
+                        recaptchaToken: s || &quot;&quot;
+                    })
+                })
+                  , r = new Promise( (e, t) =&gt; setTimeout( () =&gt; t(Error(&quot;Request timed out&quot;)), 15e3))
+                  , a = await Promise.race([e, r]);
+                if (!a.ok) {
+                    let e = await a.json().catch( () =&gt; ({}));
+                    throw Error(e.error || `Request failed with status ${a.status}`)
+                }
+                await a.json(),
+                I(t),
+                A(t + 6e5),
+                y(&quot;code&quot;);
+                let n = `We sent a 6-digit code to ${i}. Check your inbox and spam folder.`;
+                q(n),
+                B(n),
+                sessionStorage.setItem(&quot;otp_email&quot;, i),
+                sessionStorage.setItem(&quot;otp_step&quot;, &quot;code&quot;),
+                v(i)
+            } catch (e) {
+                if (e?.message === &quot;Request timed out&quot;)
+                    T(&quot;Request is taking too long. Please check your connection and try again.&quot;),
+                    B(&quot;Request timed out. Please try again.&quot;);
+                else {
+                    let t = function(e) {
+                        if (!e || &quot;object&quot; != typeof e)
+                            return &quot;Could not send the code. Please try again.&quot;;
+                        let t = e.message || &quot;&quot;
+                          , r = e.status;
+                        return !navigator.onLine || t.toLowerCase().includes(&quot;network&quot;) || t.toLowerCase().includes(&quot;fetch&quot;) ? &quot;Network error. Please check your internet connection and try again.&quot; : 429 === r || t.toLowerCase().includes(&quot;rate&quot;) || t.toLowerCase().includes(&quot;too many&quot;) ? &quot;Too many requests. Please wait a few minutes and try again.&quot; : 422 === r || t.toLowerCase().includes(&quot;invalid&quot;) ? &quot;Invalid email address. Please check and try again.&quot; : r &amp;&amp; r &gt;= 500 ? &quot;Service temporarily unavailable. Please try again in a moment.&quot; : t || &quot;Could not send the code. Please try again.&quot;
+                    }(e);
+                    T(t),
+                    B(t)
+                }
+            } finally {
+                k(!1)
+            }
+        }
+        async function D(e) {
+            e.preventDefault(),
+            await $(j)
+        }
+        async function $(t) {
+            T(null),
+            q(null),
+            N(!0),
+            B(&quot;Verifying code...&quot;);
+            try {
+                let r = (0,
+                a.createBrowserSupabaseClient)()
+                  , {error: i} = await r.auth.verifyOtp({
+                    email: b.trim().toLowerCase(),
+                    token: t.trim(),
+                    type: &quot;email&quot;
+                });
+                if (i)
+                    throw i;
+                B(&quot;Code verified successfully. Redirecting...&quot;),
+                sessionStorage.removeItem(&quot;otp_email&quot;),
+                sessionStorage.removeItem(&quot;otp_step&quot;),
+                e ? e(_) : (f.push(_),
+                f.refresh())
+            } catch (t) {
+                let e = t?.message || &quot;Invalid or expired code. Please try again.&quot;;
+                T(e),
+                B(e)
+            } finally {
+                N(!1)
+            }
+        }
+        (0,
+        r.useEffect)( () =&gt; {
+            let e = sessionStorage.getItem(&quot;otp_email&quot;)
+              , t = sessionStorage.getItem(&quot;otp_step&quot;);
+            e &amp;&amp; &quot;code&quot; === t &amp;&amp; (v(e),
+            y(&quot;code&quot;),
+            q(`We sent a 6-digit code to ${e}. Enter it below.`))
+        }
+        , []),
+        (0,
+        r.useEffect)( () =&gt; {
+            &quot;code&quot; === x &amp;&amp; V.current &amp;&amp; setTimeout( () =&gt; {
+                V.current?.focus()
+            }
+            , 100)
+        }
+        , [x]),
+        (0,
+        r.useEffect)( () =&gt; {
+            R &amp;&amp; B(R)
+        }
+        , [R, B]),
+        (0,
+        r.useEffect)( () =&gt; {
+            P &amp;&amp; B(P)
+        }
+        , [P, B]);
+        let z = ( () =&gt; {
+            if (0 === E)
+                return 0;
+            let e = Date.now() - E;
+            return e &gt;= 6e4 ? 0 : Math.ceil((6e4 - e) / 1e3)
+        }
+        )()
+          , M = 0 === z;
+        return (0,
+        t.jsxs)(&quot;div&quot;, {
+            className: u,
+            children: [(0,
+            t.jsx)(&quot;div&quot;, {
+                id: m,
+                role: &quot;status&quot;,
+                &quot;aria-live&quot;: &quot;polite&quot;,
+                &quot;aria-atomic&quot;: &quot;true&quot;,
+                className: &quot;sr-only&quot;
+            }), &quot;email&quot; === x &amp;&amp; (0,
+            t.jsxs)(&quot;form&quot;, {
+                onSubmit: O,
+                className: &quot;space-y-4&quot;,
+                children: [(0,
+                t.jsxs)(&quot;label&quot;, {
+                    className: &quot;block&quot;,
+                    children: [(0,
+                    t.jsx)(&quot;span&quot;, {
+                        className: &quot;text-sm font-medium text-foreground&quot;,
+                        children: &quot;Email&quot;
+                    }), (0,
+                    t.jsx)(&quot;input&quot;, {
+                        type: &quot;email&quot;,
+                        required: !0,
+                        value: b,
+                        onChange: e =&gt; v(e.target.value),
+                        className: &quot;mt-1 w-full rounded-md bg-surface border border-border px-3 py-2 text-foreground focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-background focus:outline-none&quot;,
+                        placeholder: &quot;you@example.com&quot;,
+                        autoComplete: &quot;email&quot;
+                    })]
+                }), (0,
+                t.jsxs)(&quot;button&quot;, {
+                    type: &quot;submit&quot;,
+                    disabled: S || !b,
+                    className: &quot;w-full rounded-md bg-primary text-primary-foreground px-4 py-2 hover:bg-primary/90 focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-background disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center&quot;,
+                    children: [S &amp;&amp; (0,
+                    t.jsxs)(&quot;svg&quot;, {
+                        className: &quot;animate-spin h-4 w-4 mr-2&quot;,
+                        viewBox: &quot;0 0 24 24&quot;,
+                        children: [(0,
+                        t.jsx)(&quot;circle&quot;, {
+                            className: &quot;opacity-25&quot;,
+                            cx: &quot;12&quot;,
+                            cy: &quot;12&quot;,
+                            r: &quot;10&quot;,
+                            stroke: &quot;currentColor&quot;,
+                            strokeWidth: &quot;4&quot;,
+                            fill: &quot;none&quot;
+                        }), (0,
+                        t.jsx)(&quot;path&quot;, {
+                            className: &quot;opacity-75&quot;,
+                            fill: &quot;currentColor&quot;,
+                            d: &quot;M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z&quot;
+                        })]
+                    }), S ? &quot;Sending…&quot; : &quot;Send code&quot;]
+                }), R &amp;&amp; (0,
+                t.jsx)(n.Alert, {
+                    variant: &quot;info&quot;,
+                    children: R
+                }), P &amp;&amp; (0,
+                t.jsx)(n.Alert, {
+                    variant: &quot;error&quot;,
+                    children: P
+                })]
+            }), &quot;code&quot; === x &amp;&amp; (0,
+            t.jsxs)(&quot;form&quot;, {
+                onSubmit: D,
+                className: &quot;space-y-4&quot;,
+                children: [(0,
+                t.jsxs)(&quot;div&quot;, {
+                    className: &quot;rounded-md bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 p-3 mb-4&quot;,
+                    children: [(0,
+                    t.jsxs)(&quot;p&quot;, {
+                        className: &quot;text-sm text-green-800 dark:text-green-200&quot;,
+                        children: [&quot;✓ Code sent! Check your email at &quot;, (0,
+                        t.jsx)(&quot;strong&quot;, {
+                            children: b
+                        })]
+                    }), (0,
+                    t.jsx)(&quot;p&quot;, {
+                        className: &quot;text-xs text-green-700 dark:text-green-300 mt-1&quot;,
+                        children: &quot;Check your spam folder if you don&#x27;t see it. Codes expire in 10 minutes.&quot;
+                    })]
+                }), (0,
+                t.jsxs)(&quot;label&quot;, {
+                    className: &quot;block&quot;,
+                    children: [(0,
+                    t.jsx)(&quot;span&quot;, {
+                        className: &quot;text-sm font-medium text-foreground&quot;,
+                        children: &quot;6-digit code&quot;
+                    }), (0,
+                    t.jsx)(&quot;input&quot;, {
+                        ref: V,
+                        inputMode: &quot;numeric&quot;,
+                        pattern: &quot;[0-9]*&quot;,
+                        maxLength: 6,
+                        required: !0,
+                        value: j,
+                        onChange: function(e) {
+                            let t = e.target.value.replace(/\D/g, &quot;&quot;);
+                            w(t),
+                            6 === t.length &amp;&amp; setTimeout( () =&gt; {
+                                $(t)
+                            }
+                            , 300)
+                        },
+                        className: &quot;mt-1 w-full rounded-md bg-surface border border-border px-3 py-2 tracking-widest text-foreground focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-background focus:outline-none&quot;,
+                        placeholder: &quot;••••••&quot;,
+                        autoComplete: &quot;one-time-code&quot;
+                    })]
+                }), (0,
+                t.jsxs)(&quot;div&quot;, {
+                    className: &quot;flex items-center gap-3&quot;,
+                    children: [(0,
+                    t.jsxs)(&quot;button&quot;, {
+                        type: &quot;submit&quot;,
+                        disabled: C || j.length &lt; 6,
+                        className: &quot;flex-1 rounded-md bg-primary text-primary-foreground px-4 py-2 hover:bg-primary/90 focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-background disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center&quot;,
+                        children: [C &amp;&amp; (0,
+                        t.jsxs)(&quot;svg&quot;, {
+                            className: &quot;animate-spin h-4 w-4 mr-2&quot;,
+                            viewBox: &quot;0 0 24 24&quot;,
+                            children: [(0,
+                            t.jsx)(&quot;circle&quot;, {
+                                className: &quot;opacity-25&quot;,
+                                cx: &quot;12&quot;,
+                                cy: &quot;12&quot;,
+                                r: &quot;10&quot;,
+                                stroke: &quot;currentColor&quot;,
+                                strokeWidth: &quot;4&quot;,
+                                fill: &quot;none&quot;
+                            }), (0,
+                            t.jsx)(&quot;path&quot;, {
+                                className: &quot;opacity-75&quot;,
+                                fill: &quot;currentColor&quot;,
+                                d: &quot;M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z&quot;
+                            })]
+                        }), C ? &quot;Verifying…&quot; : &quot;Sign in&quot;]
+                    }), (0,
+                    t.jsx)(&quot;button&quot;, {
+                        type: &quot;button&quot;,
+                        className: &quot;text-sm text-primary hover:underline focus-ring&quot;,
+                        onClick: function() {
+                            y(&quot;email&quot;),
+                            w(&quot;&quot;),
+                            q(null),
+                            T(null),
+                            A(null),
+                            sessionStorage.removeItem(&quot;otp_email&quot;),
+                            sessionStorage.removeItem(&quot;otp_step&quot;)
+                        },
+                        children: &quot;Use a different email&quot;
+                    })]
+                }), (0,
+                t.jsx)(&quot;div&quot;, {
+                    className: &quot;mt-4 text-center border-t border-border pt-4&quot;,
+                    children: M ? (0,
+                    t.jsx)(&quot;button&quot;, {
+                        type: &quot;button&quot;,
+                        onClick: e =&gt; {
+                            e.preventDefault(),
+                            O(e)
+                        }
+                        ,
+                        disabled: S,
+                        className: &quot;text-sm text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background rounded disabled:opacity-50&quot;,
+                        children: S ? &quot;Sending…&quot; : &quot;Resend code&quot;
+                    }) : (0,
+                    t.jsxs)(&quot;p&quot;, {
+                        className: &quot;text-sm text-muted&quot;,
+                        children: [&quot;Resend code in &quot;, z, &quot; second&quot;, 1 !== z ? &quot;s&quot; : &quot;&quot;]
+                    })
+                }), R &amp;&amp; (0,
+                t.jsx)(n.Alert, {
+                    variant: &quot;info&quot;,
+                    children: R
+                }), P &amp;&amp; (0,
+                t.jsx)(n.Alert, {
+                    variant: &quot;error&quot;,
+                    children: P
+                })]
+            })]
+        })
+    }
+    e.s([&quot;OTPForm&quot;, () =&gt; l])
+}
+, 17092, e =&gt; {
+    &quot;use strict&quot;;
+    var t = e.i(59031)
+      , r = e.i(15117)
+      , i = e.i(65267);
+    function s() {
+        let e = (0,
+        r.useSearchParams)().get(&quot;redirectTo&quot;) || &quot;/account&quot;;
+        return (0,
+        t.jsxs)(&quot;main&quot;, {
+            className: &quot;max-w-md mx-auto p-6 space-y-6&quot;,
+            children: [(0,
+            t.jsx)(&quot;div&quot;, {
+                children: (0,
+                t.jsx)(&quot;h1&quot;, {
+                    className: &quot;text-2xl font-semibold leading-tight text-foreground md:leading-tight&quot;,
+                    children: &quot;Sign in&quot;
+                })
+            }), (0,
+            t.jsx)(i.OTPForm, {
+                redirectTo: e
+            })]
+        })
+    }
+    e.s([&quot;default&quot;, () =&gt; s])
+}
+]);
+</code></pre></div><div style="display:contents" dir="ltr"><figure id="2c604b9d-4ca9-8143-941e-f0c194731e34" class="image"><a href="assets/eyJpZCI6Im1fNjkzYTc2ODUyYmZjODE5MWJjMjVkMTE5MmYzOGY3NDA6ZmlsZV8wMDAwMDAwMDllODQ3MWZiYmMyN2RmMTE1MTUyYzU4YSIsInRzIjoiMjA0MzMiLCJwIjoicHlpIiwiY2lkIjoiMSIsInNpZyI6ImM0YmY2MDJkMDk2MzJlMmUyN2MxN2E5NDk4Yjg1OWMzM2YyNWJiZWViNmZkMTg3NmRlYjU5MzRiMjRiZTBhOTEiLCJ2IjoiMCIsImdpem1vX2lkIjpudWxsLCJjcCI6bnVsbCwibWEiOm51bGx9"><img style="width:700px" src="assets/eyJpZCI6Im1fNjkzYTc2ODUyYmZjODE5MWJjMjVkMTE5MmYzOGY3NDA6ZmlsZV8wMDAwMDAwMDllODQ3MWZiYmMyN2RmMTE1MTUyYzU4YSIsInRzIjoiMjA0MzMiLCJwIjoicHlpIiwiY2lkIjoiMSIsInNpZyI6ImM0YmY2MDJkMDk2MzJlMmUyN2MxN2E5NDk4Yjg1OWMzM2YyNWJiZWViNmZkMTg3NmRlYjU5MzRiMjRiZTBhOTEiLCJ2IjoiMCIsImdpem1vX2lkIjpudWxsLCJjcCI6bnVsbCwibWEiOm51bGx9"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="2c604b9d-4ca9-81fe-ba57-ec1a0f8e7ed3" class="image"><a href="assets/eyJpZCI6Im1fNjkzYTczMmY2YjhjODE5MTkzNzkwYjMxZDQ0NmU5YjY6ZmlsZV8wMDAwMDAwMDJmZDA3MjJmYmY0ZDg4MGQxYzMyMGIyOCIsInRzIjoiMjA0MzMiLCJwIjoicHlpIiwiY2lkIjoiMSIsInNpZyI6ImY1OTdlNDY4N2RlZGM5NWE4NDg3ZDMwNzhjYWE1NDIzN2NiYjk1MzQxNWViMTYyNDBiOGVhMzRkZTZkM2NkNDIiLCJ2IjoiMCIsImdpem1vX2lkIjpudWxsLCJjcCI6bnVsbCwibWEiOm51bGx9"><img style="width:700px" src="assets/eyJpZCI6Im1fNjkzYTczMmY2YjhjODE5MTkzNzkwYjMxZDQ0NmU5YjY6ZmlsZV8wMDAwMDAwMDJmZDA3MjJmYmY0ZDg4MGQxYzMyMGIyOCIsInRzIjoiMjA0MzMiLCJwIjoicHlpIiwiY2lkIjoiMSIsInNpZyI6ImY1OTdlNDY4N2RlZGM5NWE4NDg3ZDMwNzhjYWE1NDIzN2NiYjk1MzQxNWViMTYyNDBiOGVhMzRkZTZkM2NkNDIiLCJ2IjoiMCIsImdpem1vX2lkIjpudWxsLCJjcCI6bnVsbCwibWEiOm51bGx9"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="2c604b9d-4ca9-80d0-98d3-fa7fca7f6173" class="image"><a href="assets/17654372006578282544009478961845.jpg"><img style="width:365px" src="assets/17654372006578282544009478961845.jpg"/></a></figure></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

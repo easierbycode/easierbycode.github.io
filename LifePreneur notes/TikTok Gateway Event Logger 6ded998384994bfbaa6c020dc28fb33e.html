@@ -1,0 +1,867 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>TikTok Gateway / Event Logger</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="6ded9983-8499-4bfb-aa6c-020dc28fb33e" class="page sans"><header><h1 class="page-title" dir="auto">TikTok Gateway / Event Logger</h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-person"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/friends_gray.svg" style="width:14px;height:14px;display:block"/></span>Owner</th><td><span class="user"><img src="https://lh3.googleusercontent.com/a-/AOh14Ggy0FcyX-X6EW32d0jOd5HNUZl3VcBq7Msx_b4mPQ=s100" class="icon user-icon"/>Daniel Johnson</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>Tags</th><td></td></tr></tbody></table></header><div class="page-body"><div style="display:contents" dir="ltr"><div id="35904b9d-4ca9-803a-8db7-e48a2b9978d2" class="transcription"><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Summary<br/></div><div style="display:contents" dir="auto"><h3 id="35904b9d-4ca9-81b0-9b74-d9a69423903e" class="">Action Items</h3></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81b4-9edd-c29f99c93a6f" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Kyle to show working display of account data from connected accounts ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-817a-8d8e-cbad51234bd3" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Create UI skeleton for mobile app showing membership site flow and analytics tab ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81ee-b826-dc92a4ffbb70" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Develop account connection flow allowing users to connect multiple accounts with verification ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81bb-9905-d10ed60fb26f" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Create milestone-based roadmap with expected dates for development phases ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8143-9606-eb1f7e5607b5" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Team to conduct internal testing and eat own dog food before wider release ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-812d-ba2f-e86004c2b60f" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Continue working on TikTok login integration (currently blocked) ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81f3-b15c-f0a0b8f952c7" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Set up staging environments using DenoDeploy for phased rollouts ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-816d-99ab-d46d1f29e4f0" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Schedule follow-up meeting to discuss work arrangement with Kyle ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="35904b9d-4ca9-817b-ba98-db7f6859850b" class="">Strategic Direction</h3></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81a0-83c2-ccee0e28e8d8" class="bulleted-list"><li style="list-style-type:disc"><strong>Pivoting away from desktop solutions</strong>: Team decided to abandon bookmarklet and browser extension approaches in favor of focusing solely on mobile app development ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-811a-92fe-de3ba36dab70" class="bulleted-list"><li style="list-style-type:disc"><strong>App Store as primary distribution</strong>: The goal is to have approved apps in both Apple App Store and Google Play Store, creating trust and discoverability ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-819f-aae2-e86dcf27e14a" class="bulleted-list"><li style="list-style-type:disc"><strong>Accepting Apple&#x27;s fees</strong>: Team is willing to let Apple take 25% commission on memberships sold through the App Store, treating Apple as an affiliate ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8151-b55b-d380a9587573" class="bulleted-list"><li style="list-style-type:disc"><strong>Comprehensive app vision</strong>: The app will combine analytics data from TikTok accounts with membership content including training videos, creating an all-in-one experience ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35904b9d-4ca9-8120-951f-e6155b324444" class="">Three-Phase Rollout Plan</h3></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-81ef-9daa-f684658398c0" class=""><strong>Phase 1 - Internal Testing</strong>: Launch with team members to test functionality and connect accounts ‣</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8104-b076-f57d4e9695c0" class=""><strong>Phase 2 - Private Beta</strong>: Roll out to small group of active existing members for testing ‣ ‣</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8175-a08d-d4b16a02d7c4" class=""><strong>Phase 3 - Public App Store Launch</strong>: Submit to App Store for public availability once stable ‣ ‣</p></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-816e-a9a8-dc2357d78e7d" class="bulleted-list"><li style="list-style-type:disc">New members on free trial won&#x27;t need early access since they lack historical analytics to review ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81f8-b7db-fae9ae4e7ed3" class="bulleted-list"><li style="list-style-type:disc">Using DenoDeploy to maintain separate environments (QA, dev, beta, production) with unique URLs and databases for each phase ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35904b9d-4ca9-81bf-b62f-fb64f6544421" class="">Technical Implementation</h3></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-816d-ae0c-ce410b5686dd" class=""><strong>App Architecture</strong>:</p></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81b2-af41-f36d18dbc9d9" class="bulleted-list"><li style="list-style-type:disc">Starting with vanilla JavaScript and Svelte for rendering ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81e8-9232-d8002df54fe2" class="bulleted-list"><li style="list-style-type:disc">Using Cordova to wrap web content for Android and iOS ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81a1-b242-f932656207dc" class="bulleted-list"><li style="list-style-type:disc">Can also build for desktop (Mac, Windows) and PWA with service workers ‣</li></ul></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-812b-82e7-dd831ee0bef9" class=""><strong>Account Connection Flow</strong>:</p></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8108-9307-ed55112adea5" class="bulleted-list"><li style="list-style-type:disc">Users connect multiple TikTok accounts through the app ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-817d-af07-fb866befe419" class="bulleted-list"><li style="list-style-type:disc">Each account shows verification status ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8114-9e70-c59028373d8c" class="bulleted-list"><li style="list-style-type:disc">Accounts page displays all connected accounts with option to disconnect ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8143-81c9-e84892c8ddb8" class="bulleted-list"><li style="list-style-type:disc">Refresh functionality for when login tokens expire ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8128-8970-ec384841ef6a" class="bulleted-list"><li style="list-style-type:disc">Each connected account can serve as a login method ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8115-a627-e1caca2f195e" class=""><strong>Analytics Display</strong>:</p></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8105-ad65-f11e4898a7c5" class="bulleted-list"><li style="list-style-type:disc">Default view shows combined stats across all connected accounts ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81c1-b473-d2a0f9b8a75b" class="bulleted-list"><li style="list-style-type:disc">Users can then drill down into individual account data ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81eb-b04c-f6dd42118516" class="bulleted-list"><li style="list-style-type:disc">Focus on meaningful analytics at launch, with ability to add more over time ‣</li></ul></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-817d-8f76-ecb4f94e4b10" class=""><strong>Authentication Approach</strong>:</p></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-819c-bec9-fe41815a6c09" class="bulleted-list"><li style="list-style-type:disc">Currently blocked on TikTok login implementation ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8156-ab9e-f9c8b0b77da2" class="bulleted-list"><li style="list-style-type:disc">Considering creating standalone LifeNor account system instead of OAuth ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-814c-b71b-e8e73afef33a" class="bulleted-list"><li style="list-style-type:disc">Would allow expansion to other social platforms (Facebook, Instagram) ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-810d-8120-dbef636a2c01" class="bulleted-list"><li style="list-style-type:disc">Each connected social account could also serve as login credential ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35904b9d-4ca9-8147-ae57-f939c02ccfc5" class="">App Store Considerations</h3></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-81aa-b609-ef932bcff874" class=""><strong>Timeline Expectations</strong>:</p></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8158-81d8-dae6735ff832" class="bulleted-list"><li style="list-style-type:disc">Android approval is faster, Apple takes minimum 15 days with perfect submission ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-818e-8172-ca685580e1c2" class="bulleted-list"><li style="list-style-type:disc">30-day timeline before public launch is acceptable ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-810c-bc2c-c5cfa58aea13" class="bulleted-list"><li style="list-style-type:disc">Team has 15+ day buffer by using internal and beta testing phases first ‣</li></ul></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8143-bf2f-cf97d079953d" class=""><strong>Submission Requirements</strong>:</p></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8107-9e30-ebed55dfe2c6" class="bulleted-list"><li style="list-style-type:disc">All icons, legal policies, and details must be perfect for Apple ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8121-a255-e8128481bc90" class="bulleted-list"><li style="list-style-type:disc">Process described as &quot;soul-sucking&quot; but necessary ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8156-a9f8-cd52b3d7e8f7" class="bulleted-list"><li style="list-style-type:disc">Apple requires separate developer account for each app ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8177-a8d9-f9eb5a8c74e9" class="bulleted-list"><li style="list-style-type:disc">Google allows multiple apps under one account ‣</li></ul></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-819e-be0a-ed1b183230d2" class=""><strong>App Store Benefits</strong>:</p></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8162-a23a-df80b1d6bf8e" class="bulleted-list"><li style="list-style-type:disc">Creates trust through official distribution channel ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-816d-92d8-e8f4d79d8e8c" class="bulleted-list"><li style="list-style-type:disc">Provides discoverability through App Store search ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81d5-944d-cdf0bb3c099d" class="bulleted-list"><li style="list-style-type:disc">Allows user reviews and testimonials (though with less control) ‣</li></ul></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-81f1-85e9-f958d7649bb0" class=""><strong>Payment Integration</strong>:</p></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81ac-8c14-f16c7e87db16" class="bulleted-list"><li style="list-style-type:disc">TikTok example shows they encourage web purchases to avoid Apple&#x27;s 25% fee ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-813a-80f6-ec3795e4220a" class="bulleted-list"><li style="list-style-type:disc">Team is comfortable with Apple taking commission on App Store signups since Apple becomes the acquisition channel ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81c5-b28a-d580c593ead4" class="bulleted-list"><li style="list-style-type:disc">Existing members joining through other channels wouldn&#x27;t trigger Apple fees ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81b0-a0dc-cee5222a5a43" class="bulleted-list"><li style="list-style-type:disc">Affiliate links would be processed before App Store to maintain affiliate credit ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35904b9d-4ca9-8138-b270-ec2a52081eaa" class="">Team and Staffing Discussion</h3></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8123-b0b8-fb7b52a0bc09" class=""><strong>Kyle&#x27;s Current Situation</strong>:</p></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81d2-a410-de746c9cd6de" class="bulleted-list"><li style="list-style-type:disc">Currently works at Geek Squad/Best Buy with flexible return policy (can leave and come back) ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81ad-ba3a-d659fbc6cade" class="bulleted-list"><li style="list-style-type:disc">Geek Squad has positive culture around employees leaving for better opportunities ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8177-a373-c1a9224b399f" class="bulleted-list"><li style="list-style-type:disc">No formal discussions yet about full-time arrangement ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81c1-96ce-ef83d843d855" class="bulleted-list"><li style="list-style-type:disc">Team exploring phased approach where Kyle doesn&#x27;t need to quit immediately ‣</li></ul></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-81a7-ac57-ef6f306dcf0c" class=""><strong>Team Context</strong>:</p></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81b6-9959-f814ef3c119f" class="bulleted-list"><li style="list-style-type:disc">Brian starting 10-day vacation, which coincides with launch timeline ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8188-92d5-f8532b4fca3e" class="bulleted-list"><li style="list-style-type:disc">Carl recently relocated and needs to float without dedicated office initially ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81a9-a109-f755bd2fa3e9" class="bulleted-list"><li style="list-style-type:disc">Team heavily focused on this project, taking over available workspace ‣</li></ul></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-815c-9bef-fd75e7657609" class=""><strong>Work Style</strong>:</p></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8121-bcad-c4de1a0aceaa" class="bulleted-list"><li style="list-style-type:disc">Team has clear vision for product and competitors ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8150-93e0-cad6e0bd7377" class="bulleted-list"><li style="list-style-type:disc">Direct communication style appreciated, with understanding that intensity comes from responsibility ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8184-aaeb-fbf6f6011975" class="bulleted-list"><li style="list-style-type:disc">Experience working with developers and providing technical vision ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35904b9d-4ca9-81fd-b0b6-c45ec773340c" class="">Additional Platform Opportunities</h3></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8140-99d0-d27cbc502adc" class="bulleted-list"><li style="list-style-type:disc">Potential to expand beyond TikTok to Facebook and Instagram account connections ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-8179-8146-cd573136af67" class="bulleted-list"><li style="list-style-type:disc">Facebook has accessible mobile API outside of app restrictions, making data scraping easier ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-810c-b13b-f093d403750f" class="bulleted-list"><li style="list-style-type:disc">Audience primarily uses Facebook, making it relevant for future expansion ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35904b9d-4ca9-81e4-96f5-f1ca8952ee85" class="bulleted-list"><li style="list-style-type:disc">Vision includes other &quot;little software ideas&quot; and tools for social media management ‣</li></ul></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Notes<br/></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8005-96fd-d3a343cd3788" class="">
+</p></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Transcript<br/></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ba-af65-f2ac4dbcd7f4" class="">I know what you&#x27;re saying. You&#x27;re saying, like at that point, let&#x27;s say part of an app. App Store rollout, So I&#x27;m starting with just vanilla JavaScript.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8065-aebf-c3ce284541bf" class="">It&#x27;s going to be anything that renders like the member center. I&#x27;m using Svelte. But generally everything is a light. straight web HTML, Cordova can wrap that. It can make it for Android, it can make it for iOS. I can build it for desktop easily, for Mac, for Windows. I can build the same to a PWA with the service workers so those update if anything changes on their own. kind of even better than the apps in that regard.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8067-83bf-ff81811e35b7" class="">So we graduate, we do like-We do raw. Raw first and then graduate. It has to be an app, right? Because it essentially is a custom browser.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8056-bc21-e3a2be86b239" class="">Yeah, for the actually getting what we need out of there, we&#x27;re going to need an app.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80de-903a-ece808e1db94" class="">He&#x27;s like with like five frames and limited data and stuff like that. That&#x27;s what I&#x27;m saying. We have to do that. If we don&#x27;t have to do an app, I&#x27;d be fine.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8020-aca0-d30d7c32d2e0" class="">Trying to get somebody on Apple to install an app that&#x27;s not in the app store. That&#x27;s what I was saying is that even on Android like it&#x27;s easier, but you know he&#x27;s like Like, yeah, it&#x27;s going to share the scary message. Just click, yeah, I&#x27;m totally in for the scary.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8004-b5ba-e11f0544aa15" class="">That&#x27;s what I&#x27;m saying. I think our existing members would be fine to test. I&#x27;m asking what format it&#x27;s going to be in. But ultimately, what I would like to see is just we just get a life graph. in the app store. It&#x27;s gonna have to go into the app store. Yeah, public in the app store, they download it. It&#x27;s a process that takes time. So I might be high. I have lots of friends in the mobile app business. They launch apps constantly.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8091-ac8e-dd423296884f" class="">Android will get one out way quicker. Your Apple ones are at least a 15 day. It&#x27;s a pain. It&#x27;s nothing.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8094-8279-c2ad8f578804" class="">What do you mean? A month, 30 days is nothing.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80bc-87b1-fec233ecac95" class="">Yeah, 15 is like if you, all your icons are perfect, all your, like everything has to be perfect. Your legal, your policy.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80f1-aa2b-c384c906a3f8" class="">All the conversation is that it&#x27;s Easier than ever to launch apps. It used to be a pain in the ass. And it&#x27;s easier than ever now. It&#x27;s got a great conversation.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8076-9435-f273c8513dfe" class="">As a developer, that and their language Swift are the two most painful, soul-sucking things in that whole career.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-805b-9b07-ecbd027cc079" class="">But these are developers saying this.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8068-a028-d69df4c4b2c3" class="">Yeah, I&#x27;ve met 12 year olds that are at the camp at Swift and great, good on them. That makes my eyes bleed. The process of doing stuff to Apple Store makes my soul leave my body.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8002-925e-f8fe4ae702da" class="">I agree that Apple Store is going to, it&#x27;s not just like Google. Google, you can just push it and they&#x27;re like, sure.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8077-9f87-e90bfb1f3da1" class="">Yeah, no, you have one account and it&#x27;s good for as many as you want.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80da-9c20-d650474a2f48" class="">Apple, you have a separate account for every app you put into it.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8059-bd02-cfa904e04427" class="">Well, and Google did just tighten up. They have all verified so you can&#x27;t have those spammy apps that are, Popping grandma pop-ups.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80a3-b011-efe63ca40569" class="">If we had it ready to go and it was 30 days before we came public, that is not something that&#x27;s a red flag for us at all.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8072-b59b-d05d3fee0a73" class="">Because we can go beta, private beta with the current people we have until it&#x27;s ready. And then once that&#x27;s ready to go public, I&#x27;m saying eventually we should be In the app store, because it creates trust with you.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80bf-a70e-d8c2dd527e81" class="">testimonials on the app store and it&#x27;s we have not a lot of control of what people say there You know, so if they say bad or negative things that could happen to there but it also that&#x27;s why there&#x27;s a lot of trust there too. That&#x27;s part of it. Right.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-807c-ab6b-f5cc337ef9f7" class="">And that&#x27;s easy to buy. It&#x27;s easy to convince people. In the beginning.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8081-96db-c44fb7e3765c" class="">It&#x27;s easy to convince people who are drinking the Kool-Aid. But if someone stops drinking the Kool-Aid, then... 50 people right now. Everybody just try to make them happy. You&#x27;re like, Hey man, I want to make you happy. I&#x27;ll give you a refund. Take that down. So, the main objective right now is to get... This template of an app.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8084-bf1a-f9bffa47a065" class="">To work, to wear. You&#x27;re able to press a button. It presents the option to log in, which shares that live manager data. And then it&#x27;s displayed in a simplified format, basically with what we see. in the app for all to talk. Just that data alone, just have that working to where cool.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80fa-b8e7-de8bc722b853" class="">Pressing on it a lot and it works. Yes. All right. Good to see you guys. Same. You&#x27;re welcome to join me, Casey.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80f7-b06a-cd54b6019bda" class="">I would like to see the-Format going like this would be The phase one before we go on App Store. So I would say the best format, the best process would be We They go to our domain. Thank you. Once they&#x27;re in that app right there, they connect. They start connecting accounts. Like connect your, connect your.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8073-a5a9-d9bf49329bc0" class="">Just keep going through that process. And it just loads them all in successful. And then so you have like one page that just says like accounts, like one little thing to put accounts and there&#x27;s all the connected accounts. And then they should be able to disk and what&#x27;s. If they want to maybe three dots, they can click them on the disconnected. But also at that point, there could be like a-refresh button. So anytime they log in the app, they can refresh if we need that.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-806d-a7c5-e8817eca861e" class="">We need them to refresh data? But I don&#x27;t know if we need them to refresh data. How long does the login last?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80f8-ba49-c81fe62d1e29" class="">I&#x27;ve never had any of JC&#x27;s expire yet. I can peek at the jot and see if it has expiration time.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ed-a28c-e55bac5f3f6f" class="">Let&#x27;s say his account, let&#x27;s say he peeked in and it expired today.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8060-aa8c-e0934145581b" class="">You could, could we just push at that point a refresh button to his thing that says refresh and the box says you need to re-log into this account and refresh it? Because if we, as long as we can do that,Shouldn&#x27;t be a problem. It&#x27;s kind of what you could do.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80a4-b177-f9cb3039ffcc" class="">I mean, no, that&#x27;s different.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8052-a0e7-e1d524e4a8c0" class="">It works different, obviously, but it does give a message that says...</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-806f-8002-ee826a6fe715" class="">Like, uh, reconnect or something like that to where I have to reshare my data.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80aa-9313-d3036a253e1e" class="">I know the process works different, but I mean it does give a message like I&#x27;m not constantly sharing. I do think that what he&#x27;s saying, like if I go into my my laptop, I don&#x27;t have to keep on logging into my live manager.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8073-85c5-ee641d4c78de" class="">It&#x27;s like...</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8099-bb98-dcce7a3c3aee" class="">We just logged in right away. Yeah, I got three of his accounts.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-806a-9210-ca0b84a81970" class="">We need to make sure we get the data.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8069-a8e9-c2eb8926de12" class="">Um.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80a2-9061-fc7878866075" class="">I would just say based on the conversation, I think it would be incredibly wise for us to move to that singular focus.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ce-b52e-ee8a352755a4" class="">And take that path.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80b3-bb03-edd8752e2c85" class="">Which is...</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ca-99f1-f84f3f4add04" class="">ditch the path of a bookmarklet, ditch the path of an extension, And just move straight into the path of... Our path leads to...</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8069-8a65-c4f37a47c97e" class="">Approved apps in the app stores that that scan our membership site and within there is analytics that are only available by multiple accounts to That becomes the path. Lean in and we just only do that path which it has to be in phases meaning we&#x27;re not gonna launch on the app store the first first phase would be like Launching internally getting all of us to be able to connect our bingo sure works second phase two would be launching with our small test group of active and then Phase three would probably be App Store, going straight to App Store. I don&#x27;t think we need to do another phase where new members coming in.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80d2-97ae-f75da834358e" class="">are having to connect to kind of like an app. Because new members will be on a free trial. They don&#x27;t have any skin in the game. It&#x27;s going to be a weird experience. And also, they don&#x27;t have analytics that are worried about. So I think we would have a little bit of time there. to get approved in the App Store. So I&#x27;d say there&#x27;s a three phase.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ff-9614-decedabde1bd" class="">Yeah, and if we do, we talked about rolling it out on a platform called DenoDeploy. And every time you commit, it gives you all the resources, meaning there&#x27;s a unique URL, there&#x27;s a unique database, it&#x27;s its own slice. So we could easily say, let&#x27;s go ahead and roll things out for At the first level, maybe we have our QA. At the second level, kind of our dev server. Above that would be our beta testers, above that would be production.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-801f-8add-c5fafb89eca7" class="">So we could have it to where we Keep one slice stable, keep that working as we&#x27;re kind of growing it here. We got that internal test group as we polish things out, we move it to a production and each thing will have its own pristine, you know, data URL access all that.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80af-a1e3-fed9dd7defc0" class="">Yeah, we could essentially just, you know.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80e9-975f-fb27bea2cb6a" class="">Yeah, however we want to do it. Maybe we&#x27;re the internals so we&#x27;re kind of on the staging, the beta, and then you join the full, but we would have a clean separation, a clean path, an easy way to bit by bit roll this out.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8004-8188-eab48a375595" class="">just as much as we want and to who we want in those groups.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8019-a18c-d21e91ec6d80" class="">I think the Okay, so I think if we...</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8011-b615-ec7e2bae282d" class="">Do you like the idea that we have about that third stage of being in the after work that the skin, The UI skin of the app wraps all of our membership stuff in there.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80bf-bb41-ee30ab58a9de" class="">Instead of just...</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80b1-b9bd-e339295b5df9" class="">data from Live Manager, it would then pull in training videos they could watch.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8031-bf4b-f3edfb7e1a72" class="">I see this being exactly what Kyle said. All the stuff he has, so he has some great stuff, you know, and he&#x27;s thought about it in a good way. If you&#x27;re on mobile, you probably can&#x27;t fit more than four things. So okay, one of them is content, the other three are these.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80c3-b5af-c8fbecb15b9e" class="">We have this dashboard, you know, you have I think we take exactly what he&#x27;s got in place, you know, so they&#x27;ll have the video content. It&#x27;ll have the Netflix style UI to where you whatever it is, trainings, camps, et cetera.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8096-9ecb-d83da2bbac74" class="">Um, So I think we can have it all plus the data in one place. It would absolutely not make sense to have a second app or second place to go for data.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80c8-b3a0-d98f25b86fbf" class="">So we&#x27;re good with that plan? Oh, yeah.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80be-82f0-f00016c7306a" class="">If I came up with a basic outline of the UI for the mobile app, then What you did was you basically could leave the sections empty for now other than the analytics because we don&#x27;t need Yeah, we could do placeholder stuff and we could also think roles so maybe one role doesn&#x27;t have all that stuff so we just build it into where if And if it&#x27;s a certain level that sees that, then you see that content.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80c4-90cd-ffbeecb095ef" class="">If not, we basically add that. All right.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80a3-a32f-d0282b6860f3" class="">I&#x27;ll build out a simple-UI, just a very, very simple UI of like how the, like a skeleton of how the membership site would flow with it. And then the analytics tab will be kind of where you&#x27;re already building out and then on the analytics app really ultimately I would just love to be able to when I connect it when I connect to this app I want to be able to like, okay, download the app.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8066-a016-de082095502b" class="">Click connect account number one. It shows my account and shows that it&#x27;s verified. Click account number two. It shows account&#x27;s verified. Add account, add account, add account, and verify. Because then I&#x27;m going to have to log out of the life manager every time to do this. Log out. And then sometimes it&#x27;s easier than others to log in. Like sometimes I don&#x27;t know all my account information because I&#x27;m just logged in all the time.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-807e-942b-dc3e3b57fe6f" class="">So somebody&#x27;s account set up a year ago. I have no idea what I set up. So it takes me a while. Once I finally get them all in or as many as I can get in, then when I go to analytics,Five.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80e8-898a-ccb05bfc6c3e" class="">it basically is gonna then show me as ultimately the default snapshot is gonna be here&#x27;s at a glance stats of all your accounts combined but then from there I can individually just show yeah so as long as shows all accounts combined Not here&#x27;s what account to account to account. Here&#x27;s all your accounts combined. Here&#x27;s what your toes are. And then like I can help come up with like what meaningful analytics we can kind of launch with up there.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8044-bff2-d1b1b5e736a1" class="">And then from there, sure, you can start giving people the ability to add. add more change or whatever. But at least there&#x27;s a default base. It&#x27;s like this is what&#x27;s-Meaningful. And then eventually we would like to start shoving some of our data in there outside of analytics.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80b6-a60b-e561bc404bc8" class="">That&#x27;s the main yeah outside this internal group. That&#x27;s tech savvy and willing to click a you know Button on an extension or something. I am still completely blocked on that real login so I still do need a Go kick that beehive a few more times and see, I don&#x27;t know. We&#x27;ve got two of them. We had one working for a while the first one Yeah It&#x27;s a nightmare.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80bc-8d83-ee0b14847da5" class="">So you have to-We don&#x27;t need that.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80a4-bec5-c0f2b99f0e89" class="">It&#x27;d be nice because it would give the picture, the name, it&#x27;d be something they&#x27;re already signed into. That could be their sign in is one thing we bounced around.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8065-9be9-dbc4abe39a42" class="">The problem is, here&#x27;s one problem that maybe is that people have multiple different TikTok accounts and which I don&#x27;t even know which one would be my sign-in. Well, so the whole thing that the benefit of what it collects would do is allow us to take the user identification it gives us to verify this is the information that we show them from the partner center and the library.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80f0-9646-eeb4299827a9" class="">So it&#x27;s just a way instead of saying, fill out this form and say, you are double discount, you are better than Ryan. said sign into TikTok, verify, just pull the data.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8077-ac8c-d7942388f569" class="">If that&#x27;s the case, if we went with TikTok, oh, then I would want to see it like this. I would want to see it where as I&#x27;m connecting accounts, which would require password access anyways, as I&#x27;m connecting accounts to... to load in there, each one of those accounts then could work as a login as well. So I could log into this app with any one of my accounts and it would log in.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ad-99ef-f16cad738ddb" class="">They would be associated, it would all, correct, absolutely.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8091-96d6-fb00b3117fa5" class="">As long as we did that, I think it would be fine. So yeah, that&#x27;s the same way that I have the web app set up. You have to sign in once, but then you can connect other things. Right now it&#x27;s just Google.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80fc-9b79-f60169ae4715" class="">Because, well, see with Google, I got a bunch of emails.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8012-9218-c8a78b876270" class="">Yeah, but essentially what it does is you have a user account made, but then you&#x27;re saying this one also works as a login. You&#x27;re authenticating this.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8025-9b2a-d40a742df0e7" class="">Right, because here&#x27;s a flaw. This is a flaw with OAuth that I dislike tremendously. Let&#x27;s say I got an AI tool that I&#x27;ve been using and then I move on from it, but then I&#x27;m like, oh, great time to use it again. It&#x27;ll all be logged out. So then I&#x27;ll go to log in and I log in and there&#x27;s no, none of my history&#x27;s in there and no, there&#x27;s not many credits, not anything. I&#x27;m like, that must not have been the account. Then I go log into another account.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-807e-9f92-e400e95c102a" class="">That&#x27;s not there. Then I log into another account. That&#x27;s not there. I&#x27;m sitting around trying to figure out where on earth is my account that I have all the details in because maybe I signed up with an email that day or maybe I did a Google account that I was logged into or maybe I used Apple Connect or maybe I used whatever. It is very– and there&#x27;s no easy way for them to know. It&#x27;s like how big?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-809a-9fab-de0436e86571" class="">Everything can just be associated with that account. So everything long and tonight.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80c3-958c-c10f1fbb5ebd" class="">And that&#x27;s pretty common. I mean, it says sign in with, and you say Google, you say X, whatever your favorite is. But then right after that, it asks you one or two more questions. Hey, we need to know-Your username or your first name or whatever.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8002-8edf-e2f67d74c106" class="">Well, even in that case... Uh... What these apps should do is say, When you click log into existing account and you use Google, what they do is they think it&#x27;s sneaky. They just go create a new account for you. But it&#x27;s like, I don&#x27;t want to create another account. I know why they do it from their perspective. It&#x27;s great. They don&#x27;t want to create another account. I want to log into my existing account.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8053-9ecb-f805bcd9ce43" class="">And so it would be so nice if I could just be notified, hey, you don&#x27;t have a freaking account at this point. Yeah, and they&#x27;re getting pretty transparent now.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80e9-9a8a-ee6171a7bbc8" class="">A lot of them will say, it used to be a little blurry. You would click the thing and it would say, this is going to share your picture and these two things with... X provided obvious but then now they&#x27;re saying welcome back Daniel this and then you go Okay, cuz out of my two Google accounts.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80cf-9d30-eb9ef22af1b3" class="">I don&#x27;t know which one. Okay, you said welcome back versus Are not gonna notice that absolutely not they&#x27;re gonna create Uh-huh. So what if we just do create your life in our account, And then from like everything else happens, all your sub accounts, all your accounts, because that also gives us the ability to want to expand a little bit out towards other social media connection tools. Like I would love we haven&#x27;t even got to the fun stuff that I can share with you that are like little software ideas, stuff like that.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-809c-a2c8-e0d9673ed918" class="">We have to see where we go. There&#x27;s lots of little software that all these social media sites, everybody wishes existed. We can start rolling out little software things that are connected. Do you have Facebook accounts? Do you have Instagram accounts? Connect those. We have ways to help you. with those accounts as well. And a lot of those accounts have mobile login outside of app access. Facebook has almost the entire site outside of Apple. So you can literally scrape the shit out of that.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80fa-ab00-f1b78881bae2" class="">And with Facebook, that token, there&#x27;s a way to get a token that&#x27;s only meant for hard software apps as a web app. It&#x27;s a little tedious, but it damn near never expires and gives you all the permissions you want. Want to go that route?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8075-9931-ee84a3ffe6e9" class="">Yeah. The thing about our audience is they all pretty much have Facebook accounts. The youth, they hate Facebook. They don&#x27;t. They don&#x27;t like Facebook. But our old people, they all got their...</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80e3-a14b-dbf75ad8a249" class="">Instagram&#x27;s becoming an old person thing too.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-808c-b88c-d768eb50b2ae" class="">No, no, no.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8085-bba5-fe6b3fb151da" class="">But here, all the youth I know, they love Instagram.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8054-b75c-f8db9ab63e6a" class="">Anybody in sports... WellWell, &#x27;cause the things they don&#x27;t want grandma to see go to Instagram. Oh, yeah.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8003-beaa-ddb4f96283db" class="">Yeah.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80d3-afdd-f85941ece720" class="">But doesn&#x27;t IG by, Hey, I never use IG.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80be-b294-e576de288a8a" class="">I was on there last night to just say hi to my kid. I&#x27;m sending it and it goes, do you want this to expire in one day, two day or never? Is that now, is that, was that always the default? No. My message is now self-destruct on Instagram.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8057-b0d4-fa21c664d8b1" class="">between your circle of friends.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ae-a2b2-e3362039f077" class="">What is that? Secret conversation.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8020-886d-e2ab522bead4" class="">Like, if you want to just have, like-So with with Brian&#x27;s twerking should he be on snap or insta Profitable likes. And you would never do something silly or stupid on Instagram.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-809f-9032-eacd4c488b75" class="">On Snap, do I got that little buy now in the corner? So you&#x27;re an influencer, you got that little makeup. But I&#x27;m guessing in general that&#x27;s a very small fish compared to the tick tock You have to be a Kardashian the Fire Island people Like So I&#x27;m clavicular and they&#x27;re following me around and I&#x27;m look-smacking andIt looks maxing.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80d3-bdf4-e5ed23750254" class="">Right. You got the Lambo. Has a six pack abs.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-808a-823c-d95b3cb7c964" class="">Rambo or like--With abs and labels. Yeah, yeah. Bitcoin. Yeah, exactly. That&#x27;s what I was thinking. Like you&#x27;re Russian, you know, your dude who&#x27;s real good with cyber has that Bitcoin V12. Super hot chick. Yeah, yeah. And a lion or a tiger.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80f0-87ba-e1231e8f344b" class="">Yeah, yeah, there you go. That helps.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8074-a708-d39f5b50e6b7" class="">Those Bitcoin guys, man. Well, sometimes they have the sports car with the tiger in it next to them.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80fb-b7b5-d751650c6f7f" class="">And the chick.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8040-8fcb-dc209988a811" class="">You can&#x27;t fit them both. The Tigers, they got the wrong energy. The Tiger would jump in the back and mauler. She has to ride his other car behind. Yeah, he&#x27;s riding top down in the front with the lion.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80fa-88b3-f5efbcd5d904" class="">Money loves speed?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-808e-8c12-dd5844cca27b" class="">Yes.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-805d-8bde-e10a8231e1f0" class="">This is when developers and marketers clash. Exactly. It&#x27;s the developer. It doesn&#x27;t understand the marketing. The developers don&#x27;t understand UI either. So.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8024-8aa9-c205dab3a189" class="">Well said. Well said. I know.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ca-b9da-e66aa8ca5142" class="">Let&#x27;s go sit in the sky. A little experience he&#x27;s had with his gun. What, really, I don&#x27;t know why you&#x27;re working at Best Buy. It&#x27;s fun.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80df-a595-e1f2f933eff6" class="">I only do shit that&#x27;s fun.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-808e-8579-ec8c9a10dff1" class="">What do you need to see from this dude to where you would bring him on full time and put him on salary so that he can be dived into it? Because I know how much he loves this stuff.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80d3-a44a-c994de0c6e68" class="">What is your current work contract like? Is it a two weeks notice type of a place? Yeah.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8083-a852-ce0fcd93167d" class="">Is it you can just burn the bridges?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8079-88b3-d9cd02ad6ab8" class="">Oh, you can come back at any time. So Geek Squad, I got one guy who&#x27;s... I think he left 18 years ago. And you have to come in once every quarter, but we only see him maybe twice a year. But he still has all the benefits. And if he wants to come work, he just comes and works. So if you put in your time, you&#x27;re good. You got your little badge. you know, you&#x27;re golden. I&#x27;m coming up on my five-year badge.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-808d-afd4-ce9f55afc9bb" class="">Is Geek Squad not a part of Best Buy?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8052-859b-e4187d9c1a8c" class="">I want it to not be a part of Best Buy. They used to be their own little thing, and then they pulled us in-house.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80e9-8bd1-c3b332e32016" class="">You could leave and then come back with like... Essentially a little bit of notice. No, you don&#x27;t ever leave.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-803a-b89d-c036fe04eb06" class="">Well, that&#x27;s the thing. Okay, so when you quit, they have this thing, I&#x27;m leaving, and they mention-It&#x27;s like Batman. They say, &quot;await the sign.&quot; And that means like, you know, like you&#x27;re still family. They want you to go on to bigger and better things. It&#x27;s the only company I&#x27;ve seen where they literally talk about that in a positive way and welcome you back with both arms. But not on the Best Buy side.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-808d-9873-e29699fec03f" class="">The Best Buy side is trash. They treat their people really bad. I would not want their emblem. What I feel good about the Geek Squad brand, I hope we find a positive breakup. We did a little sample in a Target. You could go to a Target, here&#x27;s your little Geek Squad. Or maybe we could spin back out and I hope that they do break up eventually. I&#x27;m not going to business. What would that mean to say?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ca-b84d-f5d05c71f25a" class="">So you&#x27;re looking for a time frame? Yeah, what do you need to see in order to-I haven&#x27;t even been privy to anything. I didn&#x27;t know whether you... whether you are on or not, to be honest. Has there been any conversations, Kyle? What is the current expectations that have been communicated Right now, it&#x27;s just been exploring.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8048-833d-c9371dc83276" class="">I need to sit down with you and figure out what to do. So even if it&#x27;s not a full-time salary, it&#x27;s at least the first one.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80de-ac77-e2a70aa0ce9f" class="">That&#x27;s Can&#x27;t expect you to fully build something out before Being part of something. Yeah.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80f2-b80a-f7d486952a52" class="">And I do need a couple loggers.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80aa-a78a-e5f9299521a4" class="">I don&#x27;t need that. You&#x27;re already pretty consistent. I would say... I&#x27;d be down with maybe a phased approach where it&#x27;s like he doesn&#x27;t have to quit his job today. Yeah. But where at least you have a schedule here that we can count on. I feel like if there was, how about this? Can there be a roadmap clearly outlined that&#x27;s kind of like what we just talked about? Clearly outlined for this with like expected dates because software can drag.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-808d-8757-e12677238812" class="">Goodness. I think honestly if we tick all those dates, we double them, that&#x27;ll be right where we want to do.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80b4-8ebc-ce69c7170d80" class="">Intel, that&#x27;s the smartest thing they ever did. And definitely make it milestone based. That&#x27;s very easy. You know whatever language terms expectations we can build everything in yeah We also need to launch this.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8034-b8fb-d1038c920321" class="">Yeah, this has been our,Yeah, this has been our like, we&#x27;re not gonna have that done in time for this. It&#x27;d be great, but no. It&#x27;s not going to happen. Well, we have to do internal testing anyways.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8045-ba27-f72fac3cba01" class="">We need to eat the dog food ourselves.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8017-94b7-f5ce41303f6b" class="">I&#x27;ve never actually in history ever had a first working version that was like this is perfect.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8001-a072-cc0cf75c5870" class="">Developers are even the most solid. You go to a demo and they&#x27;re at a conference and they&#x27;re like live coding time and they just ran the code and anything, you know.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8090-8deb-e0469dbb38a8" class="">Yeah, as far as my answer is still vague, I understand it&#x27;s vague, but I mean, I... Unless you&#x27;re not happy with something. I think everything&#x27;s fine. Sometimes I may sound like a little bit strong in some of my things. I don&#x27;t even need to, I just mean like, it&#x27;s just the weight of having the responsibility of It all goes on my shoulders and my reputation and my face, whatever we do.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8075-82e1-e1890bbbaf47" class="">That&#x27;s understood. I come from startup land. Like I like the idea of like my last boss was you know, hey, I&#x27;m from Norway flat hierarchy Let&#x27;s all hash it out. We all have an equal shit He would do his jet over in the, I think he said in Japan, they would be not only screaming, but like throwing things across like in big business meetings.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80d9-a412-d3536f3c2313" class="">Drinks beforehand coffee and handshakes afterwards like that&#x27;s how deals you know I&#x27;ve seen the best like the It&#x27;s also in India. It&#x27;s hilarious. So you get India working with the videos, India working with American versus India working with Indian. It&#x27;s hilarious.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8021-8a5c-e502618f6037" class="">They&#x27;re just yelling at each other. It&#x27;s a very demeaning thing. And then essentially, then they immediately, client&#x27;s on. They go, no, sir.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-806a-bb83-da17882bac11" class="">Yes, we work really hard on projects. And then the clients off and then yelling at each other again. It&#x27;s a very like to know I&#x27;d be literally yeah be little like a great demeaning culture and Japan is not demeaning It&#x27;s just fucking it&#x27;s just like boss everybody&#x27;s executive level. It&#x27;s just like a very strong Very disciplined tone. So somebody&#x27;s like if somebody&#x27;s it&#x27;s like who can kind of like out alpha each other That&#x27;s kind of like American business.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8045-b311-f2e75ee8c627" class="">Yeah, it is American business. I think we&#x27;re the software one of the softer countries in the world now Because we&#x27;re like diversity and equity and inclusion and everybody should have a voice and we should consider the feelings of others.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-800c-9e7a-ccaa288df8d8" class="">They don&#x27;t do that shit in any other country.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8077-b950-d7bac1cdad6d" class="">Yeah, if it doesn&#x27;t make dollars, it doesn&#x27;t make sense.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80e8-ab36-cc6e8efadf66" class="">Yeah, it&#x27;s like, fuck, if you don&#x27;t like it, go get it. You&#x27;re fucking fired. Like, here, we&#x27;re like, well, let&#x27;s make sure you&#x27;re happy.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-801b-9cf7-e8bd3696508e" class="">The rest of the world essentially takes the military. This person&#x27;s in charge.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80d3-9f76-d8cca6705143" class="">If I&#x27;m paying you money, you&#x27;re doing a job. But also, to be fair, they&#x27;re all very clear as to what the job is. Whereas America is like super big. Can you have this shit built by Wednesday? Build what? I&#x27;m sure you should be an entrepreneur and figure it out. We&#x27;ve got a business to run. Can you figure it out? That&#x27;s what we are.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80a6-bcd5-ccae0c1aa9eb" class="">Well, that&#x27;s why I love working with you guys. You know exactly both what it should look like, what the competitors offer, what on the screen is possible. you have a clear vision. You have someone who&#x27;s been able to take that and translate that into a working technical product at this point. It&#x27;s the dream situation.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80b4-a4e5-dcc11f145057" class="">It&#x27;s a lot better than that. If I wasn&#x27;t working on this, I have literally a career of working with programmers and providing a vision. Carl also is... right there with me on a lot of this, meaning his experience level is extremely high with these people. I can see.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80bf-a098-c50340c577a1" class="">I can see.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8042-b9b9-ffa70b6a8a4a" class="">But Mike, I don&#x27;t have the technical. You&#x27;re more technical. You could even build. Whereas I&#x27;ve never ever even tried to figure out. So I may say some shit wrong, some initials and abbreviations and shit wrong. I may not understand something, but I&#x27;ll still, I&#x27;ll still. If you see past that little flaw, what I&#x27;m saying will still have meaning. If you see, like, okay, my shit is not exactly right. I&#x27;m going to say APK or SDK or TPK or whatever. It&#x27;s like, I may not know what each one is, but just figure it out. You know what I&#x27;m saying?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8081-8be4-f284fecc8b29" class="">I&#x27;m saying the idea of, like, I want to figure out what it looks like to get here, and I can visualize very clearly what that looks like. I may not know the best path. That&#x27;s why when I&#x27;m listening to this, I feel, my intuition&#x27;s telling me we should get away from... desktop completely and move purely into this idea of the journey being to get to the app store. To get to the app store and have a LifeNor app that they can download, have a LifeNor app that we can even get people from the app store to find out about, deal with a marketing flow from there, and figure out a way to be able to do that. Maybe even let the app store take a little fee on memberships.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8097-8051-ded3e3b9450a" class="">I don&#x27;t give a shit. Can we?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80cb-ae93-dda8cb7ab5f7" class="">They want it. They want it. They&#x27;ll get it. No, but they&#x27;ll like us more if they&#x27;re making money. Yeah, for sure. They&#x27;re less likely to ask that circumvent Apple. They&#x27;re far more likely to want to shut down. Maybe not in our life. We&#x27;re not, we&#x27;ll be fine, but no, I&#x27;m just saying there, no, I&#x27;m saying if we go in and we say, don&#x27;t, Don&#x27;t join through here. Click here. Go to our website. They write in their term of service.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80af-bb3d-c3058f176faf" class="">You can&#x27;t do that. Well, even TikTok, right?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-807b-8cd0-e99f7b2c7f1c" class="">They can&#x27;t do shit. If you&#x27;re paying for an ad, though, if you buy it through the app, you&#x27;re paying more. Of course. But what I&#x27;m saying is TikTok.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8076-9181-cbcfac6a3f86" class="">What&#x27;s Apple going to do? They&#x27;re not going to kick TikTok off the app.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80e5-821b-f59b267f74a3" class="">They found a little loophole somehow.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8093-a676-dae24b67ad9e" class="">What I&#x27;m saying is if we did that, Apple would not like it. But if we were TikTok, they can&#x27;t do anything because they can&#x27;t. But what I&#x27;m saying is what we would do is we would basically, if Apple says if we have a membership that we&#x27;re signing people up, get the app so we&#x27;re signing people up, if we&#x27;re sending them to our website to sign up and then coming back, there is a legal lease that says they don&#x27;t want you to do that.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-808e-a762-ec38393cadab" class="">It says it in there. They don&#x27;t want you to do it yet. They don&#x27;t want you to do it. Because they want that. People do it. That&#x27;s what I&#x27;m saying. Let&#x27;s just give them the money. To me, if you sign up through the App Store, Apple is the affiliate. Apple is getting us business. And all we do is click here to sign up for your free trial. And underneath, we can say, or sign up here through or log into your account through mobile. I don&#x27;t care if people sign up through.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8054-af38-d399008415ba" class="">Besides maybe like affiliates that do promotions, private promotions.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80a8-b5db-fa2b100dd693" class="">I don&#x27;t care. Wherever it comes from. No, you can still pay him. I don&#x27;t care. If affiliates do private promotions and their people are going to the app store and downloading an app, and instead of signing up through their affiliate link, that&#x27;s on them. They lose. Why? Only if they&#x27;re going to pay. We&#x27;ve made 25% to Apple.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8007-98c9-d19d67d49f04" class="">Because a lot of these guys are these members that are like bringing their two friends in.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-806d-97e1-f035e1286a78" class="">No, bro. If you&#x27;re in as my two friends, I&#x27;m going to tell them to go do it.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8032-94e1-c4cc124b5801" class="">I don&#x27;t care what. I don&#x27;t care what. I thought you were saying like. You&#x27;re going to push them to the...</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-806f-8494-e1344401639b" class="">No. If you&#x27;re an affiliate, you&#x27;re going to use your affiliate link. Yeah.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ff-8bcd-f9d90d3739d3" class="">If you don&#x27;t use your affiliate link and somebody goes and finds our app in the app store, that&#x27;s not your lead.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8084-b71b-e00b2f4d1e0e" class="">Yeah, the app store is essentially just the new free marketing.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8028-9d77-e153295349b4" class="">And it&#x27;s only Apple, right?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80f0-b169-e70868cca1fd" class="">You can get ads in there. Does Google charge anything?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8047-b5ae-dbc3e2bda764" class="">So you pay $99 a year for just the license. I know with Apple, I did a member app last time, and I just had to say I wasn&#x27;t collecting any in-app payments.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-800d-a3a9-fb4e9423eccb" class="">that you can&#x27;t block so you can see anything and everything and that That was it. These were current members and they got no cut.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8053-9957-e865efff6a47" class="">Yeah, but what I&#x27;m saying is in the App Store, I don&#x27;t have any problem saying, yes, we collect payment.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-801b-bc2a-e4a1c3ac2948" class="">I don&#x27;t have any problem with being an app that collects data.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-808b-91cf-e9e34048f3a3" class="">But I mean, they&#x27;re our members, so we don&#x27;t need to talk about payment with them. We don&#x27;t pay them anything. They&#x27;re just our members. Bye, Apple. Get out of our business. They pay us money, however they pay us, Stripe or whatever, who cares? They&#x27;re our member.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80d4-ad45-f78d2cac4080" class="">We don&#x27;t need that, I don&#x27;t think. I don&#x27;t think we would have anything that technically isn&#x27;t in that.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8030-8fd7-df5915731e1d" class="">I guess you could.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8036-b226-cffa43ea25e6" class="">I haven&#x27;t done that through Apple. I know with Google you can. I assume with Apple. I pay my Strava. Apple or Google Pay. Apple has the same.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80df-a233-ec810017f024" class="">Yeah. Yeah.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ef-9afe-dcf45d33609d" class="">through the Play Store, through the app.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80e8-86f7-ded550a3fad2" class="">25% by Apple.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8043-ad64-e223e93ecb4e" class="">Is fine as the only way they would ever do that is if they came through the app store and around our affiliate or marketing channels. So it&#x27;s like the only people that sounds like Apple is the affiliate. A lot of companies don&#x27;t like giving Apple money if they don&#x27;t have to. But I&#x27;m just saying if we play ball with Apple, it&#x27;s one less thing to worry about is that every once in a while they make some money.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80fb-baaa-c641319a10f2" class="">We show up in the apps free and paid and it would, you know, the public will hear about us. People, like an example, like people on a TikTok video are like, oh yeah, I started using the Lifehunter app. Join through my link, but somebody might say, Chip, let me see if that&#x27;s on the App Store. I need to search LifeNerd.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80c6-8647-f6ff3771981d" class="">Boom, there it is. Like Amazon.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80c9-871a-f15cb0f72784" class="">Well, that referral link then should be processed before it gets to the app store. So it should be a short link, you know, LP dot.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-808a-ab82-d4dff95afb65" class="">Geo you know like a bitly type of thing and that basically takes that code okay?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-805b-b08b-ef09a8e292e1" class="">So it gives that person the affiliate the credit and then forwards them on to the appropriate No, not through the absolute through a short link yeah Yeah The credit card transaction has to happen prior to giving them the link to download the app. After the transaction, then it says, click here to download your app. So they go to a sales page, start your free membership, and then it says, here&#x27;s your free membership, and it says, step one, download the app to your phone, step two, join our Discord, step three, here&#x27;s a fast start course, whatever.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80fe-b828-d95e9b1e66bd" class="">So it&#x27;s kind of like, it&#x27;s like they have to pay us first before going to any third-party apps.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80cb-8b44-c429ba5c7a5a" class="">But if they go to the apps, it&#x27;s a little bit harder to convert a raw app store user to download the app. They got the app on their phone, and then they got to click, and then they got to go off to mobile and sign up. TikTok does it really clean. TikTok mirrors the experience almost exactly. So it opens up in a browser. TikTok was blowing it for the longest time because it was making you log back into a different account. You would have to log in again on your browser, and it would be impossible.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80e4-a594-d9c0f7dd3dae" class="">to like even remember what your account was, TikTok got rid of that. Now TikTok uses some type of new code, very, very clean what they do, that they just, they recognize what account you came from just for the purpose of the transaction of purchasing credits to advertise with.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8039-a3be-f7d6c9562e09" class="">and then they redirect you right back into the app. That&#x27;s a, yeah. Very simple, because at some point somebody at TikTok says, &quot;Why are we making them log in? &quot;We&#x27;re probably losing X amount of money.&quot; And who cares what account they&#x27;re buying from? We don&#x27;t care what account they&#x27;re logging in from. They&#x27;re buying credits for this account.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80e9-b3f8-e14f77271584" class="">So it&#x27;s like, instead of logging in and accidentally buying credits for our own account, what it&#x27;s doing is it&#x27;s just saying, when you click from the mobile app, let&#x27;s say I&#x27;m on my account, Chris Record, and I click to log in and I&#x27;m logged in on my girlfriend&#x27;s account on mobile, doesn&#x27;t matter. It says, you&#x27;re buying credits for Chris Record. buy these credits and then those credits get attached. At some certain point, it doesn&#x27;t matter. Who cares if Paige is buying them?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8084-b23d-ecd3377b908b" class="">These are credits for this person. So that is essentially like what, that was the smartest little workaround, but it&#x27;s only for transactions. It&#x27;s beautiful. But we would have to mirror that same experience And that&#x27;s hard to do because we would require a login.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ff-ac6f-dd881ea0bf72" class="">It might be a URL handler they&#x27;re using. So if we have an app and you&#x27;re doing anything on a desktop or mobile, If it&#x27;s a certain type of app, if you&#x27;re clicking to LP.go, if you&#x27;re clicking to Stripe. I can listen for that. I can intercept that. And when you click it, my app can open or as a open with option. So yeah, maybe some things we wanna listen to and think about at that level.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80b1-843b-c46ab86f4775" class="">I&#x27;ll do one right now really quick. I&#x27;ll just show you. I&#x27;ll log into an account. So here&#x27;s an example, right? I&#x27;m logged in on Google. On Chris is contagious on mobile, right? Cooties. So this is my, I&#x27;m logged in on mobile, I&#x27;m not on an app, right? So now I&#x27;m gonna go to my phone, So I can show you this. And clearly I&#x27;m logged in on my phone as the double discount. Separate account, right? This is a very different account.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8042-840b-e01661866394" class="">So now what I&#x27;m going to do is I&#x27;m going to buy credits on this account. I&#x27;m going to buy coins. That&#x27;s like basically the main thing that they sell you inside of here. So right here, I&#x27;ve got $5.20, get coins, okay? Purchase coins, transactions, right? Get coins. Okay, so now if I go to get this one recharged, Oh, look at that. It&#x27;s not. It&#x27;s just selling me straight through the...</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8093-a200-ca71a0693fb3" class="">They&#x27;re just bypassing Apple completely now.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80bb-a034-f733835540fa" class="">No, it&#x27;s right here. It&#x27;s just there&#x27;s normally a thing that pops up that really sells you.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80d0-8a0b-d59aa0fe57fc" class="">There&#x27;s a little modale for a second.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-809c-87f1-c7179af69354" class="">No, that modale was payment. So it went straight to payment. Normally, it&#x27;s been this. I don&#x27;t know if it&#x27;s like maybe I&#x27;ve clicked more or something. But look, right here. It&#x27;s usually a better advertisement than this. Recharge on TikTok.com/coin and save You should save 25%. So it shows how much money Yeah, Apple takes a 25% like-So it&#x27;s $72 instead of 70, right? So click on this. Now here we go.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ca-85a9-e43b7efe9abb" class="">It&#x27;s logging into localhost. Did you see that thing? Want me to do it again? Because I know you&#x27;re looking down when I did it. Yeah, go for it. Okay, I&#x27;ll go back. Okay, so first things first it opened up in a new window yeah, I&#x27;ll wait for you because this is this is like us this is technical Okay, go for it. Okay, so I&#x27;m on Chris&#x27;s Contagious in my mobile browser. but I&#x27;m on double discount in my in my main one, right? In my main app.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80de-9f07-c428d2e90a75" class="">So if I go to coins, If I go to balance. And we&#x27;re gonna get some new coins If I click this button here, this is going to take me localhost.com. TikTok.com Um And let&#x27;s just not even worry about this. Now look. The double discount right here, right? Different account. But watch this, it&#x27;s in a different tab. I&#x27;m still logged in, it didn&#x27;t log me out of this. Chris is contagious, I&#x27;m still in Chris is contagious. But it opened up.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8031-af55-d41856e476a4" class="">The double discount right here.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8001-bd7b-d77c1aede6be" class="">It opened up like I&#x27;m logged in.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80d1-b39c-e12611fac81c" class="">You then switch record to Chris. Chris Contagious has not received those coins, I&#x27;m assuming. Yes. Even though I&#x27;m in mobile, it&#x27;s sending me to this private link right here.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ff-b91f-e23363b35a05" class="">Right this private coin link.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80a5-b925-dfea3b61abd6" class="">Mm-hmm Which basically... God, they are so lazy with their CSP. I can&#x27;t believe they threw you to localhost. They probably actually have an app doing a listener. I&#x27;m understanding their approach even more. It is so... It is so trash. Yeah. Everything about their tech stack is so trash.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-801d-acdd-d2e0a1b147f6" class="">Yeah, so what&#x27;s good, this is an improvement though. Because what it used to do was when I clicked that link, it would recognize I&#x27;m logged in as Chris&#x27;s Contagious and take me to the Chris&#x27;s Contagious points. So I&#x27;m coming from the double discount. I&#x27;m like, oh, save 25%, go buy 25%. Then I come back, I got no coins. Then I gotta log into my other account and realize, damn, these coins are over there.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80d8-b179-f7f60256e5af" class="">Right, so now they&#x27;re letting me, even though I&#x27;m logged in as Chris Contagious, they&#x27;re bypassing that just for this singular screen right here. So really this is just a sales page that&#x27;s just pulling this up and is going to redirect me back. That code right there is just allowing them to be able to recognize where to send me afterwards. But this is not a real logged in experience. I&#x27;m not actually logged in anywhere. I&#x27;m a guest buying right now.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80d5-9493-db6e9b0e9793" class="">But I love that they did that. I love that they spell out what apples cut would have been. That&#x27;s beautiful.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8067-87c5-ddcb48f9fbc6" class="">And they used to do it way more aggressive. I&#x27;m wondering if maybe... We, U.S. purchased, pushed back on that. It used to be much more aggressive. Google just lost a lawsuit.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80ef-b583-cd25a4387899" class="">This may be related.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-802d-b825-fae01cc59d7b" class="">It wasn&#x27;t as far as, like, don&#x27;t buy from Apple, but it was, like, right on the top. It was, like, 25% off when you purchase from our mobile listing. Click here or spend more money. It was, like, very aggressive. Now, it was just that little tab. I think that, also, it&#x27;s where I clicked it from. I think, like, I clicked it from the website there, I think it&#x27;s like huge. Buy coins, 25% off, click here, and then it takes you there. It&#x27;s It&#x27;s pretty wild.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-806c-8141-f8c2ecc90451" class="">And then you&#x27;ve got a bunch of other little numbers.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8010-a9d5-cce4c16c7cde" class="">If you&#x27;re you, dig it, I bet. It&#x27;s about the Noober story. It was called Super Pumped. I read the book and watched the movie. I watched the movie.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8045-8542-dc7bfc29c0d7" class="">It was awesome. It was like a limited series. Yeah. Not a movie. Yeah. Like six shows or something, right? Something like that. Yeah, Uber story, right?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80d5-88f5-d961e9fce60c" class="">Uber story. Yeah. Yeah, it was fantastic.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8019-8178-f6c6f8bbc661" class="">It was about just, the whole thing was about just reducing friction. The whole show was about reducing, reducing, reducing friction, reducing friction. It was like, just press a button and a car shows up.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8074-a981-c6a300a4d992" class="">It&#x27;s like eventually they&#x27;re like just press a button and there&#x27;s the car it&#x27;s like Yeah, but from a parenting standpoint, that I could just track all the kids in the Waymo.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80da-b77a-cde93d0fd3bf" class="">There&#x27;s no worrisome– look, I Ubered one of the football players home from practice because Waymo doesn&#x27;t go– it&#x27;s outside of coverage. So I Ubered him home, and then the guy came, and I&#x27;m like, oh, shit. This guy&#x27;s got to go get a 45 minute drive with this Uber driver.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8094-8a08-ff4ef7fd9b13" class="">And I was like, damn. Now I feel bad.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-809f-817f-deeef5a88310" class="">He couldn&#x27;t have the whole thing to himself, to crawl out.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-800c-85d5-f72e393d2b10" class="">No, I&#x27;m just saying just the trust level of me. Yeah. Some stranger. Of me, yeah.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8092-b417-cd7bd4e24f2d" class="">Like just a robot.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-808a-aa5d-fbbc1080f584" class="">Driving him down Coolidge, which is like a pretty far drive, almost an hour. So it was like, and the guy was just looked through. Shady. Shady. And the kid is 11 that I put in the back of the Uber.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-805d-ac4c-f1cac4affcdd" class="">Any sort of sus? Uh-uh.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8015-a8a6-d4a8948221fb" class="">But this kid was 11, but he&#x27;s a tough 11. He&#x27;s like a 1990s 11. He&#x27;s got a 12 back. He&#x27;s a 1990s 11.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8092-b653-e3cb4512d1e9" class="">He&#x27;s got to find a chance.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80c5-87c3-db334a740bba" class="">Yeah, he&#x27;s got to find a chance. He does. He&#x27;s a tough 11, for sure.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-800d-9eb9-f5ece77ac1fe" class="">Yeah.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8039-90bf-eb013bbf7c28" class="">If he stays in Coolidge, though, he&#x27;ll be a drugged-out 11, a drugged-out 12. His mom knows. I talked to his mom and his mom&#x27;s like, &quot;We have to move.&quot;There&#x27;s nothing to do with all the kids, once they&#x27;re like 13 years old, they&#x27;ll be driving there. Nothing to do. There&#x27;s nothing to do there. Okay, so I don&#x27;t have an exact for you, but I would say if we can, we have another meeting where, where. I really do want to see though, if you could show the one singular display, even if it was two of his accounts, just one singular display that shows those things. But I think I can give you the outline.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80c9-aeca-db9396077f8f" class="">for the mobile app and This, I think our priority is just figuring this out. Today&#x27;s Brian&#x27;s last day here. And Brian starts a, basically a 10-day vacation spree. So we&#x27;re like, fuck. Nice for him. Nice for him.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8085-afc8-cf8f306169dc" class="">Right at launch time, huh?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8046-9f6b-c222937236aa" class="">Well, it&#x27;s always at launch. Whenever we want to launch an event, whenever we want to launch a sales video, whenever we want to launch everything, it&#x27;s always right.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80a7-8b6e-dbed796371b4" class="">Too much stress. I got to go.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8023-b441-f5822661675b" class="">He did tell Brian we were going to launch the first, so he did two weeks out at that point. Well, I guess actually.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8075-9418-e68efaa03e7a" class="">No, to me, it is fair. It is us. It&#x27;s just funny that when we finally get our shit together is right when he leaves.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-809f-9752-cebb84900d22" class="">Whenever we do get our shit together, yeah.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-809d-a4c9-e29fa6fa131b" class="">So we need to get this launched. Like I was saying, I think it&#x27;s really-Which essentially creates revenue for our company.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8079-a55e-d0ce524adb78" class="">As soon as this is done, this is the priority.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80df-a131-d6f0aadcee30" class="">Yeah, you&#x27;re a herd. And Carl too, because Carl just moved relocating out here.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8079-b468-cfa43df243f4" class="">To make it clear how much this has taken over, that&#x27;s Carl&#x27;s office and I just like half cleaned it out yesterday because I had some free time. That&#x27;s how much that this is taking over. I can&#x27;t just go upstairs and clean out an office space. We&#x27;re just so focused on this. Carl needs to float anyways his first month here. He should not be up in an office.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-802d-b99f-c8b80231e996" class="">You don&#x27;t need an office? You will need an office. Not right now though.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8032-bdff-c4f3acbb6efc" class="">No, but if you&#x27;re on the set, I could have a rolling desk. I can just roll it around. You want to pass it.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8037-a444-f25728c01e78" class="">Oh, that&#x27;d be sick. No, not a wheel, but like a wheel, like a motorized shit, a motorized thing with a desk here.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8054-a575-d2d6127c4634" class="">Oh my God. That would be so tough.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-804b-bf4f-dfae4a63b108" class="">I&#x27;ll take one.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-808f-aab8-fe05570c391a" class="">What is it, WALL-E?</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8018-ac91-d8475aebadfe" class="">Is that the movie? Yes, yes. Hey, you press a button, you press a button, and your screen just folds into a table that you can eat on.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80bf-b549-c26fbb1f6fa3" class="">And the straw pops right in your mouth when you&#x27;re thirsty.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-806d-ac77-fe001a6de505" class="">You would get high as fuck. I&#x27;m gonna get pretty fat.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-80d4-9fec-ce4586fd385c" class="">Yeah, that&#x27;s exactly what&#x27;s gonna happen That&#x27;s not a bad idea. That&#x27;s a good invention.</p></div><div style="display:contents" dir="auto"><p id="35904b9d-4ca9-8085-b9d9-d46907d63140" class="">Hook up electrodes to pump me up constantly. I mean they have that in a bunch of--Oh, like a tens to get it right there. Yeah, here we go, here we go. They have that in a bunch of like the futuristic movies, like Ready Player One. Like essentially you don&#x27;t lose your muscle master stuff and there&#x27;s also ones where it&#x27;s like, - Yeah, it does all of your muscles.</p></div></div></div><div style="display:contents" dir="ltr"><div id="35e04b9d-4ca9-8038-b536-c78c639f009a" class="transcription"><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Summary<br/></div><div style="display:contents" dir="auto"><h3 id="35e04b9d-4ca9-8132-ade0-e99479a3b893" class="">Action Items</h3></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-8181-9dde-c2301c2d6cfc" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Fix data pipeline to handle overlapping date ranges by using the most recent submission as authoritative ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-81d3-96be-f11ce75c3f60" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Update dashboard to show only today&#x27;s data for Data Overview, hide video/live analytics ‣ ‣ ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-8159-b6a5-cbcea02ae859" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Improve random color generation to ensure better contrast for colorblind accessibility ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-8187-885b-df5073bbc63b" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Investigate why only 2 of 3 data submissions are being processed ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-813f-9355-f8ffc8c86c2c" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Fix GMV (Gross Merchandise Value) number display - currently showing incorrect value ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="35e04b9d-4ca9-8154-8b1c-c40c8f0c1cd9" class="">Data Display Issues Identified and Debugged</h3></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-810d-8861-ffef844980d5" class="bulleted-list"><li style="list-style-type:disc"><strong>Date range discrepancy</strong>: Top KPIs were showing data from May 6th while other charts (high charts, table) correctly displayed current data ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-815e-ae5c-e574bfb176ff" class="bulleted-list"><li style="list-style-type:disc"><strong>Root cause</strong>: KPIs were pulling from &quot;last seven days&quot; aggregate instead of the intended current date ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-819a-a762-e8e4e2f0f13b" class="bulleted-list"><li style="list-style-type:disc"><strong>Testing approach</strong>: Narrowed focus to &quot;Boosted Deals Daily&quot; to isolate the problem ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-81b8-9a5e-fb1b2d3b82b5" class="bulleted-list"><li style="list-style-type:disc"><strong>Correct behavior defined</strong>: Data Overview should show only today&#x27;s data; Video Analytics and Live Analytics should default to 7-day view ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-8127-ab25-f8069d64f039" class="bulleted-list"><li style="list-style-type:disc"><strong>Attributed GMB not active</strong>: Need to verify this metric is being processed correctly ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35e04b9d-4ca9-8116-8558-de6513b58e2f" class="">Dashboard Features and Capabilities</h3></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-8120-9d46-f453fb934452" class="bulleted-list"><li style="list-style-type:disc"><strong>Query and visualization system</strong>: Greylog provides flexible data querying with complicated calculations, charting, and dynamic configuration ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-8106-8409-e78488a48a1d" class="bulleted-list"><li style="list-style-type:disc"><strong>Auto-refresh functionality</strong>: Dashboard auto-refreshes every 60 seconds, providing up-to-the-minute data ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-8128-9f7e-f230e8295163" class="bulleted-list"><li style="list-style-type:disc"><strong>CMS/WYSIWYG capabilities</strong>: Building a content management system that provides complete control over dashboard configuration without developer involvement ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-81b9-96d0-cd7336c6f6ac" class="bulleted-list"><li style="list-style-type:disc"><strong>AI-assisted documentation</strong>: System includes AI documentation that can generate complex queries on demand ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-810c-98c5-ca86c157880f" class="bulleted-list"><li style="list-style-type:disc"><strong>Dynamic customization</strong>: Dashboard widgets and settings can be controlled remotely and updated live ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35e04b9d-4ca9-8150-b9ad-c897b5f9f924" class="">Technical Implementation Decisions</h3></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-810f-9190-e53dccd30988" class="bulleted-list"><li style="list-style-type:disc"><strong>Overlapping data handling</strong>: When multiple data submissions overlap in date ranges, the system should use the most recent submission as authoritative ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-81c6-8021-fc303600ccf5" class="bulleted-list"><li style="list-style-type:disc"><strong>Default view configurations</strong>: Different analytics sections have different default date ranges - Data Overview shows current day, while Video and Live analytics default to 7-day views ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-8139-aa1a-ecc0d1e0e5d0" class="bulleted-list"><li style="list-style-type:disc"><strong>Data submission processing</strong>: Currently processing livestream analytics and video analytics separately with different metric counts (5 KPIs vs 15 metrics) ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="35e04b9d-4ca9-8191-bf01-c92ac8bd34d1" class="">Outstanding Questions</h3></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-8124-a295-d92277b234e3" class="bulleted-list"><li style="list-style-type:disc">Color contrast improvements needed for colorblind users - specific implementation to be determined ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-8132-9d21-c9eb36e1904f" class="bulleted-list"><li style="list-style-type:disc">Data pipeline trimming logic still needs to be fully figured out ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="35e04b9d-4ca9-81b5-9017-ec1924674ca7" class="bulleted-list"><li style="list-style-type:disc">Need to verify all three data submission types are being processed correctly ‣</li></ul></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Notes<br/></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8004-89a1-f3d567d40862" class="">
+</p></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Transcript<br/></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8015-bcf6-d41ec99d12d9" class="">Great. Yeah, we can, once we grab the raw numbers from there, Grey log is what does. anything we want from that. Any complicated calculations, charting, anything. And even though, because like when I go in here, It defaults to like seven days, seven day. 7 day. It would without-We could, in other words-It would basically be able to do this just by whatever. Well, you said it defaulted to a number. You could set that number.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8029-ad94-f467186a4182" class="">You could control the desktop. what they see when they first come into the app. I&#x27;m going to give complete control and make it live. On the fly, you know, boom. what you&#x27;re seeing is dynamic. It can be controlled. You know, there&#x27;ll be, Ideally, you&#x27;ll just have some little widget thing where it&#x27;s, I&#x27;ll show you how to use it. And it&#x27;s got the best documentation ever. So you just ask how to do this and it&#x27;ll be like, here, just copy this. This will get you the exact complicated ass query you&#x27;re looking for.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80de-beda-dca972043a28" class="">If you want to. look at information from all sorts of ways, pre-process it, add pre and post pipelines, anything you want, you&#x27;re like, here&#x27;s what I need and it will give you, you you know, a thing where you just fill in the name. product name here date here, pop it in there, get whatever you want. And you can do that just for yourself. but you&#x27;ll also be able to create for this app. you&#x27;ll have complete control. So it&#x27;s a CMS.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-806c-98e6-f2b0050c2897" class="">I never get to get, you know, &quot;Oh Daniel, come dot the &#x27;si&#x27; across this &#x27;t&#x27;.&quot; No. I built you the WYSIWYG. I built you the editor. So you have Word where you can go and put whatever you want on the page. Yes, that&#x27;s cool. Is the stuff adding right now correctly on your app? I don&#x27;t have the same one as you. I&#x27;m testing... The virus. Yeah. And if it doesn&#x27;t, let&#x27;s go over exactly what should be.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-805e-8e54-cb04391e1525" class="">Because I know That&#x27;s all your accounts. It&#x27;s not showing several days, it&#x27;s showing that date from May 6th, whenever this was created.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8015-9c04-ea4210295405" class="">Those colors are a little too close as well.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8055-b627-f80bf9badec7" class="">Like if--So this isn&#x27;t showing you last few days.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8021-aff7-d1b1eefecb2b" class="">Her color is that. Your color is that. I&#x27;m colorblind. Blue and purple are pretty close. I should probably... make the random colors a little more, make sure that they&#x27;re contrasting some sort. as much as possible. It won&#x27;t refresh unless you go hit the bookmark. And actually, I was sitting there, I hit the bookmark, and it just updated on my mobile app. Under server settings, it might actually be polling.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8024-a3e8-dc84e3927d0b" class="">I don&#x27;t remember if I put that on, but if so, it&#x27;s auto-refreshing. Uh Yeah, yeah, look, auto refresh every 60 seconds. So I kind of got lucky that it refreshed like right when I hit the button, but you don&#x27;t ever have to hit refresh. We can actually take that off. It&#x27;s live. You&#x27;re up to the minute every minute, but it&#x27;s not. Like if you go push the button right now and something in your numbers changes, it will reflect on there within 60 seconds.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-803b-8fc7-e3a34674426b" class="">Stop.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8086-ace6-f05ddf956ce1" class="">I mean, in French. Some stuff. Whatever this is, Setup for this is accurate. It still goes to the sixth. When I scroll down, So this data does update tillHope others. So that data is accurate, but whatever this point from. It hasn&#x27;t updated at all. That&#x27;s from March 6th.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-802e-9915-e08de88aeb1d" class="">Does it say the dates?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80bb-8992-e47190b25112" class="">Yeah, it says May 6th. Okay. This one says.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80b2-8589-db129216d495" class="">March through May 4th. And what did you just put? You just submitted data showing yesterday&#x27;s date, the 11th?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80f7-b5b7-d067b60f321c" class="">Well, okay, hang on.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-802e-bdf7-c47646d7b3df" class="">Same thing though. Maybe hit refresh. Let&#x27;s...</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-807b-8202-dba1828c599c" class="">and narrow it down to just Yeah, both of those are from Boosted Deals Daily. So just narrow it down to just Boosted Deals Daily. Let&#x27;s look at just that, just to focus on if we&#x27;re getting what we need.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8082-86d9-d747582260e7" class="">And then yeah, refresh, hit refresh now that you&#x27;re just on boosted.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-805a-8801-c7d7a07525d2" class="">And what are the dates? Makes sense. Okay, then over here, I have 512. So that&#x27;s a problem. What if it&#x27;s Is this one of the ones that has live and video toggle?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-801e-ad0f-ef93e45264b4" class="">No, it doesn&#x27;t. Hmm. I mean, you could put forever if you want, yeah. It still doesn&#x27;t show.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80f6-b3ba-cc8d8c950a24" class="">Make it updates this or whatever this is.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8080-9621-edda1473e459" class="">Okay, wait, wait, wait. So this has the date you just added. This little bar chart, high charts does. Yeah, it does. This stuff does. The table does. Both charts, but the top statistics does not. Okay. Hang on.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8082-98a3-f45ca33b7761" class="">Stop puppy.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80fd-939f-de7f4d614310" class="">What? What? Was this for live or videos that you put up today&#x27;s data?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8098-bc58-f5f1d1dc9f92" class="">Well, the only thing that will show for today&#x27;s data is the. Everything else in there is from yesterday or before. So the data overview.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8005-bb5a-fc21b7ef3ac6" class="">that&#x27;s showing this from. You may sit.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8083-9a97-dfeb4a7cda6b" class="">Yeah, I&#x27;ll just tell it what page it is. No problem. So you clicked under analytics, these top two and submitted those.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8024-a535-cb14fb28438f" class="">I did the video analytics as well. All three? Yeah. Okay. Let&#x27;s see if data overview defaults to today&#x27;s view. So. If you wanted to show us. Last seven days that thing has to be changed. Everything else defaults. Video live defaults to a 7 day only.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80aa-a203-e0e66daa2250" class="">So the top KPIs are six, you said? The KPIs are the sixth.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80f8-9fe6-caf5a873f42d" class="">Yeah, that&#x27;s what she said.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8084-880e-f747068dfd8a" class="">If that TV were a couple thousand dollars a year, if that TV was that long, she would do it. But there&#x27;s other things too. Did you know any of them? Did you know? Did you know the TV existed? example you want to sell me if she was like hey chris did you know the tv does this she just swiveled itYou can stand here and just do a turn. You can do it. Shoot, how many? You How many courses like this? How many courses?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8058-99f3-eebe1a958861" class="">So there was features that were tailored to me, I would do it. That&#x27;s where people are. Basically, I want you to think about this going. This way. Okay.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80d9-961c-c60a32ea26d1" class="">So top of the funnel is like here&#x27;s the interest, interest, interest. Middle funnel expands it. Did you know how to do this? Did you know how to do this? Questions and answers. All incoming objections to this line is the middle funnel. So you don&#x27;t really need to worry about that. You&#x27;re just choosing. A method of action to overcome Thank you. Right. Started working on some UI for that. Excellent. Tell us, we&#x27;ll figure out where they want to get the data from and we&#x27;ll just start.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80dc-ba93-d2708567dfb2" class="">So cool.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-807c-8292-fae5c19fad75" class="">Oh, the SoCo app?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80ae-a661-f004cce2fefe" class="">This is the actual cell phone?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8027-8ffd-d9b86d3379a5" class="">No, no, no. That&#x27;s... That&#x27;s in TalkScript, just in the menu now. You can just go to Virals. I haven&#x27;t added it on yours yet, but that&#x27;s where I&#x27;m adding this CMS where we can dynamically enable and disable and customize remotely. But that&#x27;ll be one of the things maybe.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80b6-a982-fe6f578d102e" class="">They do die. I play high school ball out here. It&#x27;s in there. Passed away.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80b2-b437-ebd4db975e38" class="">All the best. Ontovirus?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8034-ad87-e2cb8e47ed09" class="">Hey, those are What you doing?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8002-bdb1-c1dcbd03b5ea" class="">We leave her alone. Hey. When people are eating, give space. Yours is in there. Go eat yours. I&#x27;m gonna lock you in there because the other doctor go eat it. Come on. Come on. You&#x27;re back in jail. BF carrots. Love you. Eat up.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8021-90fa-e04296a4f5b5" class="">No, it&#x27;s saying those are the right numbers maybe. It should be 228905, 5.6727828.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-809b-995c-f2427b251c64" class="">So you&#x27;re seeing.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80a5-ae02-fb361b6af2fd" class="">Good today for Boosted.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8068-a2b2-c9c2da5eeee1" class="">I mean, look at this today. This is what you&#x27;re seeing here is.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8054-b542-fe95855b5fba" class="">Oh, okay. Well, it&#x27;s just whatever you sent. I&#x27;m just making sure.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8004-8b86-d64363ccdead" class="">The attributed GMB is not active.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8043-9554-c03f382846ee" class="">What number is that? The... 228905.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8043-8993-fe9a5484e06e" class="">Item sold is the only one whose name no longer matches the data. It now sends attributed items sold. Okay, but besides that, the GMB thing, let&#x27;s find out. Let&#x27;s redo all your data.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8054-b4c7-d9edbdef1033" class="">So GMV is the only one that&#x27;s wrong. 5.6727828, those are right.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80f7-8d39-c4371b69a835" class="">So only the 228905, that&#x27;s wrong. The other two, the 5.6727828, those are right. Are any of those still okay? All three of those are... Let&#x27;s see. Which should be in what you just sent. Let&#x27;s look at what you just sent.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80f1-a77b-f2b973e61276" class="">Like you sent to a live stream analytics and you said. Another one. Thanks for your analytics. or no one streamer and one&#x27;s live stream. So they&#x27;re two different. One is 10 videos, five KPIs, The other was 15 metrics, 10 rows of videos.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8058-ac41-fd715468eaff" class="">Yeah, I&#x27;m seeing something like GMB 11977. 77. No, no, that&#x27;s what you just said. It&#x27;s no reason to like resend it, but, um, It&#x27;s saying start and end was 5.5 to 5.11.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8007-9e2b-d3d890e10f14" class="">Right, right, right. I get that. So. Oh, I get what you&#x27;re saying. Okay. Yeah. Yeah, I get what you&#x27;re saying. But you see how this could get like super confusing. Like you might send a week of whatever and then you do it again tomorrow. So now it&#x27;s a day forward and a day after. And We&#x27;ve got to actually process it in that case. I forgot how, what the steps are. For that pipeline, I have a plan. Don&#x27;t look at it. Stop!</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80ff-b94a-cadd2ad455d8" class="">So here&#x27;s my plan Just in an implementation level, tell me.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80bc-b19c-c12dc31f667c" class="">I think this makes sense.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80c0-8ccc-e32d7115ea52" class="">So I gave the example where like, what if you submitted 5.11 and then you also submitted a week you also submitted 5.5 through 5.11 how should it fucking handle that And then if you want to zoom in on anything, just hold that and do that. Two minute out. the control in two fingers. But Yeah. Let&#x27;s see. It looks good to me, but I mean, it&#x27;s... I want you to make sure this here. Domain.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8030-9b81-c89d7d84f400" class="">So in other words, if you send a week of data in and you send a week of data in, And now I&#x27;m querying saying, I want data from here to here and it overlaps with both of these. Which one is the authoritative? My thought would be... The one further ahead in the timeline. Although it&#x27;s overlapping, that way this part that&#x27;s getting both of them know about these two days. Use it from this piece. We got to make those choices or some sort of choices, you know what I mean?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-808f-b751-c012dc58c0b8" class="">So that as you&#x27;re sending it in as one, a seven, a this, a that, we decide what is the authoritative. Unless everything is always sent in as a day. That would work, but... So this stuff we&#x27;re going to have overlaps. I&#x27;ll deal with it. Like, yeah, I just wanted you to take a... Oh, yeah. All right.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8024-81b8-eb052a9b1b2e" class="">Is this what displays?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8038-a69b-c8da9ab7ee83" class="">It&#x27;ll ultimately affect what displays. Yeah, absolutely. Well, I don&#x27;t know if that&#x27;s what displays. That&#x27;s just my current build. I think I&#x27;m on a different one than you. Yeah, I have a couple versions I&#x27;m testing out.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8063-a03f-f2f720aee7b9" class="">Well, again, this is where-It&#x27;s confusing. Thank you. Today. Why is today showing? We data. That doesn&#x27;t make sense to me. Not only that, I&#x27;m seeing all live streams like that. That goes back a month.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8079-b996-e2082599a182" class="">14 through Got it. Okay. Yeah, yeah. Okay. I can hide that stuff. Hang on.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8091-8347-f8c16939049b" class="">So like the only thing that should show up.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-809f-851b-ddfebf6fd876" class="">Yeah, no, I understand. So let me, yeah, let me filter by the day. That is a good.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80ce-ab43-f4b33df9dcad" class="">The only thing that will show today is going to be in daylight. Okay. So you won&#x27;t be able to see your live analytics or your video.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8033-a526-cdfd983a8975" class="">Right, I don&#x27;t need it. I&#x27;ll spill it out. Just like, yeah, I&#x27;ll just show just that part. That makes sense. The KPIs is what I think they&#x27;re called in here. Let&#x27;s see. Yeah, that&#x27;s easy. We&#x27;ll still have to figure out how to do the whole data pipeline trimming, but... I&#x27;ll figure that out.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80e0-9d6c-d0312ab70830" class="">We don&#x27;t have videos though for today.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8057-ab3d-c1521a5067e8" class="">It&#x27;s not going to show. It doesn&#x27;t show the space. I&#x27;ll take it in here. The only thing that shows. That&#x27;s accurate for today.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-803c-a60a-c0dd977d1d12" class="">you No.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8042-a880-e1f24bb62a39" class="">No.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8067-8d1e-fc9f18c8c083" class="">Bar line reference.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8076-ab26-d683036d7c33" class="">Affiliate KPIs for the day. also or just Data overview.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80b7-b536-fc20fe778164" class="">For today, it should just be data.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80f6-8df7-e3990decc251" class="">Now videos live affiliate. Do you want all of them? Do all of them have the one week by default? Yeah.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80dd-9958-e2f8bd69727d" class="">No. No.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80ed-b13e-e2d2f17b06cd" class="">I can invite you. I didn&#x27;t invite you. No, don&#x27;t do that.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-806a-a837-eeee693c12cc" class="">It&#x27;s working. What were you doing outside? Thank you.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-803b-834b-d15bd9ed6d24" class="">I think that&#x27;s all there is. Can you hear our vote?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80b8-bcca-d6c2cc4f8fe7" class="">Me sitting down isn&#x27;t an interesting experience. No, no.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-800d-a4be-cde692428f8c" class="">You right there. You okay?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8007-a9da-e0ddb0621de6" class="">No.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80a7-8904-ecdf36da4f48" class="">What&#x27;s up, wacky boy?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80ef-aaa8-df21fa1b5d01" class="">Okay, so something like... Cheers.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8078-b877-c5e410b96929" class="">Is that the change you wanted or?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-802b-b28a-fbbd461c46e8" class="">Yeah, but that&#x27;s still not...</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8048-8075-fd9e0567334f" class="">On what, be more specific?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8080-866f-c3dc53d5f5ae" class="">of that stuff from today. I don&#x27;t know where it&#x27;s pointing from.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8058-8ab7-ca7f8b308c10" class="">Oh, let&#x27;s look 2289.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80b0-b3ee-e82133e6208c" class="">So that came from 512, 538. 512, is that today? Yeah. That was one of the two you sent this morning. So the... First one you said. Let&#x27;s see, oh there it is, 228905.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80dd-ba06-e2944a97f75b" class="">Oh, that&#x27;s the last seven days value. Name attributed items sold 100. blah blah blah blah blah CTR 5.67 5.67 so that&#x27;s That&#x27;s the one that you sent today. That was the first of the two. That&#x27;s what was in there.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80ba-bb4f-f82bf161489c" class="">If you look at data overview.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80fc-80b8-c29921026d67" class="">I mean, just go to your screen and look, I mean, let&#x27;s trace it back. You know what I mean? Like that&#x27;s all we need to do is stop. Hunting. Oh shit.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80d1-95e5-c1faf1a89404" class="">Yeah, no, I get it.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80ee-a6aa-c424731adaf4" class="">But this would be from the first one you said.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8099-bbd9-eac04296bbe3" class="">I think I only showed two.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8045-9fa5-d8b19de77186" class="">Yeah, because if you don&#x27;t see that green thing, I think it only sent two of them. I don&#x27;t know if I&#x27;m processing all three, so that&#x27;s not a thing we should. actually step through.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8001-b99f-e6b51b921cb0" class="">Oh yeah, look. So key metrics. Last seven days, that&#x27;s where it&#x27;s from right there. Shut up or I&#x27;ll kill you.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80b0-8499-d0e50ce72224" class="">That slide down a little.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80f2-b67c-f4aab4f220b5" class="">Okay, so do we need to rename whatever this is saying?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80fe-b767-e2f560f3abe5" class="">That&#x27;s what I&#x27;m saying, data overview would be the only thing that should show up under today. &#x27;Cause the only thing that can show up today is data overview. Okay. Live analytics and video analytics is always the earliest data we have is from yesterday.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8052-a87f-f3d920d3c666" class="">Let&#x27;s see.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-807e-9b20-f6ccd3f23dce" class="">So data overview four or five. I am seven.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-804a-8dbd-ef6cc6e4da34" class="">Or.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-809d-82ca-dc91c3a77f7c" class="">Question mark.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80cd-b30e-c64e9e08bc6e" class="">Words.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8088-b28c-dbf4ec557fa3" class="">Cool.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80e4-af9e-e85cbedab833" class="">45, 27, 45, 47, Okay, so I don&#x27;t think that one&#x27;s set. So we&#x27;re on this page, data overview. Shut up or I&#x27;ll kill you. I click this. I got a green. So I&#x27;ll go over, hang on, I see. I&#x27;ll fucking kill you. Yeah, so there that is with eight metrics. 45.97. So now that one came in. for some reason, But now.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80f0-8d83-c8db62e4850e" class="">that data, not the other. the other one because it&#x27;s coming from the other one as we can see here so easy I know.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-802b-8c6d-eadc4b5ab02b" class="">I&#x27;d really be happy about this. There&#x27;s a spot.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80e5-8e2c-f2fd5e2a30bf" class="">Okay.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-807d-b269-c84fe64b2bf6" class="">uh one I don&#x27;t see if that looks right.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80b8-9318-eb0da977c983" class="">What?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80e5-b844-c1755fc98992" class="">Here. Okay. You&#x27;re a stinky ass boogie, man. Here you go.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80c6-9363-c8eb2e50fbaf" class="">Yeah, one more time before I go back. Let&#x27;s do it. No, I&#x27;m not here to play. Hello, Patti. Go ahead, love. I missed you too. I&#x27;m not coming out with you though, so.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8013-a136-ed5fce7ef6b3" class="">Stop scratching.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80f7-882c-ff89c4345eaa" class="">What the fuck are y&#x27;all doing?</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80a5-9135-d4644b4eb263" class="">Peach, come on.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80cc-b9b9-f2e1e62cc875" class="">Now that&#x27;s shit. Hey. If you just want to relax, cool. I&#x27;m doing something. I gotta go. Do you wanna go potty? We got shit else for you.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-806a-8f6a-d4e234447ceb" class="">Peach, come on. Stay.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8079-a112-ce42021a98a0" class="">Where did that other phone go? And if you want, plug your phone into...</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8083-b39e-e0fbf02af7c7" class="">Okay, we&#x27;re good. Need to have the viral back on this one. Well, there it goes.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8052-bb6f-e15431266b57" class="">I&#x27;m gonna grab a controller, I&#x27;ll meet you at the car.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-8007-85ca-de2d24c8f8bd" class="">I think Waymo got kicked off the freeway, man. The last like six rides. And like, picking a new route, none of them freeway anymore.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-80cb-b063-eda4abbddadb" class="">See you.</p></div><div style="display:contents" dir="auto"><p id="35e04b9d-4ca9-809b-a8ba-fdf37f9bdbbb" class="">-Thank you.</p></div></div></div><div style="display:contents" dir="ltr"><figure id="34804b9d-4ca9-8048-8f9f-c08fc8918b81" class="link-to-page"><a href="TikTok%20Gateway%20Event%20Logger/ngrok%2034804b9d4ca980488f9fc08fc8918b81.html">ngrok</a></figure></div><div style="display:contents" dir="auto"><p id="34404b9d-4ca9-80e3-a899-c87841fac183" class="">Graylog security</p></div><div style="display:contents" dir="ltr"><figure id="34404b9d-4ca9-8079-a804-e8e05f94058b" class="image"><a href="TikTok%20Gateway%20Event%20Logger/image.png"><img style="width:704px" src="TikTok%20Gateway%20Event%20Logger/image.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2c604b9d-4ca9-8033-904a-c4df74c53286" class="">listen to ws://localhost:21213</p></div><div style="display:contents" dir="auto"><p id="21a04b9d-4ca9-8005-8fc1-f85b9ba4f836" class="">onMessage<div class="indented"><div style="display:contents" dir="auto"><p id="21a04b9d-4ca9-8075-82b8-e1087c6f2329" class="">send via UDP to Greylog</p></div><div style="display:contents" dir="auto"><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js" integrity="sha512-7Z9J3l1+EYfeaPKcGXu3MS/7T+w19WtKQY/n+xzmw4hZhJ9tyYmcUS+4QqAlzhicE5LAfMQSF3iFTK9bQdTxXg==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" integrity="sha512-tN7Ec6zAFaVSG3TpNAKtk4DOHNpSwKHxxrsiw4GHKESGPs5njn/0sMCUMl2svV4wo4BK/rCP7juYz+zx+l6oeQ==" crossorigin="anonymous" referrerPolicy="no-referrer"/><script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-jsx.min.js" integrity="sha512-m3JYEI6gx5fh9jF10FjGoMzVKcV2N6nchcDcqPCdI1L3R2WQV7br2XVNR8iTLb2daOMRl3zldbcfT40xU2ntVw==" crossorigin="anonymous" referrerPolicy="no-referrer"></script><pre id="21a04b9d-4ca9-800b-82d4-ca4a30b05fb5" class="code code-wrap"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">connectWebSocket() {
+        const websocketUrl = &#x27;ws://localhost:21213&#x27;;
+        console.log(`Attempting to connect to WebSocket: ${websocketUrl}`);
+        this.ws = new WebSocket(websocketUrl);
+
+        this.ws.onopen = () =&gt; {
+            console.log(&#x27;Connected to TikFinity WebSocket!&#x27;);
+            this.addEventToLog(&#x27;System: Connected to TikFinity!&#x27;, &#x27;#00ff00&#x27;);
+        };
+
+        this.ws.onmessage = (event) =&gt; {
+            try {
+                const messageData = JSON.parse(event.data);
+                console.log(&#x27;Received TikFinity Event:&#x27;, messageData);
+                this.handleTikFinityEvent(messageData);
+            } catch (e) {
+                console.error(&#x27;Error parsing WebSocket message:&#x27;, e);
+                this.addEventToLog(`System Error: Could not parse message.`, &#x27;#ff0000&#x27;);
+            }
+        };
+
+        this.ws.onerror = (error) =&gt; {
+            console.error(&#x27;WebSocket Error:&#x27;, error);
+            this.addEventToLog(&#x27;System Error: WebSocket connection error.&#x27;, &#x27;#ff0000&#x27;);
+        };
+
+        this.ws.onclose = () =&gt; {
+            console.log(&#x27;Disconnected from TikFinity WebSocket.&#x27;);
+            this.addEventToLog(&#x27;System: Disconnected. Attempting to reconnect...&#x27;, &#x27;#ffff00&#x27;);
+            // Optional: implement reconnection logic
+            setTimeout(() =&gt; this.connectWebSocket(), 5000); // Reconnect after 5 seconds
+        };
+    }</code></pre></div><div style="display:contents" dir="auto"><p id="21a04b9d-4ca9-80dd-8c31-c6140559e781" class="">forward message to Pusher, which web overlay can subscribe to<div class="indented"><div style="display:contents" dir="auto"><pre id="21a04b9d-4ca9-8042-b9f6-f3c630fe6ccc" class="code code-wrap"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">app_id = &quot;2401&quot;
+key = &quot;f513119581ede36ac6c4&quot;
+secret = &quot;7d5b73abea1b6d88cb65&quot;
+cluster = &quot;mt1&quot;</code></pre></div><div style="display:contents" dir="auto"><pre id="21a04b9d-4ca9-8055-9c33-c5ee26121195" class="code code-wrap"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">&lt;!DOCTYPE html&gt;
+&lt;head&gt;
+  &lt;title&gt;Pusher Test&lt;/title&gt;
+  &lt;script src=&quot;https://js.pusher.com/8.4.0/pusher.min.js&quot;&gt;&lt;/script&gt;
+  &lt;script&gt;
+
+    // Enable pusher logging - don&#x27;t include this in production
+    Pusher.logToConsole = true;
+
+    var pusher = new Pusher(&#x27;f513119581ede36ac6c4&#x27;, {
+      cluster: &#x27;mt1&#x27;
+    });
+
+    var channel = pusher.subscribe(&#x27;my-channel&#x27;);
+    channel.bind(&#x27;my-event&#x27;, function(data) {
+      alert(JSON.stringify(data));
+    });
+  &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;Pusher Test&lt;/h1&gt;
+  &lt;p&gt;
+    Try publishing an event to channel &lt;code&gt;my-channel&lt;/code&gt;
+    with event name &lt;code&gt;my-event&lt;/code&gt;.
+  &lt;/p&gt;
+&lt;/body&gt;</code></pre></div><div style="display:contents" dir="auto"><pre id="21a04b9d-4ca9-80bf-98f4-de902927c53c" class="code code-wrap"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">curl -H &#x27;Content-Type: application/json&#x27; -d &#x27;{&quot;data&quot;:&quot;{\&quot;message\&quot;:\&quot;hello world\&quot;}&quot;,&quot;name&quot;:&quot;my-event&quot;,&quot;channel&quot;:&quot;my-channel&quot;}&#x27; &quot;https://api-mt1.pusher.com/apps/2401/events?&quot; &quot;body_md5=2c99321eeba901356c4c7998da9be9e0&amp;&quot; &quot;auth_version=1.0&amp;&quot; &quot;auth_key=f513119581ede36ac6c4&amp;&quot; &quot;auth_timestamp=1750630570&amp;&quot; &quot;auth_signature=015bd7113f52bdb74aa9cbce8d9bfbe9c04e84c1c5e931fac70c6dba41411cb0&amp;&quot;</code></pre></div><div style="display:contents" dir="auto"><pre id="21b04b9d-4ca9-8010-a54d-db402e4fdb6a" class="code code-wrap"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">Could not get the app: http status code: 401</code></pre></div><div style="display:contents" dir="auto"><pre id="21e04b9d-4ca9-807d-817c-fb8b1ff82e51" class="code code-wrap"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">app_id = &quot;2401&quot;
+key = &quot;ed8c111328bd62c680c4&quot;
+secret = &quot;bbf9c2058add938fc2ff&quot;
+cluster = &quot;mt1&quot;</code></pre></div></div></p></div></div></p></div><div style="display:contents" dir="auto"><h3 id="21e04b9d-4ca9-801b-8417-c3d3403bb897" class="">Event Payloads</h3></div><div style="display:contents" dir="auto"><p id="21e04b9d-4ca9-8092-906a-cd06e9ed9701" class="">like</p></div><div style="display:contents" dir="auto"><pre id="21e04b9d-4ca9-80bc-b8b2-c0674e2c9efa" class="code code-wrap"><code class="language-jsx" style="white-space:pre-wrap;word-break:break-all">{
+    &quot;event&quot;: &quot;like&quot;,
+    &quot;data&quot;: {
+        &quot;likeCount&quot;: 3,
+        &quot;totalLikeCount&quot;: 520,
+        &quot;userId&quot;: &quot;7512006564394845230&quot;,
+        &quot;secUid&quot;: &quot;MS4wLjABAAAAhsjTE89g4CU3l-vb07sAGtULcfRdg6XRz4eZu_Dh0kBA_vPrbXjMsz0h3cgDgC7D&quot;,
+        &quot;uniqueId&quot;: &quot;christineellis51&quot;,
+        &quot;nickname&quot;: &quot;Christine Ellis&quot;,
+        &quot;profilePictureUrl&quot;: &quot;https://p16-pu-sign-useast8.tiktokcdn-us.com/tos-useast5-avt-0068-tx/de9bb16f0517432e283cdf11011a93fa~tplv-tiktokx-cropcenter:100:100.webp?dr=9640&amp;refresh_token=b6a1642b&amp;x-expires=1750032000&amp;x-signature=0wJ95Dh9aESK0GIt83I2RDT72w8%3D&amp;t=4d5b0474&amp;ps=13740610&amp;shp=a5d48078&amp;shcp=fdd36af4&amp;idc=useast8&quot;,
+        &quot;followRole&quot;: 1,
+        &quot;userBadges&quot;: [
+            {
+                &quot;type&quot;: &quot;image&quot;,
+                &quot;badgeSceneType&quot;: 6,
+                &quot;displayType&quot;: 1,
+                &quot;url&quot;: &quot;https://p19-webcast.tiktokcdn.com/webcast-sg/new_top_gifter_version_2.png~tplv-obj.image&quot;
+            }
+        ],
+        &quot;userSceneTypes&quot;: [
+            6,
+            6
+        ],
+        &quot;userDetails&quot;: {
+            &quot;createTime&quot;: &quot;0&quot;,
+            &quot;bioDescription&quot;: &quot;&quot;,
+            &quot;profilePictureUrls&quot;: [
+                &quot;https://p16-pu-sign-useast8.tiktokcdn-us.com/tos-useast5-avt-0068-tx/de9bb16f0517432e283cdf11011a93fa~tplv-tiktokx-cropcenter:100:100.webp?dr=9640&amp;refresh_token=b6a1642b&amp;x-expires=1750032000&amp;x-signature=0wJ95Dh9aESK0GIt83I2RDT72w8%3D&amp;t=4d5b0474&amp;ps=13740610&amp;shp=a5d48078&amp;shcp=fdd36af4&amp;idc=useast8&quot;,
+                &quot;https://p19-pu-sign-useast8.tiktokcdn-us.com/tos-useast5-avt-0068-tx/de9bb16f0517432e283cdf11011a93fa~tplv-tiktokx-cropcenter:100:100.webp?dr=9640&amp;refresh_token=4f7a589c&amp;x-expires=1750032000&amp;x-signature=4tN6mIyxWWdg1LJeQK%2BsnvCX488%3D&amp;t=4d5b0474&amp;ps=13740610&amp;shp=a5d48078&amp;shcp=fdd36af4&amp;idc=useast8&quot;,
+                &quot;https://p16-pu-sign-useast8.tiktokcdn-us.com/tos-useast5-avt-0068-tx/de9bb16f0517432e283cdf11011a93fa~tplv-tiktokx-cropcenter:100:100.jpeg?dr=9640&amp;refresh_token=0ea81d5e&amp;x-expires=1750032000&amp;x-signature=C%2Bk4x%2FDlq0FQ7YsZrVqD%2FMkOlbg%3D&amp;t=4d5b0474&amp;ps=13740610&amp;shp=a5d48078&amp;shcp=fdd36af4&amp;idc=useast8&quot;
+            ]
+        },
+        &quot;followInfo&quot;: {
+            &quot;followingCount&quot;: 1,
+            &quot;followerCount&quot;: 0,
+            &quot;followStatus&quot;: 1,
+            &quot;pushStatus&quot;: 0
+        },
+        &quot;isModerator&quot;: false,
+        &quot;isNewGifter&quot;: false,
+        &quot;isSubscriber&quot;: false,
+        &quot;topGifterRank&quot;: 1,
+        &quot;gifterLevel&quot;: 0,
+        &quot;teamMemberLevel&quot;: 0,
+        &quot;msgId&quot;: &quot;7515588820285277214&quot;,
+        &quot;createTime&quot;: &quot;1749859382884&quot;,
+        &quot;displayType&quot;: &quot;pm_mt_msg_viewer&quot;,
+        &quot;label&quot;: &quot;{0:user} liked the LIVE&quot;,
+        &quot;tikfinityUserId&quot;: 1888822,
+        &quot;tikfinityUsername&quot;: &quot;wizardofdealz&quot;
+    }
+}</code></pre></div><div style="display:contents" dir="auto"><p id="2c604b9d-4ca9-8003-a8c3-cf1b9a649ee1" class="">
+</p></div><div style="display:contents" dir="auto"><p id="22b04b9d-4ca9-807e-9786-fcc013663470" class="">
+</p></div><div style="display:contents" dir="auto"><p id="22b04b9d-4ca9-80b5-b16a-c6ad19f1ef00" class="">interactive TikTok event ideas</p></div><div style="display:contents" dir="auto"><ul id="22b04b9d-4ca9-80c5-872f-f43d02a78cbf" class="bulleted-list"><li style="list-style-type:disc">duck feeder, drops food on gift</li></ul></div><div style="display:contents" dir="auto"><p id="22b04b9d-4ca9-80cd-aaa3-f3e4358848ba" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2c004b9d-4ca9-8034-83d8-f3d95882e7e3" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2c004b9d-4ca9-8041-8698-db91d81cc648" class="">capture as truth to ElasticSearch, add graylog, voila, a $30k super search for ~free</p></div><div style="display:contents" dir="auto"><p id="2c004b9d-4ca9-80b0-9da1-c7d14457e429" class="">Graylog4 can find the GOAT creator, their sponsors, and sponsors top products for that week / whateverDuration</p></div><div style="display:contents" dir="auto"><p id="2c604b9d-4ca9-80c1-bb2e-f235a28d1ae2" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2c604b9d-4ca9-8064-91e7-dc7afdc4753a" class="">
+</p></div><div style="display:contents" dir="ltr"><figure id="2c404b9d-4ca9-8099-92ac-f8dc2647e17d" class="link-to-page"><a href="TikTok%20Gateway%20Event%20Logger/TikTok%20com%202c404b9d4ca9809992acf8dc2647e17d.html">TikTok.com</a></figure></div><div style="display:contents" dir="auto"><p id="2c604b9d-4ca9-8022-a8d4-fa4feab46789" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2c604b9d-4ca9-8075-9e9d-ffe6957b28af" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

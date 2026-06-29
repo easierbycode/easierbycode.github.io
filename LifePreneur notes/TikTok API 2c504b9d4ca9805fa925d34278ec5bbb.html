@@ -1,0 +1,754 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>TikTok API</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2c504b9d-4ca9-805f-a925-d34278ec5bbb" class="page sans"><header><h1 class="page-title" dir="auto">TikTok API</h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-person"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/friends_gray.svg" style="width:14px;height:14px;display:block"/></span>Owner</th><td><span class="user"><img src="https://lh3.googleusercontent.com/a-/AOh14Ggy0FcyX-X6EW32d0jOd5HNUZl3VcBq7Msx_b4mPQ=s100" class="icon user-icon"/>Daniel Johnson</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>Tags</th><td></td></tr></tbody></table></header><div class="page-body"><div style="display:contents" dir="ltr"><figure id="34204b9d-4ca9-8092-bdda-d4d6c6c64e92" class="image"><a href="TikTok%20API/image.png"><img style="width:703.9921875px" src="TikTok%20API/image.png"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="34204b9d-4ca9-80bf-84f6-eecd2b8d3cf0" class="image"><a href="TikTok%20API/image%201.png"><img style="width:703.9921875px" src="TikTok%20API/image%201.png"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="34204b9d-4ca9-8007-9ac5-fad4d8b8e09e" class="image"><a href="TikTok%20API/image%202.png"><img style="width:703.9921875px" src="TikTok%20API/image%202.png"/></a></figure></div><div style="display:contents" dir="ltr"><figure id="34204b9d-4ca9-800b-b341-fdeaa568f86e" class="image"><a href="TikTok%20API/image%203.png"><img style="width:703.984375px" src="TikTok%20API/image%203.png"/></a></figure></div><div style="display:contents" dir="ltr"><div id="34104b9d-4ca9-801d-8264-c11335cf1cda" class="transcription"><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Summary<br/></div><div style="display:contents" dir="auto"><h3 id="34104b9d-4ca9-81d1-b30f-de8b9c5f13a8" class="">Action Items</h3></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8149-b8a3-c8e9b6fb50c4" class="to-do-list"><li><div class="checkbox checkbox-on"></div> <span class="to-do-children-checked">Test newly added scopes and login kit to see what data can be accessed ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8113-b1fe-cfe7a356347e" class="to-do-list"><li><div class="checkbox checkbox-on"></div> <span class="to-do-children-checked">Investigate data portability API and determine if application is possible given EEA/UK restrictions ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81d7-b6fd-ec6ef390eede" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Inspect <a href="http://Yuca.ai">Yuca.ai</a> to identify which APIs they&#x27;re calling for their functionality ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81f8-bce3-e167180336f7" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Explore bookmarklet solution for extracting data from Partner Center ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81e4-8206-d6fc203a2533" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Report back on what data can be pulled with current permissions before next meeting ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="34104b9d-4ca9-81b7-ab09-f57a65e98752" class="">TikTok API Integration Progress</h3></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8107-9658-ebdfc31b0d8c" class="bulleted-list"><li style="list-style-type:disc">Set up TikTok Developer sandbox environment with login kit, share kit, and webhooks ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-811d-a0df-fdaa48bdb412" class="bulleted-list"><li style="list-style-type:disc">Added multiple scopes to the app including user basic info and other permissions ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81ac-a985-e32b2e1216e6" class="bulleted-list"><li style="list-style-type:disc">Successfully configured sandbox version with URI and applied changes ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8157-9152-daa6880c938e" class="bulleted-list"><li style="list-style-type:disc">Discovered TikTok Research API is restricted to academic researchers and nonprofits, not available for commercial use ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-810d-87b0-eb0ac34013d3" class="bulleted-list"><li style="list-style-type:disc">TikTok for Developers API appears to only provide public data (likes, view counts, comment counts) ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34104b9d-4ca9-8186-b62c-f56ac7d8fe27" class="">Data Access Challenges and Solutions</h3></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81ba-b146-e226a3da9603" class="bulleted-list"><li style="list-style-type:disc">Primary goal is to access TikTok Shop data (sales metrics) which is not available through standard APIs ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81c5-b535-eaca01df332e" class="bulleted-list"><li style="list-style-type:disc">Partner Center provides access to creator data but only through web interface with export functionality, no direct API ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81fd-801d-f08d1b137fe9" class="bulleted-list"><li style="list-style-type:disc">Proposed bookmarklet solution: create a browser bookmark that scrapes visible data from Partner Center pages when clicked ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81fe-b89c-f8ea4df00959" class="bulleted-list"><li style="list-style-type:disc">Bookmarklet would be semi-automated, requiring someone to click daily but still viable ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-811e-b97a-ec0401c1addd" class="bulleted-list"><li style="list-style-type:disc">Alternative approach: use Elasticsearch/GreyLog to aggregate data from disparate sources as single source of truth ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34104b9d-4ca9-81e4-82b8-f19c2e288b4b" class="">Competitor Analysis - <a href="http://Yuca.ai">Yuca.ai</a></h3></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8103-b48c-cc6af409c349" class="bulleted-list"><li style="list-style-type:disc"><a href="http://Yuca.ai">Yuca.ai</a> is the primary competitor to mimic, offering campaign hosting and video metrics tracking ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81a5-962c-c6f5dc9bdcf0" class="bulleted-list"><li style="list-style-type:disc">Their platform shows creator login (using TikTok login kit), campaign management for brands, and video performance metrics ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-819c-8856-dca8f1ccb954" class="bulleted-list"><li style="list-style-type:disc">Console inspection revealed extensive third-party integrations with many errors, particularly from PostHog analytics ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8111-80b9-da826bf923b4" class="bulleted-list"><li style="list-style-type:disc">Plan to inspect <a href="http://Yuca.ai">Yuca.ai</a>&#x27;s network calls to identify which APIs they&#x27;re using ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34104b9d-4ca9-81f6-a0c1-e2742597d9da" class="">Application Development Updates</h3></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81cd-b0d6-e292091d213f" class="bulleted-list"><li style="list-style-type:disc">Currently working on second version of the website with improved security ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8158-a0b3-eccd2614a034" class="bulleted-list"><li style="list-style-type:disc">Built on Superstarter foundation using BetterAuth and Supabase for secure authentication and API connections ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81f9-a439-c8f655ea72d1" class="bulleted-list"><li style="list-style-type:disc">Implemented rule to never deviate from foundation, only extend it ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8154-99fa-f515e69a9691" class="bulleted-list"><li style="list-style-type:disc">Dashboard includes connected accounts management, goals/campaign tracking, and video playback functionality ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81d1-a219-cb7acadef42b" class="bulleted-list"><li style="list-style-type:disc">Initial page load speed is the main performance concern, though in-session navigation is fast ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8110-ae2d-ddf1c971bc98" class="bulleted-list"><li style="list-style-type:disc">Using AI-powered development tools (Cursor) to build 80-90% of features, with improved hallucination handling ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34104b9d-4ca9-815d-9e74-fa7447fdaf03" class="">Campaign Management Strategy</h3></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-813c-b82e-c7d29d64e93f" class="bulleted-list"><li style="list-style-type:disc">Two primary models: Yuca-style campaigns (tracked through app) and Discord campaigns (submission-based) ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81db-b36b-c504ed6ff8fa" class="bulleted-list"><li style="list-style-type:disc">Discord is where major brands currently communicate with TikTok creators ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8196-a2bf-d91d2e3c8e2a" class="bulleted-list"><li style="list-style-type:disc">Goal is to aggregate all campaign information in their app so creators don&#x27;t need to leave platform ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8169-af76-c491ace13294" class="bulleted-list"><li style="list-style-type:disc">Need to verify posted video counts against actual data for accuracy ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34104b9d-4ca9-8135-8351-f342247c3b88" class="">MVP Definition and Scope</h3></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8196-a81e-fbe00a12cb06" class="bulleted-list"><li style="list-style-type:disc">MVP focused on login functionality and displaying all user data ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-810b-8c7e-f44b723ba7d7" class="bulleted-list"><li style="list-style-type:disc">Public API data (likes, views, comments) are nice-to-have but not immediately beneficial ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8173-97aa-f5282f118ac1" class="bulleted-list"><li style="list-style-type:disc">Core value is TikTok Shop data showing sales correlated with video performance ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-81c0-a787-e31f19072e37" class="bulleted-list"><li style="list-style-type:disc">If Partner Center OAuth works, implementation would involve sending links to creators to connect accounts ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34104b9d-4ca9-8141-a1e7-cc0b50691ad8" class="">Platform Expansion Considerations</h3></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8136-b179-fb67d2afa23d" class="bulleted-list"><li style="list-style-type:disc">Currently TikTok-focused but planning to expand to other social platforms adopting similar creator economy features ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8139-8a54-f8d4699bcf52" class="bulleted-list"><li style="list-style-type:disc">Discussed affiliate marketing progression from basic link sharing to full funnel ownership ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-818b-b001-dfc00a71e109" class="bulleted-list"><li style="list-style-type:disc">Mobile optimization prioritized over native app due to 45+ year old target demographic and TikTok&#x27;s mobile-first nature ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-814d-ba42-f78742e5a1f1" class="bulleted-list"><li style="list-style-type:disc">PWA (Progressive Web App) considered sufficient for mobile experience instead of iOS/Android native apps ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34104b9d-4ca9-8180-ac93-dab840f40c1f" class="">Follow-up</h3></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-810a-a426-e097683dc4fc" class="bulleted-list"><li style="list-style-type:disc">Next meeting scheduled for Thursday (Wednesday unavailable) ‣ ‣ ‣</li></ul></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Notes<br/></div><div style="display:contents" dir="auto"><ul id="34104b9d-4ca9-8087-a934-c8b01163697b" class="to-do-list"><li><div class="checkbox checkbox-on"></div> <span class="to-do-children-checked">set up webhook endpoint</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-804e-b921-fe53fbaa177a" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">when clicking Add TikTok Account loops back to same page, no opportunity to login to additional account</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-8025-bf78-ea2f1d0cc1e1" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">when entering campaign goal and logging out it resets.  campaign should persist, and should allow video inclusion across multiple accounts</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-808b-abc3-c8f1673a4eca" class=""><a href="https://supabase.com/customers/euka">https://supabase.com/customers/euka</a></p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-808a-8340-c0fcb2715bc4" class=""><a href="https://creators.euka.ai">https://creators.euka.ai</a></p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-809e-8348-f67f58beb89a" class=""><a href="https://tiktokshopdeveloper.splashthat.com/">https://tiktokshopdeveloper.splashthat.com/</a></p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8000-8705-cac08ddcc292" class=""><a href="https://partner.tiktokshop.com/docv2/page/connector-multi-channel-dropshipping-and-print-on-demand#">https://partner.tiktokshop.com/docv2/page/connector-multi-channel-dropshipping-and-print-on-demand</a></p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8078-98b1-db81f258a546" class="">
+</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8044-b68b-c9a72a3e6b55" class="">partner.tiktokshop.com/openlearn</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8041-a767-f55adc86a279" class="">
+</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-806c-8ef1-c00d7fb91ec5" class="">Most tools like Kalodata and Euka supplement official API data with scraping. The typical pipeline looks like: Partner API v2 polling + webhooks → queue → workers → raw data lake → warehouse → BI dashboards, combined with Seller Center exports and Marketing API data.</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80fa-a7c0-c527bb1e162f" class="">
+</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80d8-b248-ddaf1e018ac5" class="">
+</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-805e-ba9f-f544788d7ea2" class="">
+</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80a1-9354-e5b327d04df3" class="">
+</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80a2-a027-f72bab4d697b" class="">
+</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-80d2-a33b-fa8402599fc3" class="">
+</p></div><div style="display:contents" dir="auto"><p id="34204b9d-4ca9-8089-bd65-cb717f8f7a5d" class="">
+</p></div><div style="display:contents" dir="auto"><ul id="34204b9d-4ca9-802f-83c7-cfa5ff3a0c45" class="bulleted-list"><li style="list-style-type:disc">Context7-compatible library ID: /websites/developers_tiktok_doc- Description: TikTok for Developers provides APIs and kits for developers to integrate TikTok features including content posting, user authentication, video embedding, and data access into their applications.- Code Snippets: 1887- Source Reputation: High- Benchmark Score: 75.25----------- Title: TikTok Business API SDK- Context7-compatible library ID: /tiktok/tiktok-business-api-sdk- Description: An SDK built to facilitate application development to integrate with TikTok Business API.- Code Snippets: 2695- Source Reputation: High- Benchmark Score: 57.79----------- Title: TikTok-Live-Connector- Context7-compatible library ID: /zerodytrash/tiktok-live-connector- Description: Node.js library to receive live stream events (comments, gifts, etc.) in realtime from TikTok LIVE.- Code Snippets: 43- Source Reputation: High----------- Title: TikTok Shop SDK- Context7-compatible library ID: /hsib19/tiktok-shop-sdk- Description: An unofficial, community-driven TypeScript SDK designed to simplify and provide type-safe integration with the TikTok Shop API for Node.js environments, enabling automation of e-commerce functionalities like product listings, orders, and inventory.- Code Snippets: 72- Source Reputation: Medium- Benchmark Score: 66.95----------- Title: TikTok-Api- Context7-compatible library ID: /davidteather/tiktok-api- Description: An unofficial Python API wrapper for TikTok.com that allows fetching trending content and specific user information, but cannot be used for posting or uploading content.- Code Snippets: 22- Source Reputation: High</li></ul></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Transcript<br/></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-800a-81cc-ce332d3d0468" class="">Yeah, I think if we could grab everything throw it in something like Elasticsearch. I have a GreyLog instance set up where it would be It can take in information from all these disparate sources and it just acts as the truth then anything you want to see it can pull that in at an Unbelievable. almost like it&#x27;s pre-rendered speeds. So you could, you know, maybe through partner center, you have access to said person&#x27;s XYZ statistics.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-806e-816f-d52fa614aac8" class="">screenshot that, OCR it, whatever you gotta do. Write a little bookmarklet where I click, grab the fields, post those out. So we&#x27;d have that truth. Here&#x27;s the stats about person A. Then over here we could render in person A logs in. We see that their username, okay, you&#x27;re person A, but we know through this totally separate method we did, have the stuff about you that we can... Use for dashboard or what have you.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80a1-842e-e53c59ce83e2" class="">So I think next, maybe move forward on just making it a multiple.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8043-9b32-dc2773e7cc69" class="">So you can-No, I just manually wrote everything.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80e7-acd2-de843b48cd6e" class="">If they have a kit, that&#x27;d be...</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-806b-aaea-e3e4e0278b0f" class="">Well, on that page you sent me,Hmm?</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8039-a92e-f9ebd841347b" class="">Okay, yeah, I see content posting API and then We&#x27;re under data portability API.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8072-84af-e4f1dbd22dec" class="">From your inside, your developer access?</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80f6-a9b8-c353fb60751e" class="">Is it the app Lifepreneur Agency, that app?</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8094-9df6-e3286152c6c1" class="">Yeah, but I mean, there&#x27;s a production in the sandbox. How long do you click into that?</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80d8-82a9-ee9c3190ce93" class="">Let me click sandbox. OK, so you&#x27;re editing. Alpha V1, a sandbox version. Yeah, so that brings up this page here.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80b2-9ed8-ec1edb812909" class="">Yeah, so if you scroll down, There&#x27;s a bunch of products that I just added, so if you refresh. Because there&#x27;s a login kit, there&#x27;s a share kit, webhooks.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8009-b04f-da8f0c9e9e71" class="">Can you hear? Yeah, so if you scroll down.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-804d-a532-fb434d980bf5" class="">You&#x27;re adding it under what?</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80cc-b0a2-fa97dfbf9f36" class="">Add scopes? So right above it. Oh yeah, you have apply changes. So if you add this done, and then apply changes. It needs a URI before it&#x27;ll make it active. So if you give it a URI and then apply changes, maybe it unlocks yourThe ability to use the logging kit? &#x27;Cause there&#x27;s a share kit too, which has not-products I&#x27;ll log into this and then at least in the sandbox you&#x27;ll have...</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-806a-a2cb-c3e7d2cf6c94" class="">This isn&#x27;t an active I&#x27;m doing it under sandbox.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80aa-b835-d59c75953f85" class="">Are you under sandbox training?</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80bb-9491-e2eb196c2cf5" class="">I am under the sandbox, but I don&#x27;t know if me deleting stuff while you were doing stuff changed anything. So have you applied changes yet? No. Let me hit it one more time.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8081-b76c-d8c0d1f8483a" class="">Yeah, it says save. I think I did it before too.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80af-80ae-f7af6f6b8575" class="">Yeah, okay. Cool. And then that&#x27;s added there, so cool. So now hopefully you should be able to... See, so all you have right now is scopes as user basic info. So if you add these other ones here, And then apply changes. And you should have access to all that stuff.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80fa-b056-c7fb7091ba34" class="">Yeah, I think those are what we were just talking about, right? Yeah, the other ones that you&#x27;re talking about. Link the...</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8030-a78e-c1f24ad3885d" class="">So hopefully you&#x27;re able to pull that stuff now.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8010-a5e2-ffd685a48cf8" class="">What&#x27;s strange is when you go all the way to the bottom, you go under scopes, it says target users. Okay, I see it now. I had to refresh again, but mine was in for a sec. Okay, we&#x27;re synced up. Cool.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8000-8cfe-c26b08dc8674" class="">Well, let&#x27;s see if that helps with anything. All right, I did have to fill out all this stuff for this to work. So I guess I could do it in production. Because production it said that there were more Scopes availableHere&#x27;s this you&#x27;re talking about but it says it&#x27;s only for EAIn the UK. So I don&#x27;t know if you would be able to use that.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-800f-afa3-f7c5b17393cb" class="">And I think E, I think it&#x27;s education or something like that. One of these.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8005-9355-ec21498f2427" class="">Portability Activity SingleJust doing... Make a single request for direct message. message data We don&#x27;t know what that would give us, but this is all All data on the-That&#x27;s pretty cool.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80d8-98ff-c049916d97e3" class="">That&#x27;s not just a you gotta go click the button each time. That&#x27;s a we can keep tapping in.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80db-93ea-dc1884eb8301" class="">I&#x27;ll have to look at that then to apply for it. Well, because it says EEA. in the UK, I wonder if we&#x27;ll be able to actually do it. But we&#x27;ll find out. But it requires the login kit, Yeah, if we can figure that out. It just seems so limited.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8015-9c81-e40e428689ba" class="">Yes. That&#x27;s what I started looking at. Bookmarklet, pull it straight out of some other page. If you&#x27;re logging in as a... Whatever type of user for the partner center, I can see the data. Maybe there is no API to that data. But we could still extract it out with the bookmark very easily.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8021-806d-f7bbb34c78bf" class="">Yeah, so I guess This TikTok for developers looks like it really is just...</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80bc-9bb2-c8bf016f69e3" class="">I got this little silly AI.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8084-b571-c29fd31d7fff" class="">Yeah, &#x27;cause it doesn&#x27;t say, Is there something?</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80d6-8d43-e9af192d4154" class="">So the same stuff we could do from there, we could do from More than likely. We could do it from inside the actual web app as well. This could be, if it is something you can only get from a command line API, then...</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-800d-983d-c0fc0079d463" class="">I mean, this just looks like it&#x27;s... All public So this looks like the Borrow buckets? Daily Virals thing I showed you that shows like the video. The like counts when it was posted, possibility of using an app. That sounds like all of this comes from this API. Please.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8076-8dff-ef52291fe542" class="">video types we can essentially probably recreate This is going down the other line where it was more of like a tick tock seller shop, which could still be beneficial.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80f7-9400-ec01fca10f28" class="">I don&#x27;t know what TikTok minis or goes are.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-809d-a038-ca782f61d8cc" class="">And commercial content is different than research.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80a0-a158-dc6851731fa7" class="">Yeah, it&#x27;s saying Tiktok research API is restricted to academic researchers and nonprofits. Creators, advertisers, or commercial... Thank you.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8087-bd17-f8d8929d295a" class="">Actually Best case scenario log in.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-807f-ba31-c2b1b9f45552" class="">Yeah If we don&#x27;t find it, I mean if we exhaust all resources and there&#x27;s no clean pipe that gives it, Is there any way for you to be able to tell if they&#x27;re using a specific API if you went to like grow your yuca Like if you inspected the pages or something.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-806a-9cea-c674756efafe" class="">I can see what they&#x27;re calling out to you, absolutely. Because Yucca is the one that we want to mimic. the most first, yuca.ai. Because that&#x27;s the one where they&#x27;re hosting campaigns, collecting You&#x27;re able to log in, you&#x27;re able to see the videos that are actually like. the metrics of that campaign when they&#x27;re posted. Thank you. You say it&#x27;s up to 48 hour delay.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80bb-9015-db14a60c6516" class="">Creators This is Yucca.ai is... I think where the brands log in to make their campaigns. But creators.uk.ai, Logging in with TikTok, I believe, is just that login kit. We essentially have access to it.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8051-9de0-d6b3c7f3099d" class="">that Just to connect my app to-Those are all the same Yeah Because yeah, I&#x27;m seeing it on you good now and now I&#x27;m like Okay, maybe it&#x27;s... I think you should just not pull in the information. And if you ever look at their log-Sweet baby Jesus. They brought in so many third-party partners and so many permissions that are in the CSP. It&#x27;s errors galore. I have never seen a more... Their console is exploding.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80e8-8409-f75295cadaea" class="">From every single third party they bring in.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80fd-90b2-d10f8adab1e5" class="">I don&#x27;t remember what I connected. I did that inside a cursor. I was like, Here&#x27;s the console log errors. They don&#x27;t look like they&#x27;re mine that I get. That&#x27;s, oh, it&#x27;s a... Post hog, something hog, something for a dashboard.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8023-87e5-d61b9f7cee65" class="">Yeah.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8046-9ce7-ee76f2849d89" class="">That&#x27;s trying to collect data and it&#x27;s like, no, this is all those issues.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8071-bee5-f31dbeb2f60f" class="">Okay, so that was cool. I&#x27;m guessing that&#x27;s my avatar from TikTok.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80ff-bef7-efcce94b900f" class="">TikTok, yeah.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8096-9414-f73eedf8e418" class="">They knew this from TikTok. Maybe that&#x27;s my TikTok username. Yep.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8099-9dd3-f666e8951b3d" class="">And that&#x27;s just what they created.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80fe-b4c7-fbffbf3e537d" class="">Oh yeah, look who they&#x27;re calling out to, post hog.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80c5-a1bc-f3953111e139" class="">Yeah But it&#x27;s just something I&#x27;m playing around with. on the admin dashboard for the website. I don&#x27;t like how it looks at all. It looks terrible. That&#x27;s the one that...</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80b1-a880-ec48ef9cdf52" class="">My main issue right now is I just can&#x27;t seem to get the Page to load fast. It&#x27;s fine once you&#x27;re logged in and you&#x27;ve clicked all the pages because then it&#x27;s Just pulling from the session data, but the initial So you&#x27;re talking about life.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-808d-b319-fd01657c7989" class="">Yeah. I get an error. I can&#x27;t get in at all.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8035-a551-d920f6cdd838" class="">Yeah, you have to add a subscription. Okay, okay. That&#x27;s good. I want that to happen. But once you&#x27;re logged in. Like if I log in.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8031-9f3e-f8750f4be0a4" class="">Yeah, if I just hit it.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80a8-8988-f58e1d77a017" class="">Yeah But when I come in, this, like it loads decently there. But like going to this page, I already have. a session on dance It&#x27;s decently fast.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8020-b30f-dd0ae05847f0" class="">I was doing moving everything over to I didn&#x27;t like having to scroll down here so I moved admin to up here.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8074-a66c-d96ea4b63093" class="">But I mean it&#x27;s not bad. Not at all.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80bd-9305-ec404b58671f" class="">Yeah, I think I fixed it because this was the biggest one. This is a beta feature where we&#x27;re going to I&#x27;m trying to make it look like This was taking forever to work. I like your idea too.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8083-beb2-cabdd696f2d2" class="">Hey, it&#x27;s got a title. Let&#x27;s make a unique color for Yeah, this is all just...</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8050-8d97-ece18b38ec87" class="">AI generated, I need. Something in there, so I&#x27;m not getting a bunch of errors. That&#x27;s the plan. And then I made a beta dashboard, essentially the pictures that we had. Right. This is just to make sure this will look decently. Having it in, you said that being a But I mean, it loads decently well. This is the thing is they log into home. They have their different connected accounts. And I haven&#x27;t done anything with this but just mock up a UI.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8061-90ba-e8f52d8ac691" class="">But this essentially Would be if we went if we didn&#x27;t do a combined one if we did all of them They can click on it and then Change the information.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80a7-913a-d51b86dbfd66" class="">I got their accounts here. You gave something.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8025-aa84-ddddd8db9be1" class="">I mean, it&#x27;s just amazing.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80e8-be7b-ece590d457d0" class="">To give it like a friendly name so you know which account is which account.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8042-8e97-da163a4bba94" class="">I mean, but your username&#x27;s there, so I don&#x27;t know. It might be something some people like, but... Yeah, that&#x27;s the point of it essentially. So this is decent. If we get all the information here, the main thing Is these goals? Instead of it just showing the the post when you come here to click on it. You want a goal name? but then you would also want to be able to connect it So like the-CodeMonkey account.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-800c-9a31-ffe94f811457" class="">I want to create a goal for this account. I want to post 10 videos a day. And create the goal. Whatever name you have, and somewhere it shows the accounts it&#x27;s connected to. Or you can click in here, I&#x27;m going to list the videos that are counting. towards that, something like that. But that would be more beneficial for this, which is the campaign. So post-progress in GMB. This would have to pull information from somewhere anyway.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80ea-ac09-d3492ae765e6" class="">So being able to show where it&#x27;s pulling it from so that actual videos and That&#x27;s a general idea so I have a general UI for it.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8029-9304-cfe3da134cfe" class="">I don&#x27;t like it at all. I would change it like I&#x27;ve done for the actual website. The actual website.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80dd-adef-c787e64b90a4" class="">Been doing it for like the last three months, but I need to just, the reason I need Just give it to Chris or Ryan and I don&#x27;t like this. I don&#x27;t really like this right now. I would rather it be more of like a badger or a pill that kind of goes across. But it doesn&#x27;t matter. It&#x27;s a small thing that doesn&#x27;t matter right now. I don&#x27;t like this either. The colors and stuff. It&#x27;s better than it being plain.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8012-808b-c3f958ed57c0" class="">That&#x27;s just all preferences. That was, This is what I&#x27;m happy with right now. This needs to be updated because it&#x27;s plain, but it works. They all scroll in. They all have specific stuff. This works where you can actually read stuff. But it&#x27;s the... This is the thing I&#x27;m working on. Next is I want someone to be able to click here and the video plays. It should be fine, I just, I don&#x27;t, the way that I have it set up is to connect That&#x27;s the thing that matters.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-800d-9892-d4a7a1880b57" class="">This is the first thing that come on. They see this, they can click on it, and it plays. Overall I&#x27;m happy with what I was able to do live coding wise. Oh, for sure. The security part was what was killing me for... This is the second version of the website. The first one I built was riddled with security issues. Now the only issues that I&#x27;ve had is I&#x27;ve just had someone try to pin my contact for Support app or something for the support team, which is the next thing I want. Build more internal.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-801a-8c6a-c0f0d88a0ead" class="">Right now everything&#x27;s being handled by this dashboard. It&#x27;s not the most beneficial. It&#x27;s all just am I making sure I&#x27;m actually getting information. Like I can look at people&#x27;s stuff and it&#x27;s wired up to be able to do. things like I can manage their subscription from here, but I&#x27;m just still going to stripe or waterfall or wherever they&#x27;re coming from. But it&#x27;d be nice to be able to just do this.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-809a-9a5c-cd2517381ddd" class="">you&#x27;re credits or whatever. And they come in and just do adherence and I give them access. I mean this stuffUpdates, looks like it&#x27;s, even is really only coming from the people who are connected. So everyone is no user. I don&#x27;t know if this is. I mean the basic stuff worksBeta features, I can-This analytics page was muted. Trying to get something. That Chris and Brian could look at. idea without having here Talking to-to clog.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8014-b38c-edb643746d5e" class="">It&#x27;s better just to-I already have an infrastructure set up. It&#x27;s better just to make this a beta feature.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80a4-9ff5-f076a626f4b9" class="">Yeah, I would agree with that. Either some sort of a button that&#x27;s not in your main menu, Yeah to access flag inside the admin dashboard.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8047-ad9a-d29684c8d096" class="">But this is all justEssentially, the biocoding, I see errors in and I&#x27;m like, Now with this, I can get it 80 to 90% of the way there and do whatever.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-800a-bbcc-d8b63a2715da" class="">Programming is no longer the challenge. It&#x27;s no longer the superpower that&#x27;s held by few.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80b3-9092-ea33c23609eb" class="">Yeah, but now you just move over into consulting more. People can build stuff, but it&#x27;s going to be like the first one that I built where, you If I actually launched that publicly, it would have been hit. Everyone&#x27;s data would have been stolen. If I had any sort of payment stuff on there, This is I didn&#x27;t think about that at all. With this new one, I went out and bought it. foundation from Superstarter.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8053-a017-e525a8b4023f" class="">And I was like, look at it, they had a bunchAuthentication, BetterAuth, and uSuperbase, How to do all the API connections. I was like, cool. And I was built off of that. So it was a lot easier to do it that way.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8014-a4cb-f57a09ffcec7" class="">It was just more of with these IDEs, making sure that they don&#x27;t just change it. So I had to make a rule that I was like, never go away from the foundation, just extend.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80c1-8e7d-e066dc9a6ccc" class="">That&#x27;s definitely a smart, I don&#x27;t know if you put that in the .soul or .agents, but that is a very smart thing to put in there.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-803d-a07e-f091c9a9627a" class="">Yeah, because every time I did that, and I had to learn how to do branches, I kept doing everything on me and not being able to easily go back. So then once I did that, I was like, able to tell, I was like, no, something wrong happened here. This is not what I wanted. And then it was like, oh, yeah, it&#x27;s the hallucinations. They&#x27;re better now.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-808d-b2b2-ebbb017e2deb" class="">I don&#x27;t even know if I would have to do that now because they have a memory and a bunch of other stuff. That&#x27;s what we&#x27;re working for. I&#x27;m putting it into here. Logging kit. I guess I need to look into see if I can find something inside.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80dd-8cfa-da182f768103" class="">Because right now, It would just be collecting the information and pipe it into a script that goes out to That&#x27;s the... I guess. I guess I would have to be MVP one because just being able to, I would say MVP is log in, be able to see all your data. Adding any sort of video?</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-806f-aa65-d71f7642c9a9" class="">I don&#x27;t even think we can do the other one until we get the data because it doesn&#x27;t look like that data would be helpful for what Chris wants. Because Chris wants to see the...</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8057-b81a-c6290f40579b" class="">So I would say yeah, it&#x27;s really just That first, which is the login stuff.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8059-a877-ee33f33ddbc4" class="">See what you can do with what I just connected to that app. Hopefully that gives us something that&#x27;s useful besides just a lot. because if It&#x27;s just a lot. I feel like.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80ca-9ee2-d34b9def631b" class="">Whatever other developer wants to have, like we can get from partner center of business, we&#x27;ll also have a lot. Otherwise, how are you getting the information? I guess it would be different because partner and business would be clients. Yeah.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8072-afaa-ca61cfe15ef2" class="">Yeah.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80bd-a1d5-eae4699cd024" class="">Yeah, I guess figure out what you can hopefully You can get something beneficial.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8012-8b5c-f91202171190" class="">to show us from the next time you come in But it looks like yeah the rest of these api&#x27;s from on this developer side of it. is not going to be helpful, or it&#x27;s not something we can do.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8098-aa1a-d725c2c218d1" class="">Take a little bit of Because if a partner center one works, All it should be. If it&#x27;s client side, it&#x27;s probably us sending the links to people people to connect like we did JC and that counts.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8002-b8d3-c6d88d7e9f29" class="">As the OAuth is what I&#x27;m assuming. Like we send a link to JC, he&#x27;s connecting because technically that I mean likes view counts Common counts are great. but it&#x27;s like a Nice to have.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-805c-92e2-cf988a4623e4" class="">would be beneficial to us right away. The actual shop data is what we want right now. The view count and stuff like that, It&#x27;s great to have. put against it, like this. This video made you. 50 sales. These were the likes, comments, and stats. So maybe those helped or not like does that correlate like was it just because if you had 50 sales, but like I thought we had access to the other day, so when we were looking at JC&#x27;s stuff, it was...</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-808b-a946-dfb23e646e00" class="">Hey, here&#x27;s how many hours you So we have that. but not an API. Nothing I can give you for that stuff. Like that&#x27;s just me logging in.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-809b-a7cb-e40b2e50f2b0" class="">and I can access, this is weird.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-801c-a92c-c9888ebec119" class="">Making sure you&#x27;re a human.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80be-a5c2-cb9d1413e4da" class="">I&#x27;ve never seen it here though. I&#x27;ve seen it on all the different pages on the inside of it. But essentially, yeah, I can go to Creator Management and look at their stuff here and go and I can look at his data. But to pipe this out, all I have is exporting. I don&#x27;t have any other sort of thing that I can do.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8084-8110-d24a8b398fde" class="">It doesn&#x27;t give me that sort of access. So what I was talking about, the bookmark, I don&#x27;t know if you&#x27;ve used one of those, but it&#x27;s literally just a normal bookmark. So if you said show bookmark bar, it shows your bookmarks there. Literally just be a click that you could click it and have it do work. Yeah, so you could have one there that just says do work. You&#x27;re on the partner center, you can click and it will grab what&#x27;s on the screen and Put it in.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80ce-ac32-c1717a19ca58" class="">Okay, so semi-automated. Someone would have to go and click on it every day. to pull information but still doable. That&#x27;s not bad. And that&#x27;s essentially what a scraper or?</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80a4-8c0c-fc138890986b" class="">I mean, you could consider it a scraper. It&#x27;s scraping the page you&#x27;re already on.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8012-aa25-eceda0d9502e" class="">So essentially just doing like an inspection.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-800c-ab32-e4a22b316bc4" class="">And I mean, even if it&#x27;s not visible, Like I had one My company&#x27;s, we needed some data not available. It showed a little map. you know, and you can maybe get 20 at a time or what have you. But with just looking at the JavaScript, you could get a lot more than what you were seeing. So I empowered my business people with a little bookmarklet to click, click, click, and then they were able to get that carrier support.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-803d-9826-c01d36291447" class="">information they needed right into the spreadsheet that showed up right when they clicked it they could see it they could use it yeah that would be beneficial because there&#x27;s there is some stuff which I don&#x27;t think unless they just I can see everyone who&#x27;s downloading I can see he&#x27;s done 33 videos and all this Let&#x27;s stop and view this. And then it pulls this out, but again, But these are the things like I Yeah.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-801f-9576-fb68522b03ab" class="">this It&#x27;s just there&#x27;s a bunch of stuff in here with no real explanation on how to do it. We&#x27;re just reaching out to other people who are doing it and trying to get information. Because there&#x27;s nothing that&#x27;s like explaining how to do it. Just like with TikTok shop. There&#x27;s no concrete this is how videos and analytics and all this stuff works.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80d2-888a-d5d9fa334298" class="">So we&#x27;re all just using the community to get you Here&#x27;s the guidelines. But it&#x27;s an ever-changing thing to where I&#x27;ve noticed that the SEO, you know,Experts, as they call them. yourselves. really have these communities around them, kind of like you&#x27;re doing, talking just</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80c5-9da8-f315bd0fbe69" class="">They have a very basic version of what David Vyral does.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80a2-ad1c-db247e117953" class="">They essentially show the top 10.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-806f-9f2c-d58558d564aa" class="">easy to collect that data for people then it would be being able to track it enough you know we&#x27;ve proven we can track this stuff and brands have accepted the data and then run the campaigns ourselves so your original would be yuca or discord campaigns yeah so yuca or discord discord is a Essentially, you get-get a flyer, these are the things that you have to follow. and how to submit your paperwork.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8081-bc80-d65fbd66f445" class="">Okay.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8082-a327-f3e53bd7d791" class="">Getting the information that we&#x27;re collecting and the Just making sure that we and submit the paperwork. require UCAS different. You could track some stuff because you connect your TikTok account to it. But we would still need to pull that campaign information into the app so that they have another play. They don&#x27;t have to go to. We don&#x27;t want people to constantly go to another appLet&#x27;s say. We can give them a little link.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8006-9bc7-d5f490b1e0d4" class="">to go out to it to submit it or see the actual data, like the affiliate data that I have. I pulled out an end to to see if I can actually track it accurately to make sure it&#x27;s actually accurate, So we can track that they posted 10 videos We want to verify against whether Okay.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80f6-9725-db92510f506c" class="">Discord is that like the brand? I&#x27;m the one who I have a discord channel.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-801a-b282-c7cbba612693" class="">I post an image with a discord is just one of the platforms that most of these brands have been using.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8047-96da-feb99447ead7" class="">to communicate with TikTok creators. The other one is Lark, which is, I guess, a TikTok community, like Discord app that they created that they&#x27;re trying to get people to use. And then WhatsApp, because it&#x27;s free to be able to message people. But essentially, Discord is where we found all the major brands.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80cf-a2b3-da6c2a501d5f" class="">So that&#x27;s that&#x27;s where in the future we wouldn&#x27;t even want.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80fa-a872-ec803fc5f7c0" class="">Our members to go and sign up for their discord communities because again, it&#x27;s another avenue that will pull them away from our community. We would just have all the information there and those brands would be okay with us. People are still going to do it. It&#x27;s just like any of these.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-805c-9180-ddbb1a0954af" class="">We don&#x27;t want you to leave for any reason, but we&#x27;ll give you data from other sources. That&#x27;s all we&#x27;re trying to do. That makes total sense. Start with TikTok and eventually move to all these other social media sites that are adopting stuff from TikTok. Because Chris has, honestly, if we weren&#x27;t doing just TikTok,If I wanted to link to a really good JavaScript book, I&#x27;m promoting it in my post on YouTube.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8057-8205-eb07b124a467" class="">I put that link at the bottom. I could probably find the URL. Just publicly available, not need to doDo you need? or much, and I could just start getting paid because I would Yeah, essentially.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-805d-908c-f0bf8eb5bf8a" class="">So like a JavaScript book, a way that most people would probably do it is Gumroad.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80d4-b7c8-d4f9a3cf72a3" class="">Which is another like second mini Shopify store for more niche like people. But yeah, you technically couldn&#x27;t get paid on it because you don&#x27;t have a token or a UID that would say you saw it. You can grab anyone&#x27;s link and Yeah, that&#x27;s all it is.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8028-892c-f785def1bf86" class="">I mean even our affiliate tracking with Rewardful is just a token at the end of the URL. But that&#x27;s affiliate marketing at its base level that most people are using. used I&#x27;m just pointing people to it. The next step is Build your own website that has a bunch of links in it, like a blog. or anything that takes you off to their site that then cells again for you. with their funnel. Then the next step is you build the funnel itself.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80e9-90c6-d559ef4a1e5e" class="">You&#x27;re essentially telling a story better than the brand. and then still get paid for it. Because eventually they all have to go to that initial sign up page or checkout page or whatever for them.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80a7-ae88-c7cedc847345" class="">But in that third step in your example you could be end to end.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8016-88af-e92403a65ae2" class="">And really the only thing that&#x27;s at the end of your funnel is just payment. That&#x27;s the top level of affiliate marketing. marketing that people have been doing for like the last 10 years is you make everything sell the brand and then there&#x27;s another step on there is you can cut out the brain completely and widely. So that&#x27;s what a lot of people are doing on TikTok. The water bottle, I can make a water bottle exactly like that because or I could sell circle itself people are taking that concept from Walmart and saying that they can just be authorized. There&#x27;s a lot of brands actually, Viva New that JC&#x27;s doing, they have like 10 shops. Not all of them are the actual company. I don&#x27;t think any of them are the company.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8084-96c5-cee50be06343" class="">I think they&#x27;re all authorized retailers. So that&#x27;s the other thing that you can do. But then as an affiliate marketer, as these creators, that is our community, they need to know which Right now a lot of people are just going for the highest commissions and they&#x27;re not checking The-what&#x27;s the word I&#x27;m looking for? Not authenticity, but essentially like the-Legitimacy. Because a lot of them, like I could start up a new shop Right now and how do you sell it and I get a bunch of I won&#x27;t be able to sell on TikTok anymore, but I&#x27;d still get all that money.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80e5-89aa-c91e0313e2ce" class="">That&#x27;s the thing. That&#x27;s happened, like the fake benchmark. Benchmate, nuts. Someone just got a white label.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-806f-9beb-d28f30ab3915" class="">of those products probably from alibaba and then sold them on tick tock as tick tock doesn&#x27;t have a good betting process apparently um for yuca do you have a referral code is there any benefit of me putting your uh i don&#x27;t know i don&#x27;t use you could um i literally just signed up because i Yeah, do you have an Apple?</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8044-9b29-d548aaabcc7c" class="">Not with me yet.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-806e-ae9b-ef74df0e29c4" class="">They just launched an iOS app. Apparently it&#x27;s worse. Then just.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80e0-b237-f98178461f2f" class="">eventually that&#x27;s what we want to do too want to eventually have an actual app that people can use. I was looking into it and honestly if you just go with a PWA, I don&#x27;t know what the acronym is, then you&#x27;re fine because you still get this little icon on your phone screen.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8040-8c45-c5894123ceb6" class="">So I think that&#x27;s where we&#x27;ll probably go because to even put anything inside the iOS store Yeah, so unless they&#x27;ve changed it, one of my companies, we did an iOS version, and it was for a product where we built the hardware, you could rent homes and stuff, see kind of what&#x27;s going on. All these IoT device data coming in.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-806f-94c5-fd4bf6e12110" class="">Dashboard and alerts and blah blah blah. It was just a free app. They didn&#x27;t have any problem with that at all. I got a lot more than I ever thought I could squeak through. I made it fully firebase for the content. Meaning literally that page that slides in when you start the app. I can have you have that open. I can type and you can see the app change in front of you. Approved and. So I was like, wow, okay, that&#x27;s good to know.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8090-93ce-fbb32d962ca0" class="">We can get a free, just to extend to our Current audience, you know app out there and even yeah, that&#x27;s an option. I guess if we want to use it as a marketing strategy Or just a different way, so they don&#x27;t have to be you know whatever is done on the computerBenefit in moving into mobile app Yeah, okay.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8016-9f2e-d424beb3a2c0" class="">Yeah, that&#x27;s the next step, but the first thing, The member avatar that we have is like 45. The reason why I&#x27;m making itMobile optimized first is because TikTok&#x27;s on your phone, so it&#x27;s just easier to, have it on your phone and then not have to switch devices.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8087-8a7d-f1b294bc5933" class="">I mean, there&#x27;s those people like JC that just run the whole thing on their phone, you know?</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80cb-a2b7-ff84214b4c1e" class="">Which is crazy, but I tell them I mean, especially with lives.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80bd-b2cb-d23b3d59d6b5" class="">which is his bread and butter, just get a tablet or a laptop and have that dashboard and all that stuff up. Because you can, instead of... going to his phone because he goes like up to the camera again and like active activates the live flash and stuff like that, he can just have something behind his little display where he hits it and activates it. That&#x27;s the thing he probably doesn&#x27;t know or he doesn&#x27;t want to know.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80ed-8035-dfb2304bee2a" class="">It&#x27;s inconvenient. That&#x27;s what Chris&#x27;s girlfriend does. She uses a tablet just to, hits it to restart the live and keeps talking. She doesn&#x27;t have to go up and change stuff. So another reason why we have multiple people that are going to be coaches is it&#x27;s just, it&#x27;s this small stuff. It took... I don&#x27;t know if it took JC, but I think it took Ryan a couple People you could have it set up on the laptop with a soundboard device and do custom stuff.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8053-b2ad-ef2f8c3086ca" class="">That&#x27;s something that another big So just simple stuff.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-802d-b6af-ffabe92b1a5d" class="">When do you want to come back?</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8034-9261-f878605395fc" class="">Yeah, my day is this week or Wednesday is my day.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80b8-bd27-d1e9df6a9d6c" class="">I&#x27;m not available. Wednesday is your day. So do you want to come back tomorrow or do you want to come back?</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8014-8133-ddf8d012262e" class="">Thursday as well. Yeah.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-802c-877f-d3dd8f36ac7a" class="">Really what I&#x27;m trying to say is basedTop of, I guess.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-80b8-970b-d4219df73272" class="">If you feel that way and you don&#x27;t want Okay.</p></div><div style="display:contents" dir="auto"><p id="34104b9d-4ca9-8059-85e1-f2f71a228e39" class="">Sent a message and I was all good. Yeah, but then the weekend happens. Yeah, I get that.</p></div></div></div><div style="display:contents" dir="auto"><p id="2c504b9d-4ca9-80ce-95c8-cf16cd25c689" class="">
+</p></div><div style="display:contents" dir="ltr"><figure id="34204b9d-4ca9-80e4-b13d-dd0343fa78c5" class="link-to-page"><a href="TikTok%20API/04%2014%2026%2034204b9d4ca980e4b13ddd0343fa78c5.html">04/14/26</a></figure></div><div style="display:contents" dir="auto"><p id="2c504b9d-4ca9-8005-9803-de14cb672275" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2c504b9d-4ca9-801f-bfa4-f736f0e5eee0" class="">LINKS</p></div><div style="display:contents" dir="auto"><p id="2c504b9d-4ca9-8043-be2d-fa9b1190131e" class="">====</p></div><div style="display:contents" dir="auto"><p id="2c504b9d-4ca9-8054-ae7c-d4f3f129ac15" class=""><a href="https://developers.tiktok.com/doc/data-portability-api-application-guidelines">https://developers.tiktok.com/doc/data-portability-api-application-guidelines</a></p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

@@ -1,0 +1,747 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>inventory</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="37d04b9d-4ca9-809d-8747-f37f95c792a6" class="page sans"><header><h1 class="page-title" dir="auto">inventory</h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-person"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/friends_gray.svg" style="width:14px;height:14px;display:block"/></span>Owner</th><td><span class="user"><img src="https://lh3.googleusercontent.com/a-/AOh14Ggy0FcyX-X6EW32d0jOd5HNUZl3VcBq7Msx_b4mPQ=s100" class="icon user-icon"/>Daniel Johnson</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>Tags</th><td></td></tr></tbody></table></header><div class="page-body"><div style="display:contents" dir="ltr"><div id="38004b9d-4ca9-80e6-a6f8-cc326076e087" class="transcription"><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Notes<br/></div><div style="display:contents" dir="auto"><p id="38004b9d-4ca9-80f9-9e3d-cab776949720" class="">
+</p></div></div></div><div style="display:contents" dir="auto"><p id="38104b9d-4ca9-8026-b2c0-d8e37f725a59" class="">
+</p></div><div style="display:contents" dir="ltr"><figure id="38104b9d-4ca9-81d7-8f6d-e352916a2b6a" class="link-to-page"><a href="inventory/Untitled%2038104b9d4ca981d78f6de352916a2b6a.html">Untitled</a></figure></div><div style="display:contents" dir="ltr"><figure id="38104b9d-4ca9-80bb-8d7b-ecd704bd0222" class="link-to-page"><a href="inventory/Issues%2038104b9d4ca980bb8d7becd704bd0222.html">Issues</a></figure></div><div style="display:contents" dir="auto"><p id="38104b9d-4ca9-8081-bd80-ee8b57958f52" class="">
+</p></div><div style="display:contents" dir="ltr"><figure id="37d04b9d-4ca9-80aa-a767-ec21a49d16d6" class="image"><a href="inventory/image.png"><img style="width:709.9921875px" src="inventory/image.png"/></a></figure></div><div style="display:contents" dir="ltr"><div id="37d04b9d-4ca9-80d2-8505-e2a8ec99be46" class="transcription"><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Summary<br/></div><div style="display:contents" dir="auto"><h3 id="37d04b9d-4ca9-8129-95a9-e81a178675db" class="">Action Items</h3></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81ac-8fbb-e36aa097774a" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Use remaining scraping credits to validate 100 products and establish accuracy benchmark ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81bf-b430-d5a0f7039741" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Add credit card to scraping service to remove credit limits and enable larger-scale data pulls ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-810e-8a73-f97d057d3a35" class="to-do-list"><li><div class="checkbox checkbox-on"></div> <span class="to-do-children-checked">Save all price fields (original price, real price, discount, min/max SKU prices) and images for each product to avoid repeat API calls ‣ ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81e5-8af7-d3627466cb13" class="to-do-list"><li><div class="checkbox checkbox-on"></div> <span class="to-do-children-checked">Share a sample product JSON record as a GitHub Gist for team review ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81db-b892-cf11a01cd8ce" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Investigate reversed TikTok API research to understand affiliate link slug generation formula ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-8149-8250-f8ce16b5876c" class="to-do-list"><li><div class="checkbox checkbox-on"></div> <span class="to-do-children-checked">Talk to Kyle about next steps for the project ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-819e-905d-e05020f54424" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Continue building out the inventory management system with bin/shelf support, BLE scanning, product dispositions, and multi-user roles ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-810c-af48-e606fa252ee1" class="to-do-list"><li><div class="checkbox checkbox-on"></div> <span class="to-do-children-checked">Contact Carl at bankwithcarl@gmail to continue coordination ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><hr id="37d04b9d-4ca9-8180-b3f5-e95139abb0d6"/></div><div style="display:contents" dir="auto"><h3 id="37d04b9d-4ca9-8112-b5f6-c355a8be7615" class="">TikTok Product Data System</h3></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-8143-8126-f0627ba1a2c9" class="bulleted-list"><li style="list-style-type:disc">A backend system is being built to aggregate TikTok Shop product data from multiple sources: creator side, agency side, and customer service order lists ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81b1-919a-ebbc2712cf97" class="bulleted-list"><li style="list-style-type:disc">A fixture of ~355 orders was extracted from TikTok&#x27;s customer service order list by paginating through all pages; this may represent a user&#x27;s complete order history ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81a3-8dc0-ff6d9119c9b4" class="bulleted-list"><li style="list-style-type:disc">Product data is being pulled via a third-party scraping API (&quot;scrape craters&quot;) at approximately $1.88 per 1,000 requests, or as low as $0.99/1,000 on bulk plans ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81a7-9487-d493b8ce899e" class="bulleted-list"><li style="list-style-type:disc">33 products have been cross-referenced against TikTok so far with 100% accuracy on pricing ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81ba-8c52-fa62c44699fb" class="bulleted-list"><li style="list-style-type:disc">Plan is to validate 100 products total before committing to a paid credit upgrade (~$47 for 25,000 credits) ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-8184-8a30-f682ee2f2737" class="bulleted-list"><li style="list-style-type:disc">Prices will be pulled via third-party API rather than scraping TikTok directly to avoid rate-limiting or ban risk ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-8103-91b0-c227c2a7827f" class="bulleted-list"><li style="list-style-type:disc">Product data fields available include: original price, real price, discount percentage, min/max SKU prices, sold count, review count, sample reviews, seller info, product category, images, and a direct TikTok shop URL ‣ ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-819b-9d8a-e5dfae3be6e8" class="bulleted-list"><li style="list-style-type:disc">Graylog is being used as the backend engine; described as highly powerful and accessible to non-technical team members for querying ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-811f-8faa-f3747f468aa5" class="bulleted-list"><li style="list-style-type:disc">Cron-style event triggers and conditional logic (&quot;if this, then that&quot;) can be set up in Graylog for automated workflows ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81d4-8d68-fa446a7b8f81" class="bulleted-list"><li style="list-style-type:disc">Competitor Caliata was identified as likely having internal TikTok data access via a former TikTok employee and their own AI-based ranking algorithm ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="37d04b9d-4ca9-8189-aa0b-de95d5d88145" class="">TikTok Affiliate Link Investigation</h3></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-8126-804f-f8d1629bbbc6" class="bulleted-list"><li style="list-style-type:disc">Affiliate links follow a short URL structure starting with `t/Z...` that appears to hash a product ID and creator user ID together ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-8115-9fb4-dd8aff285850" class="bulleted-list"><li style="list-style-type:disc">If the slug formula can be reverse-engineered, affiliate links could be auto-generated for any creator+product combination without manual copy-pasting ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-8108-b52a-d7ecac6ea1d6" class="bulleted-list"><li style="list-style-type:disc">This would enable a Go High Level-style site where members could duplicate a full affiliate product catalog with their own links pre-built in ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81e4-a1e6-e3c947bd4283" class="bulleted-list"><li style="list-style-type:disc">A researcher has reportedly reversed much of TikTok&#x27;s Android and iPhone API traffic including JWT token structure; if current, this could unlock the affiliate link formula and other hidden data ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-817a-bb34-f77b9ea429d3" class="bulleted-list"><li style="list-style-type:disc">Affiliate link generation is considered a <strong>future/V2 priority</strong>, not current scope ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="37d04b9d-4ca9-81bb-ae3f-f5a66003b724" class="">Inventory Management System</h3></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81e4-8925-d49d3b582eb5" class="bulleted-list"><li style="list-style-type:disc">A physical inventory system for product samples is being planned, separate from the TikTok data system but integrated with it ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-8196-b433-d48eb8639032" class="bulleted-list"><li style="list-style-type:disc">Products will be tracked by bin and shelf location (e.g., A1, B2) using barcode/QR/UPC scanning via phone camera ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-8149-870d-fa21288a61c1" class="bulleted-list"><li style="list-style-type:disc">BLE 5.1 is being explored as a private, reliable communication link between a handheld scanner and a kiosk/workstation, with USB/Bluetooth fallbacks ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81ea-98fa-dfdf2adf54cd" class="bulleted-list"><li style="list-style-type:disc">Product dispositions being considered: **available**, **checked out** (with owner tracking), **reserved**, **on hold** (e.g., creator still using), **discontinued**, **fire sale** ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81dd-b122-f989932377c0" class="bulleted-list"><li style="list-style-type:disc">Workflow: product arrives → scanned as &quot;on hand but not inventoried&quot; → goes through fulfillment intake → cleared as available or held ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-8143-b6ac-ca1b84a255d6" class="bulleted-list"><li style="list-style-type:disc">Multi-user roles planned: admin, creators, and warehouse/stock workers ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-819a-9985-e6118a625d93" class="bulleted-list"><li style="list-style-type:disc">Creator-specific inventory separation needed (e.g., Brian&#x27;s samples vs. Chris&#x27;s samples have different disposition rules) ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-8153-bff1-da45ebaba904" class="bulleted-list"><li style="list-style-type:disc">A POS-style UI was floated for fun (scan items like at a checkout), with a simpler internal-use version planned first; could potentially be productized and sold as a SaaS tool later ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81ed-acd2-e1ffbb5d41bc" class="bulleted-list"><li style="list-style-type:disc">Webhook integrations (eBay, Stripe, etc.) discussed for automated fulfillment notifications ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="37d04b9d-4ca9-81c6-ac54-e4992ed5d6b4" class="">Team &amp; Business</h3></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-8114-b6c7-e3518a6e92b2" class="bulleted-list"><li style="list-style-type:disc">The team discussed bringing Daniel on full time, with positive sentiment expressed by multiple participants ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-81a9-95d2-d9af4b07b705" class="bulleted-list"><li style="list-style-type:disc">Daniel is seen as being able to offload significant technical work from Kyle ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-8189-8f21-d0261537644d" class="bulleted-list"><li style="list-style-type:disc">Full-time focus was noted as increasingly important given the upcoming launch and potential bug fixes needed quickly ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-813d-ae6d-c2ced4ba90c0" class="bulleted-list"><li style="list-style-type:disc">TikTok content strategies were briefly discussed, including electronics/household content and posting on a second account ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37d04b9d-4ca9-815e-afcb-ebfc055743d2" class="bulleted-list"><li style="list-style-type:disc">A Logitech keyboard/peripheral received as a TikTok Shop sample was discussed — options include keeping it for content or selling it ‣ ‣</li></ul></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Notes<br/></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f4-91b1-d878d74225ea" class="">
+</p></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Transcript<br/></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8042-a90a-fa23f14a289f" class="">See what their APIs are. So that way if something gets fulfilled it automatically sends an email to me saying this product needs to be picked back and shipped.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-807e-ab0a-f54d2ca9e835" class="">Oh that would be easy. That would be all just webhook stuff. Right. So we&#x27;d look at third party, the eBay, we&#x27;d look at the money side, you know, Stripe, all those things on event, they&#x27;ll phone home and we&#x27;ll have a listener in the handles. somewhere, right? Yeah.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80dd-988c-d31f4f5dab34" class="">Yeah, we could have like a POS system. Someone comes here directly and buys liquidator, comes and buys like a pallet. We have a pallet with all the products already in the pallet. They pay us to put it in the system somewhere. I was like, what are you doing, bro? I&#x27;ve been telling him this for months, like he did the same shit with it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8096-81bd-f4e27b7aea81" class="">Yeah, I didn&#x27;t really thought of the bin idea. That&#x27;s good as far as inventory, A1, B2, or... Okay. We&#x27;re being... One, two, three.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-808c-9e14-c6785a343f9b" class="">Sure. I guess. Keep the same, yeah.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f9-9e19-c8e5502f3fd7" class="">A through Z, sure.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8099-808c-cc760865a5a3" class="">I think it&#x27;s Starwood, right?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80b0-92ac-d3b45ec0b11f" class="">I can&#x27;t remember. Yeah, I was thinking if we had something that managed our inventory, it would have all the recent things that said samples been through, is it currently available, stuff like that. A little barcode or whatever where you&#x27;d check stuff out. It&#x27;s the lowest price, maybe it makes it big. They had a fun idea to maybe make the UI like you&#x27;re checking out at Fry&#x27;s. You come up and it&#x27;s like, scan your first item, boop, just for the fun video. Mark.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8043-b6d3-d8abb7094237" class="">But.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-806c-8233-e551d63f9f38" class="">I mean, I think we could do something very, just like try to make it simple for internal. And then we could do UI fun stuff if it&#x27;s something we want to take beyond internal. Because maybe this system is something we could sell to the list where people are like, man, I got all these samples. I don&#x27;t like, I don&#x27;t, I lose count of stuff. I want to, and I want to flip it too. Well, we have an app that actually will help you track that stuff.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80a2-9113-c600a5620e50" class="">and shelve it and track it, but it&#x27;s an extra 50 bucks a month or something like that, depending on how many users you want. Maybe it could go there, but right now I think we just make something simple that&#x27;s internal use needs only, you know?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-807b-a13b-db71b0d55335" class="">She&#x27;s not here.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8072-9713-ed7f5083a783" class="">And with AI and everything nowadays you probably could code it out pretty quickly. Fairly quickly. I think we would just need to work on the dispositioning part, the filters and tags.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80b1-9990-ce5ebe4346ee" class="">He was just being a little too professional.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8021-9171-ead0aa830017" class="">He was being upfront about the ownership too. It&#x27;s not necessary. I feel like I was the one that got the, And I was doing fairly decent.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8011-a9ce-f80479981d44" class="">And I wasn&#x27;t getting any type of like, like. Push some of them. Like those are all organic tropicals. I think we&#x27;ve kind of got most of that figured out.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8050-a1e4-f6e807b1980e" class="">And then right now, what I was actually playing around with was... For his, I can get... The orders, or at least I can&#x27;t reliably get it every time. We realized that when you go into customer service and you say no, it says which item gives you that list. So I took this list here, which is the most complete I could find, 350 something items for wizard. So this might be his everything. I was able to just grab stuff you&#x27;re seeing there. Roll it up to the top.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-803e-8a0e-dc84f431c895" class="">So And... I tried to do Firebombing. I guess maybe. Season. Maybe I just pushed So I was able to export those out just to like try to run. stuff against it just as a fixture to say hey could also just update it so it can fork and if it sees this it&#x27;ll handle those that hierarchy which will be different It looks like that&#x27;s going to work too, so. We can have, you know, just multiple, any place that has valuable data. Yeah.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80c2-bc56-f8dfaf8c3236" class="">You know, probably this thing is going to give you a visual indicator. Hey, push me.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80c6-bff5-cefabeaf9deb" class="">There&#x27;s stuff I can extract.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80bc-bc74-f65aa2743cab" class="">It&#x27;s good that you can do that with an account that&#x27;s, I guess it&#x27;s banned from TikTok shop, shoppable products or whatever, but it&#x27;s good that you can do that with an older account because, I mean, realistically, we just need to draw the new accounts for sure because then they could show them the proof. But it&#x27;s good that you can, That&#x27;s right.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-806b-b298-e67f8a64c042" class="">I think it&#x27;s a better indication that&#x27;s going to work with new accounts than it&#x27;s working with these older accounts. But I could be wrong because TikTok is weird.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-805e-8b8b-f2cd4bfbe5d1" class="">And then as we add, you know, like if you look at product details, video details from both the seller, I guess I shouldn&#x27;t call them that, the creator side and the agency side, Um... Almost everything is the same, 90 something percent. But there&#x27;s usually a couple attributes that aren&#x27;t shared here and then the agency usually has One or two things that aren&#x27;t on the creator side as well. So it&#x27;s interesting that we can get both pieces of data, a grounding ID, Something to link everything up and then from there we can just see what comes in.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f3-b364-d68b674c760a" class="">It tells what its source is, so we can additionally do some logic against where did it come from and this and that. Yeah. Yeah, I think the end result will be. Like we&#x27;ll have some sort of system where We&#x27;ll be able to kind of search for stuff as new stuff comes in we&#x27;ll have an intake process so we can quickly add them. Things that we don&#x27;t have price, I think the API is up and running. Let&#x27;s see.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8033-b4d0-d005ff05c0fd" class="">Here, we&#x27;ll put up a side-by-side and test.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8023-9023-c3d2e8b8961a" class="">I feel like my video is suffering. Yeah. But also like it&#x27;s mostly built like So I got 70 credits with these guys.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80a1-9c0b-e598c14f0719" class="">Uhhh... That sounds interesting.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8082-9885-cce02c10eb98" class="">Oh, yes.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-801d-a10f-e25fdaa789e3" class="">That has a fun name.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80e4-bf2c-cfc897d36625" class="">Astaxanthin, let&#x27;s do that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-802a-a4b0-ea23458b421d" class="">Astaxanthin.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8002-85d6-e81cd52cf279" class="">Astaxanthin.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8077-bd05-e847782364ed" class="">That&#x27;s what Brian calls it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ed-8bd3-d5a6aa8254ea" class="">Love it. Okay, so let&#x27;s see how much Astaxanthin goes for. I feel like it&#x27;s taking me longer too.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8045-a5a6-de9154e39af0" class="">I&#x27;m like, you know, I&#x27;m not doing it. Astaxanthin.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ee-a2da-f1513480b260" class="">So it&#x27;s 3880.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f3-b37c-d6e0930ae158" class="">Go ahead and update it. Do you agree? Yeah. Boom. So now that&#x27;s got a sample price to it. I think it&#x27;s out of this list now, but here we can find it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8082-9911-e6237a778e9f" class="">Clothes or tech or something to wear.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-808a-a29f-f7aa87048285" class="">Yeah, so we see that it&#x27;s got a sample price, a little bit of extra info. Um. But. Let&#x27;s see.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-805a-9b3a-f5d56bb3c4df" class="">Like... Just like being pure in the message.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8047-9fb6-d82f20cc7581" class="">Let&#x27;s see if some of these have sales. It&#x27;s been straight. Hmm. You b*tch. Hypnosis 3.0, exactly. So yeah, Brian&#x27;s comparison engine. You can kind of look at different things. You could say What&#x27;s its ranking, creative videos, platform videos, sales, sample value, what signals are given. So we can have different areas that kind of bring in all these things and surface some things that we&#x27;re interested in.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80fc-b8ec-e2aa3196f5ff" class="">Probably, what&#x27;s it say, watch? Is that gonna give examples?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8023-8412-e7d6d9fa13db" class="">I mean... Worked through all the I have a more pretty you know demo that kind of goes through all the possibilities But I&#x27;m still kind of working that out up for any suggestions.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8052-a309-f735917ece44" class="">Yeah, we get to if you can find the top like five videos and Not just that category for that That&#x27;d be helpful for a Creator Look energy watermelon You like that one?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80cb-8fe0-feb186a1ec19" class="">You know, I like their cherry slush. I don&#x27;t know about their watermelon. Let&#x27;s uh... Has he sold any of that though?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80a8-9669-e9b4c5a039ff" class="">Maybe, so that&#x27;s part of it. Dude wipes.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8077-b45e-f437526572b5" class="">I think that&#x27;s on everyone&#x27;s top.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8061-92f4-cc13b01914b6" class="">The place we&#x27;re renting, they specifically put in their contract that you cannot use.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80aa-b244-c10f132c4ec3" class="">These old Tempe pipes?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-808b-a20a-f6ced1fab1eb" class="">Absolutely not. Yeah. Like maybe 5%. Hmm. Maybe. So that&#x27;s 20.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-803d-bf44-c3e272d2226c" class="">I&#x27;ve never heard salute before I came around here. I&#x27;ve heard Doritos, you know the drinks.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8090-85db-fec64ac6b173" class="">Fuck. This has got a little 420 something. Let&#x27;s see here, cherry slush.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8043-868b-c605e7a9857a" class="">Whose account is this?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80d9-bcbe-e8cd1c79a353" class="">This is just all of everything that we have. So that&#x27;s where it gets interesting. This would be kind of an admin thing. But of course you can, what&#x27;s real easy is you can ask, just like GraphQL, you can ask for just what you want. So I just want these IDs matched, I just want these attributes and it will distill down exactly what you need.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80db-b30d-e0585d1bb05f" class="">Right, so we need to have it broken down per?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80c0-86be-c22d45826899" class="">I mean if that&#x27;s what it&#x27;s going to if it&#x27;s going to someone&#x27;s handheld and it&#x27;s you as a user and you have these brand IDs that you work with or you know we&#x27;ll have certain things that are scoped yeah let&#x27;s see how much the cherry slush is 2999 sounds right, OK. I buy it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-805b-8f3a-c67dcbdc6b83" class="">Are you buying it?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8085-97df-ce5910e71dd3" class="">No, we&#x27;re kind of buying it. You know, I had 70 credits. Now I&#x27;ve got 68 from those two I just used. Yeah, so this is, what do they call themselves, scrape craters.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-809a-9d80-f33e41dd8327" class="">There&#x27;s my little 300.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-805c-96b5-f1ef79a7069c" class="">Um...</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8016-806b-c63f35dd2705" class="">Just trying to figure that out again or something?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ba-8b8e-cac9c0d6630a" class="">Yeah, having more...</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-800c-8481-c117254d0a69" class="">Scraping is probably pretty cheap.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80d7-9c1d-e6e45ca39438" class="">It&#x27;s like Whatever I said at the last meeting, it was $1.20 for a thousand or something like that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8050-8afd-fc82c7c5f114" class="">Interesting, so maybe they should have a credit system for users. You&#x27;re just saying once it&#x27;s scraped, it&#x27;s in the system.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-801c-a86b-e286502c8757" class="">Sure, there&#x27;s 10,000. There&#x27;s probably 100,000 products on there.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8090-90a0-c703970271da" class="">I&#x27;d be curious to know what that number is.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80d7-8878-c78bef983812" class="">There&#x27;s probably at least 100,000 products on there. You said it&#x27;s 10 cents per 1,000? Um...</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80c4-b0c0-cf909f3b7d78" class="">There you go. Bye-bye. The origin said, &quot;Canada science always &quot;be spoiled with traffic.&quot; I heard him say that. So $1.88 per 1,000 or...</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8053-8884-d0c49522dca7" class="">99 cents for a thousand. That&#x27;s probably going to be, but no, these are like bulks though. Yeah. Or custom...</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-807a-8933-cb52b8c8c103" class="">And you&#x27;re only gonna need to scrape whatever people are using at the time so That&#x27;s gonna that&#x27;s gonna take a minute to ramp up But it&#x27;ll ramp up fairly quickly once everything&#x27;s live, but it still doesn&#x27;t take a minute that&#x27;s not very manageableUnless you have to do like a super update every once in a while just to make sure it gets products come and go, leave. I wonder if there&#x27;s a way to check for that, because products come and go, products go out of stock.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8066-ab9c-f47b6f98bd91" class="">Will that affect the system somewhat? How so? Just because of the low price point.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-804f-9df5-d20b77a91ff6" class="">Well, if someone-well, not really. Something went out of stock. You can&#x27;t sell it. That&#x27;s all I have. That shouldn&#x27;t matter. They have it. This is just a track if they have it on hand or not. Probably not.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8077-8d3d-d82ac6f31df0" class="">The support for the creators is phenomenal.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-809a-acb4-dcef9447923d" class="">Yeah, skip what I said.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80e8-b530-df66fbf5b1f8" class="">It won&#x27;t matter.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8014-8664-d7d4fab3aa1b" class="">It won&#x27;t matter.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80bf-8360-fcde5199c2c0" class="">I can&#x27;t even get the budget to spend. They told me I&#x27;m gonna spend up to five dollars.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80c2-8ffc-c5bef826b647" class="">I haven&#x27;t gotten it because it&#x27;s like I mean, if we need, of course we can add any sort of live hooks, which is one of the things I really like. Um... We can set up Because this engine we&#x27;re using on the back end, Greylog, it&#x27;s stupidly powerful. Stupidly powerful. And then just going in and reading, here&#x27;s what I want to accomplish. It breaks down. All my companies, you know, the non-technical, you know, just the business guys are able to, oh, okay, this is what I want to get. That&#x27;s easy. I can copy that and now I&#x27;ve got that query I need.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-803d-9cce-d9ccbc8d9a75" class="">But we can set it up, I believe, also for invented things, kind of like cron type of things, or... You know, if this then, you know, at six months, check and make sure that this is alive, or if this, whatever metric, do this.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-801c-bc94-deea43373e8f" class="">I was running in my own head, just what are the possibilities of that even mattering if it&#x27;s not? It doesn&#x27;t really matter because no one&#x27;s going to be able to order something new because that won&#x27;t be available at that point, and the only thing we really care about is if we have it on hand. What the value is, how much we sell it for, what it&#x27;s valued at to the creator, to prove that they&#x27;re getting so much money as well, free samples and whatnot.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8002-9e6a-cbaecd004040" class="">So I don&#x27;t really, there&#x27;s no scenario I can think of that matters.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8038-8ac2-f970d3b61968" class="">I think I still have the other stuff. No, I think I got out of there.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8054-b4e0-ef7bf8b95897" class="">I&#x27;m gonna give it. At least through this weekend, maybe next week, see how it&#x27;s going, see if I can get some momentum going. And I might try to do that account. I haven&#x27;t posted on the other account yet, but I think I am going to do like electronics. Household content. You gonna do it much longer or are you done? No, he doesn&#x27;t have to work today, man. Grab a room and go live. I gotta go get to work. Grab a room and go live.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80b4-ba80-cc1998797da0" class="">As far as this project with the accounts, how are we going to do that? Um.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-809d-9ac4-c77e4e7ed648" class="">Was it where he&#x27;s doing the scrape for the pricing and whatnot? What&#x27;s, I don&#x27;t understand the question. What the hell is the name of the thing that you were using, the subscription thing where you had like 100 credits or?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8098-a32f-e4e3c50e96e5" class="">Oh yeah, he still got 68. He had 70 a few minutes ago. Yeah, if you&#x27;re, I mean, you&#x27;re probably going to run out today. I mean, it looks solid to me. Like, let&#x27;s put our credit card in there and let you...</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80cb-bc9e-e8f0a3372acc" class="">Yeah, like if we, I don&#x27;t know, what&#x27;s a good one?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-801e-808f-cab9b5fe7990" class="">Oh, well, I guess we got to check the, we got to, did you cross-reference these with TikTok or anything?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ed-825c-da6f7ce4f7ae" class="">Everything I&#x27;ve seen has been accurate so far.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80be-80ef-c603baeb09ab" class="">What would you say, like how many have you, have you checked 100?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-809c-bb9f-d93d99b1a78a" class="">I&#x27;ve checked 32.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-801a-9d6d-ea19498eb1a0" class="">Okay, so I think let&#x27;s check 100. Let&#x27;s use all the credits, check 100. And then from there we&#x27;ll know, okay, 99% are perfect or 93% or 60% or whatever.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8039-b7e0-e970ac089131" class="">Yeah, we could check.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80a5-b3d9-f01f2499290e" class="">Because, I mean, you got pretty good so far. So what did you do? You looked at the price here, and then you looked on TikTok?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8092-a90a-fdc3a86cece5" class="">Well, let&#x27;s try one. Let&#x27;s say Cupid&#x27;s. This should be. That&#x27;s interesting.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80bd-8ffe-ccec71f648f9" class="">It shows sales.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-802f-9041-cc3a5f5f353a" class="">Well, yeah. So this one has some sales. Because think about it. We&#x27;re pulling it from all the different places. We&#x27;re pulling it from the creator side, from the agency side. all the different places this engine that grabs all this stuff our back end is all of those yes so if a product is you know on your list if it&#x27;s on he provides it as a seller if it&#x27;s added throughI mean, it should all be the same number. You would think so.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-801b-82f8-d649551443c6" class="">I did find some of them are using a nine at the front now, and this is actually really good for those cases because I&#x27;ll grab the whole description, send it over, and I&#x27;ll get the one seven ID back that we need. So I am able to process both scenarios. But like this one doesn&#x27;t have price. If we want to get it, we could just say... Let&#x27;s look it up. Lookup price. Looking it up for one seven. So that&#x27;s a one number. It thinks it&#x27;s a hundred and 1995. All right, cool. That&#x27;s the retail. Yeah.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8066-bda4-f1ccaeed8fa1" class="">So do we know, are we able to pull more details from that?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8030-87ea-f2e21f466133" class="">Like, yeah, that&#x27;s what I was also going to say. If there was other stuff we want to augment it with, we can absolutely.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8027-a91d-fe4aa300e43c" class="">Yeah. We want, that&#x27;s a strikethrough price. We want the, what it&#x27;s available for typically. I mean, not necessarily.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8002-8c72-cb3c2381ad21" class="">If it&#x27;s a value or if it might be later, I&#x27;ll grab it all. Yeah. every piece if it makes sense to him.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8016-97d8-e17f9eea93d1" class="">So then we just look up, what is it, cupids, hypnosis 3.0. Cupid&#x27;s hypnosis 3.0 pheromone cologne.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80b3-96f2-c470098e338c" class="">It&#x27;s going to be like 49.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8052-9429-eab36a994842" class="">Because you sell this right I stopped posting on though because ever wondered what makes up today is your last chance to Who&#x27;s this person using Chris&#x27;s audio? Nobody knows POV shop dealsMaybe someone in the community.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8015-a201-f9fd41f8520e" class="">Big, today is your last chance to get the triple discount. When you tap the cart right now, it&#x27;s gonna activate the flash sale. Then your second discount comes from TikTok. It&#x27;s gonna be extra coupons that you can claim. And your third discount is fast and free shipping. Tap the cart, change the quantity to two, and save big.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ce-8fd7-c75014efaf81" class="">Limited time left. Today&#x27;s the last day. Audio still round? They&#x27;re always making new ones. Isn&#x27;t he starting an agency, that dude? Not like a-Not a TikTok agency, though. I don&#x27;t believe.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-800c-b692-deb810cafa1e" class="">I&#x27;ve just seen some videos with him talking saying somebody started an agency and he had signed Matt Kala and blah blah blah blah blah and I was like... Okay, cool. I didn&#x27;t know what it meant, but it&#x27;s...</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80bd-b07c-ea4b98e27134" class="">Yeah, just kind of an announcement. This is what we get here. He&#x27;s not... Trying to get more people, he&#x27;s putting a name out there for the brands to... Yeah, just basically say we&#x27;re gonna get paid what we&#x27;re worth. Hello. How you doing?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-808c-81bd-e68cfeb7d28c" class="">Good, you? It&#x27;s funny, I got your, um, going to your customer service ones. And I found like 355. This might be all your orders ever. So...</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8043-ac03-dc0ad760f4e3" class="">It&#x27;s a... Just going on and open. Cut, and store it on the way open. You guys open on.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8040-8ed9-c9a6fcafa2ee" class="">It&#x27;s the weekend thing?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-805c-bf91-e5e0057bdc94" class="">Not really. Sometimes we&#x27;re here and people catch us.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8012-afc1-cc15391bd281" class="">There we go. Cucumber watermelon, brand new and then this is an interesting new pack. Ah, Mexico. I thought it was like World Cup-y looking. Roll cut game, yes.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8090-9247-eb48ca635f4c" class="">Man, I got some like Mexico shirts and whatnot. They&#x27;re pretty nice.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80c3-96ca-d603fb58e147" class="">You got some what? Some like Team Mexico jerseys to post on TikTok now, which I did do.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8008-9e8b-cbd8fef34dc1" class="">Nice. Appreciate you. Take care man. You too. I&#x27;d like to wear them. I&#x27;m actually kind of afraid to wear them. Why? I&#x27;m a puppet. Yeah. Because it became a dirty word.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8042-a495-ec477f1e6ff7" class="">Mexico became a dirty word all of a sudden.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-805c-89fa-d69815efc07b" class="">I know you like ice in your content, which is hilarious, by the way.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-808a-92be-d6e2345aea13" class="">That video was hilarious. Yeah, I&#x27;m like, I don&#x27;t know how safe I feel. That video has made like a sale. But it&#x27;s getting decent engagement. Yeah, that was hilarious.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8077-a407-f63912547311" class="">Yeah, so I was able to go to the customer service where you go like, no, that&#x27;s not the one. And then they show you your whole list, right? I was able to see like, well, can we grab everything out of there? So I pulled that out as a fixture. This is your complete order list. Oh.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8059-9cb6-fefceefd71c2" class="">Real quick, Brian. Next steps. So we should talk to, I guess, Kyle about. What&#x27;s up? Next steps, we should talk to Kyle, I guess, about.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f1-b10b-d313f59d52ee" class="">I&#x27;ve pulled his stuff out of, you know how you can go to customer service and get that list? He had like 355 items in there. So I was able to actually paginate it all the way to the end, pull it out, and then make a fixture of that. So I was updating my code to run against all the places we can get any valuable data. It looks like it&#x27;s going to work against that too.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8091-9788-dfcb24a8fb3a" class="">Do you think this speed that it&#x27;s going at is going to be a problem with TikTok?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8048-b61a-f31c032382c0" class="">Oh, yeah, yeah. No, I&#x27;m going to– no, no, no. This is actually just on the page itself. with very little back and forth to the server. If that&#x27;s why I said we&#x27;re not gonna scrape any of the prices, we&#x27;re gonna hit the third party API. We could, we could go to shop, question mark, look for the thing, get the thing. Risk is all hell. We wanna pay that penny to do that. Got it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8024-9f4c-e38785db433a" class="">Yeah, it is a penny. So that&#x27;s totally worth it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-806f-8135-d2bc06d7dd68" class="">So yeah.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8010-a44b-d86914e186e3" class="">So I&#x27;m just called him.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-805e-bdb0-f4c0db72a38a" class="">I, I like it. I think, I mean, well, no, no. So let&#x27;s, let&#x27;s test to like check. I feel like check a hundred of them. That gives us an actual, like, all right, it&#x27;s not a thousand, but it&#x27;s a hundred. And then we got like what the first hundred we checked, it was just a random a hundred products. It was perfect in every way.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ab-86fc-d95fbb34feb2" class="">Or I haven&#x27;t seen any misses yet. I&#x27;m sure they&#x27;re not going to be a hundred percent perfect. I&#x27;ve checked 33 now.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80cf-aa80-e97d549a0bd1" class="">I know you&#x27;ve like, 33 prices, but every one that came in you did like?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8011-ba7a-ca3b851b7299" class="">Yeah, they were ones like he&#x27;s selling like, you know, Viva New or like the Slush from Lucky, like ones that already knew the price. So this is $29.99. Okay, it gave me $29.99.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-801e-af00-fa0ec24df3c1" class="">And then is this able to pull in the current sale price?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8099-8d14-f4f45b6edfe4" class="">It should. I&#x27;ll check. Yeah, I&#x27;ll grab all the stuff and see what it is. I&#x27;m not sure off the top. Let&#x27;s see.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-807e-b0ed-c8141e68c08b" class="">You were saying? Check. Go through that, check it, and then what?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8005-ae33-e766f47ad619" class="">And then like let&#x27;s get your get our credit card plugged in there to where um We can do more, we&#x27;re not limited to 100, yeah. And then also all this data, we&#x27;re saving it after we pay the penny. Yeah, we&#x27;ll only...</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8069-8b77-e42c78575933" class="">Not that that&#x27;s that big of a deal right now, but long-term it would be. Nice.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80e0-b290-ee782db22f3b" class="">Okay. Exciting.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-802a-8a2f-e94d1775e681" class="">Yeah, I&#x27;ll see what all they have.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-805c-932a-d8960e39794a" class="">Yeah, &#x27;cause once we&#x27;ve paid for it, I wanna run it on my account. And see, because that&#x27;s going to be like-A couple thousand samples. More than that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8070-83cf-dad991256b58" class="">Probably more than that, Brian.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80a9-9478-c24f8e6094bc" class="">Chris&#x27;s is going to be insane. His is going to be insane. doing a high level longer than him and getting higher value samples he&#x27;s still quantity wise he&#x27;s Dwarf me already.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8097-8ebd-ed0865004479" class="">So, dude. do that then obviously he has the working model going here&#x27;s the price stuff so we got Price.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80d8-892e-e7a3696e0083" class="">We got original price, real price, discount.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8040-aea9-c9136ecda916" class="">Real price.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-803c-93fd-fb18ff303633" class="">Minimum SKU price, maximum SKU price.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ba-ac4b-d2a7895d2792" class="">Interesting. Minimum SKU original price. That&#x27;s about it. Okay. Yeah, definitely save all that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-809d-bea9-c2d69fe12412" class="">Okay. I&#x27;ll save everything in price. If there&#x27;s any other stuff you think is valuable-I think I&#x27;m saving images just so we don&#x27;t have to-Makes sense. ever do any calls again.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8084-b7c2-ccd615dd9a07" class="">If we see it, that&#x27;s it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-809d-a328-cf04f0c19375" class="">Done. We&#x27;ve saved it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80fe-89ca-d8666f235df8" class="">And then do you get a TikTok, a link to TikTok shot from that or no?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8074-866b-d47cbdd638e3" class="">Let&#x27;s see if there&#x27;s a link available. Sell properties. Images. Product base, wait, yeah, main URL, backup URL.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8096-91e6-d25a34be3269" class="">It says TikTok URL right above that. That looks like photo to me, but this looks like it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f5-8434-e1e0e4680a84" class="">This one right here, the app.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-809f-86ea-d87d35e12202" class="">Go to that URL? Yep.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-806f-8da9-dfbcffa1ae58" class="">Oh, so that&#x27;s the actual shop.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8065-8e0a-d2c5e1d74f60" class="">Okay, so we&#x27;re getting close Look seller.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f4-8c1c-e0244716f26e" class="">It&#x27;s right there at that seller.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8084-b5f4-e10cba3fbfa3" class="">Yeah. Yeah good call. So let&#x27;s see.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8045-b678-c4e79e2336ab" class="">Oh, yeah, look that&#x27;s all nested in seller There&#x27;s a product like that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8031-818c-cd481a61cfe1" class="">Yes, we got a product categories.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8001-a31c-f9bc65fefb95" class="">We&#x27;d be in it&#x27;d be in the beauty and personal So that&#x27;s a good thing probably Yeah. What else? Product base.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80e7-a76f-cb12f3d584ec" class="">But because you had that product ID right there, that&#x27;s it. You can just There&#x27;s a specific URL.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-809c-96d3-fb0af88ad97c" class="">Oh, yeah, this 173 or 172, we can get everything with that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-804c-a92c-ecc8affe2553" class="">You can add that to the end of a TikTok.com slash something and that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8007-a8a4-e2629bb349e9" class="">Oh, yeah, you can look that up, yeah. Absolutely. So we have the URL. Cool. I guess we got information about the video, it looks like, images, how many have been sold.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8037-910b-e532b48a784c" class="">One thing to be aware of, as an affiliate, we have a share link that gives us a URL. Do you know what that URL structure looks like?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8040-adab-e7e7b6ca0ae1" class="">I need that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8048-b5dd-d34f44e09bde" class="">Just to look and see what you think that it looks like real quick. Let&#x27;s get it. So like this right here, if I hit the share button and I click copy.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-809f-80b1-f84f9cefd95c" class="">Kind of annoying.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8022-99db-febfdebb98aa" class="">Here&#x27;s what the link looks like though. So T slash and then the URL. This is a, I don&#x27;t know, It&#x27;s like a hasher. I don&#x27;t know how you&#x27;re gonna be able to get from this number to this but it&#x27;d be really cool if it was possible to wear.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ef-a3de-cf59e3676691" class="">Have you noticed they all start with the same like ZT from what you remember?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8068-b224-e32c7b9a40ff" class="">Great question. I just sent you another one too.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-802c-a4bd-e865c9e25c8d" class="">Wait, hold on. What was that? Was it the URL? Yeah, yeah, yeah. You start to the Z.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-800b-81b7-d5461aa25c67" class="">Start to the Z, okay. So yeah, that&#x27;s going to be an affiliate coded product. So like every product has an unlimited amount of, I don&#x27;t know, I mean, I would assume they take a... product ID and his user ID and hash it or something. But anyway, it comes up with a unique and then in sales that go through that link go to him. So in time, we&#x27;re going to want to be able to build out. We have a program you&#x27;re familiar with Go High Level. So there&#x27;s a platform called Go High Level where we can build out a full on website with all the affiliate links of all the products and embed videos on it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8002-870a-dd2e19399ddb" class="">And then our members can buy Go High Level and they can duplicate that site except for use their affiliates. affiliate ID and if they have to go into every individual product and copy-paste it that kind of kills the whole Like. Amazingness of it. So anyway, just kind of be on the lookout to see if you could, you know, not important.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-801a-988b-c1441a2ba7f2" class="">No, that&#x27;s good info. But in the long run, just like if you could, if you stumbled across, how does that work? And knew how to like reverse into where you could create it, where if all we had to do was give you our username or something, like knowing our username and knowing the product, you could have an affiliate link for it. That would be really, really cool. We could do something. We could add our own link that then maybe goes to that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80bc-a5b2-fc8d0dc180c6" class="">And it lets us know how many people clicked it, where did they come from. It could tie said product info to said person based on that, you know, unique. So there&#x27;s ways we could absolutely tie the two together. Yeah. So we&#x27;ll have different records of, you know, here&#x27;s people, here&#x27;s products, but we can link them for sure. Has sold this many and et cetera.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80b7-bf6b-d1817cd581de" class="">Yeah. All I&#x27;m really getting at is like being able to... come up, &#x27;cause right now, other than what I just showed you, I don&#x27;t know how else to generate that affiliate link for me.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80c1-99dc-e05dad5e7d05" class="">Now, that was just per product. And if he sold that product, you guys would have two different affiliate links. So that one product can have multiple affiliate links linked to one creator.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8077-8535-cb1d570a8e87" class="">I imagine it would also start with a Z and it would be a completely different link other than that. And so I don&#x27;t know if there&#x27;s a way to decrypt what that is and figure out how that was generated.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-800e-825c-c07414a41940" class="">Or even just store them. Because they&#x27;re not just a one-time use.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-808f-8ba3-cde2c8b05f4c" class="">No, they&#x27;re not one-time use. But storing wouldn&#x27;t be useful.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80b4-b7a7-fa2c6bb0234b" class="">The product knows that it has six reps that have links to it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80c8-90dc-da056318bb0b" class="">I don&#x27;t think it&#x27;s like that because any account at any time can pull in any link and any affiliate. So I think it&#x27;s like some kind of they&#x27;re combining the two and coming up with it. That way it&#x27;s not like a super long whatever, right?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8060-9eed-fa206e5db95d" class="">Yeah.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80e6-9624-c2035a8f4f5e" class="">But I don&#x27;t know how to get, like, if we could figure out what formula they&#x27;re using to come up with that slug, that would be way more useful for somebody who&#x27;s never even added a product to their showcase. They can tap that button, and then they get their entire high-level site that has all the affiliate links for, you know, thousands of products already built in, created, without them ever having to copy a single one of them.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80b6-baf7-d58ab269a077" class="">That would be something to where, so in order for that to be possible, we just have to know how to, figure out how to create those slugs ourselves. But that&#x27;s just one example. There&#x27;s multiple reasons why we would want to be able to create those slugs for them. But all of them are way down the line. Not right now. So.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8042-8739-dea97e92a4ce" class="">Next week. You can reconvene, look at all this stuff and all. My question here is, and I&#x27;m just going to put this up. It&#x27;s out there. What do you guys need to see from him to maybe bring him on full time or to get paid or whatever? I think I&#x27;ve seen it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-805c-bbca-c2dad964f3f8" class="">Yeah, obviously it&#x27;s not my decision only, but I&#x27;m pretty happy.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80cf-ad77-c7bea11f9138" class="">I mean I know with obviously Kyle he spread them you know obviously That would be huge for Kyle, even with the website he&#x27;s done, obviously. He&#x27;s done a great job from what I know and all.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-802c-9aef-c39d14b19f0e" class="">This I don&#x27;t think is something that, I mean I don&#x27;t know, maybe Kyle could have figured out with Cursor. But how much would that have cost? I don&#x27;t know. I don&#x27;t know.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-806b-a42f-c8c9761b6715" class="">But I feel he would help lift off a lot of the weight that&#x27;s been on Kyle.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80bc-a0b1-c0d4e01185cb" class="">Yeah, yeah. No, no. I like it. I&#x27;m very happy with Daniel. This is very cool. And the progress and the speed of it is all of its great.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8047-93fd-d704a8f14291" class="">If he was focused full time. Agreed.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80d8-9480-f0f347d4b6ee" class="">And that has not been that important, but it is now. Not that you&#x27;re launching yet. Mm-hmm. Especially if we run into some kind of bug or something that needs to be fixed quick. Yeah, hopefully we don&#x27;t, but you know. There&#x27;s almost going to be bugs. Well, hopefully they don&#x27;t run into bugs that need to be fixed quick. Yeah. Yeah. Like this little order issue where you have to find a puzzle. It&#x27;s not that urgent for TikTok, obviously.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8050-b245-ea0cea5a5c92" class="">It&#x27;s been going on for a while.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8079-b080-ca423de25327" class="">I think there&#x27;s a way around it. I don&#x27;t know exactly what that is, but I&#x27;m sure there is.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8066-bd91-cf3cb6781a18" class="">Yeah, yeah, it seems like we found it. And I think if it shows up blank, you know, prompting them on how to You need to get TikTok to verify you with a puzzle. Here&#x27;s some things that have worked in the past. Try these and then go fix it. And everybody else, you know, I mean, people in all of the communities used to like random little bullshit with TikTok. Oh yeah.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8048-8363-cd338f10e0b9" class="">Sometimes you don&#x27;t see parts right away.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80e8-a2e8-f763fa10c402" class="">You just got to wait a little bit. Like everybody eventually learns that. That sometimes if you look at your own video after you post it, there&#x27;s no cart for the first couple minutes. Used to be that you&#x27;d never see your own carts. But now you do. Most of the time, but sometimes you don&#x27;t.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8034-809c-fc6900f00f44" class="">They even give you review info in that one scrape. There&#x27;s like, where&#x27;s review store? Yeah, review items. The number of reviews.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8078-b74e-dd62eee315d3" class="">Oh, we actually have the reviews? Yeah, the review count, a couple sample reviews. I wonder if those are sample reviews or there&#x27;s like an AI summary of the reviews.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80fb-965e-c3b90fd40c3b" class="">I mean the review ID didn&#x27;t have a person review userOkay, no, yeah, that&#x27;s a real person, yeah.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8021-a708-cdb1d08b9a9c" class="">Interesting, cool.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8088-95a8-ed7509b37eca" class="">Let&#x27;s see, some stuff about the shop.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80a6-87b7-df27bfcf853a" class="">Is there a downside to just saving all this just in case?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8018-9b19-cda52c36b84e" class="">No. Okay. I think I&#x27;m just going to augment the whole thing on each just so we have it. Because yeah, when we feed it back out, we&#x27;ll be able to just get exactly what we want, scope it perfectly down. Yeah. Awesome. Related videos... Nah, probably is not helpful. And then I did find someone who&#x27;s reversed a lot of the TikTok stuff. So I&#x27;ll see if that happens to be in there when it comes to the affiliate link.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8074-bfa1-d996fb58126d" class="">And just the stuff between their Android app and their iPhone app. They&#x27;ve... If this guy&#x27;s stuff is current and working, The keys to the kingdom are out there. Okay. So. If this guy&#x27;s stuff is current and working, The keys to the kingdom are out there. So we should have way more control. Not easy to do. You&#x27;ve got to really know every piece of data perfectly, but they&#x27;ve got to that level. So like when they send secure data down, they package it all up in JSON and then basically encrypt it called a JWT token, send it over and you need a key and it&#x27;s not, you need to understand the schema to be able to reverse that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ec-aa5b-d7759f230ffe" class="">And with that reversed, we could... If there&#x27;s stuff they&#x27;re trying to hide, like that header, we can bust it out. process through that same. We can also change information that they think is signed in real and send it back. We probably don&#x27;t want to do that. But yeah, it opens a lot of doors. It lets you peek on the Android traffic and the iPhone traffic. So when we&#x27;re looking and going, well, it works on there. How are they? Well, let&#x27;s find out.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8093-963d-ecb218a1596d" class="">I don&#x27;t want to look at Swift code, but we can get down to that level.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8055-8788-cc3177607ed2" class="">That&#x27;s the money?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80e9-8db3-f2b88f1ab69d" class="">That&#x27;s gross. It&#x27;s apples, yucky.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8019-b3d0-e744704b162b" class="">Yeah.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80c3-95d8-cfbe90efcbcc" class="">Like back in the day, I don&#x27;t know, was it NASA that you hacked into? Or was it, is it NSA?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ba-9127-df67cd69e84c" class="">Like the, the airplane shit? Yeah, we got some blueprint shit.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8028-99ef-d335f260439c" class="">It was cool.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80da-a283-ecb8eda54ffe" class="">He&#x27;s done it for fun. He used to jailbreak Xboxes. I did jailbreak my Xbox. He had a wholesale business, man. He was actually just selling people devices like that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80da-95ae-d295bdf3fc00" class="">That was a great box. I mean, it had a media player on there. It had a Nintendo game and all that stuff. That was cool.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-803e-8c34-c71c832b697b" class="">Dude, when you modded it, you could have all the old systems. You could have it dump its own game. Oh, something came out, put it in, one click.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8032-ad99-e62619d16413" class="">You have it. Having the Xbox Media Center.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80b7-877d-f4bc3881db62" class="">The best part was like, you know, once you got a good deal on hard drives, those were just all profit. Because I would take your old hard drive out, upgrade you, I&#x27;m already making money off that. It was like seven minutes every, you know, $160 was my base price. My guys were shipping them to, like, they were going for $500 in Hawaii. And they were just buying, like, you know, big pallets. That&#x27;s awesome.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-804d-b3a2-ea04a5295c59" class="">The whole point is he always goes that extra level where he&#x27;s like, Tries to break the shit and figure out how it works. They just said about Whatever the fuck you just said on TikTok.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80b3-89b2-e971870a1636" class="">Yeah, we got the keys. We can peek. Hell yeah! Let&#x27;s do it. Let me tell Kyle. Yeah, you roll.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-801a-af9a-d541bee2fe4e" class="">Is that a good mic for? What? That mic there. A box of either one? Thank you. Yeah, it gives just like a few slight, yeah, just a good like to have, you don&#x27;t always want</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8090-bf0b-cf6d42ea5848" class="">But the other one we could probably use for stuff.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-808a-b267-ca27e86294c9" class="">yeah that&#x27;s what comes back for a typical product Sold count. That&#x27;s good. Original price. Real price. Thank you again. You&#x27;ve been doing your best.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-803d-b780-c7572f50d705" class="">I love the Asian Reds.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80b3-b275-ee40dde4eb85" class="">The original the minimum skew original price is probably what we want to use as probably retail.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80fa-b539-c9750f720dc9" class="">That&#x27;s the only one I&#x27;m capturing. Yeah, that is currently the what I&#x27;m calling the sample price. That is exactly that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8084-b055-ca76cd98fe0c" class="">So we&#x27;re going to grab everything. Yeah, totally, might as well. Not that it&#x27;s expensive, but in volume over time it would be faster. Total unit sold is kind of useful.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80c9-bba5-e3796f5b446a" class="">That total unit sold could be useful. Especially the snapshot.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ac-bc29-c0ed56a71c3c" class="">There&#x27;s a bunch of interesting things. The photo, keeping the photo locally. We were talking about maybe the top performing videos for that product.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8045-a93c-ef9e3a6c7c6a" class="">Yeah, the next thing for all that information is like V2 stuff. make little widgets of what is actually beneficial for people. You can even charge more for that in the TikTok app. Do you want to know what the top performing videos are? Blah, blah, blah, blah, blah. Like. What is it? Daily Virals, Yuka, all the stuff they do.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-801b-9e62-fa29974b3c89" class="">If you want, I could share kind of what&#x27;s maybe one of the records. I&#x27;ll just throw it up as a gist, send you a link.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8069-939d-cff60a6d60c2" class="">It looks similar to what, essentially, when I save the page, right?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8073-b7e5-c69be930587b" class="">Well, this is just a Jason dump. But yeah, some of the order in the order list, those are just Jason dumps.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-803d-b3ec-c4baf9efc805" class="">But yeah, let&#x27;s see.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80d9-a7ee-e94a4be40800" class="">Priced, uh...</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f6-a1af-f1e495a6411e" class="">We want to do what Go High Level does. Take all the nice things that other companies and softwares do and make a version that works but isn&#x27;t as fancy as theirs. Or just have every Yeah, we could be better than go high level and make things that are the top tier, but... That&#x27;s cool. Is this... Price start, is that like the-I don&#x27;t understand that one. Let me find... Oh, here&#x27;s the other kind of stuff.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8054-9132-dd0c4e100fb2" class="">Yeah. $39.99. This is the one I&#x27;m using.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8079-8cfc-da8012d6a196" class="">original price yeah but it&#x27;s a discount of 47% how cool it shows the discounts too so that&#x27;s cool yeah so essentially original price 37 Thirty nine dollars But it would be crossed out, show $27, then the discount under it for TikTok, yeah. Yep.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8099-a84c-f548930aeb4a" class="">Yes. Oh really?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80fe-8592-ebef1b577fbf" class="">I think Caliata is--I think Caliata is backed. I think Al-Adha is essentially this about people&#x27;s They probably also have APIs that are not public. Oh, absolutely. Because they were the first. I mean, we pointed him at Caledata and he was like, &quot;Yeah, they&#x27;re using third party stuff.&quot; It was either them or the others.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80be-8b8d-f01d4caef13b" class="">One of the TikTok guys left and went to Caladata or the other. They do have the partner V2 and they have the internal knowledge. Yes, both. Oh, and their own two other sources, data from their exports. They&#x27;re telling people to send us your exports and they wrote their own. They&#x27;re calling it like a bio-algorithm. They wrote their own AI type thing. Uh-huh. That&#x27;s the opening. Mm-hmm. So yeah, I mean, I&#x27;ll start with everything.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80cf-8d76-ce76bab4941f" class="">It&#x27;s called like, some kind of evolution code, I don&#x27;t know what it&#x27;s called, but like you could just try a bunch of, it basically followed the principles of evolution for coding. You try this, this, and this, and then like pull off these like trees of attention. if they look bad and just Keep iterating and getting betterThat&#x27;s kind of interesting. They were using it to, Like because there&#x27;s circuit boards where proofs show that this is the most efficient circuit board where it takes these inputs and you get these outputs through this circuit board and they were running these algorithms. I want to for whatever reason evolution algorithms pop my head, but that&#x27;s not what it&#x27;s called. Evolution. Right? Yeah. But they, yeah, I mean that&#x27;s basically what it&#x27;s, it&#x27;s what&#x27;s modeled after.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80fe-ac23-c5521ca1ec62" class="">Evolution is very slow. Right. And that&#x27;s what&#x27;s modeled after, but they were like breaking these proofs and coming up with more efficient circuit boards. Using these algorithms, and they&#x27;ve now grown just like-Yeah, 14 million positive ratings. You know Google has a chunk of your time spin towards nothing, just like whatever you want, your own projects, and then all of their best products end up coming from that little tiny chunk of time that those people have to tryTry whatever they want.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-806e-afe2-e3252ca26cf8" class="">I was thinking of the doctor strange 14 different possibilities. So he&#x27;s going to need moreCredits. Honestly, we&#x27;re at 100. Test all hundred of them and we&#x27;ll have a percentage. which is not perfect, but... Probably better. Right now we&#x27;re at 100% after 3,000 so far. This is off of your sales? Are you telling me you want me to keep it in January yet? Well, what I can&#x27;t believe it. Upgrade his credit.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8062-903d-f36f29d4bda0" class="">Yeah, the first one was like $47, maybe 25,000 credits or something. So you have $47.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-802d-a681-c16376e54cc0" class="">So we can go more.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f9-8b1f-f9dbc5cfcf83" class="">-Here you go.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8023-9348-f8a80764f853" class="">There you go, that doesn&#x27;t tear the gas, yeah?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8063-a8e7-ccf8a931eafe" class="">There&#x27;s a use case for that one. -Eight seconds.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8081-8281-d7451d6db156" class="">I think we gave a bunch more people than just that. So we&#x27;re a couple thousand dollars a day going out the door.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ff-bfd2-f6f0e833e9c0" class="">Well anything that goes out electronically is recorded. Anything that goes out that I can, I don&#x27;t.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80df-b104-c41330327ca6" class="">We can always pencil that in if that&#x27;s sad.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8095-b383-ef57232a2de8" class="">The way that I was last told is if the cash is under a certain amount of money, Chris doesn&#x27;t care.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-806b-aee7-f5cd8366e3a9" class="">All right, I gotta go make someAwesome, awesome. We&#x27;re gonna go to strip club now, so. Yeah, there you go. Shaky. Go earn more, 100&#x27;s not enough.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8051-af9f-c4a8e27f59e6" class="">Oh yeah, he needs-What was that amount you didn&#x27;t care about? Go work the pole boys.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80dc-87d3-ecf055f4c56b" class="">Oh, there&#x27;s the micro-ingredients. There&#x27;s my gum. It&#x27;s in the workout room and these are the ones that make videos on it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80b5-a8b0-e3bc83247014" class="">Yeah, there&#x27;s the testosterone events. That&#x27;s when that&#x27;s starting to sell, or that&#x27;s when it gets out. Taking it? Oh, yeah. Yeah. Catch up?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f5-94ce-dc96aeca6ae0" class="">Kind of. Not really. Just kidding. I&#x27;ll work on it. Yeah, my eyes are so great. Okay.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80c4-990e-fc8a97b153ff" class="">All right guys.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8052-b787-ff9330f7bd57" class="">Also too, I&#x27;d really like to work on this inventory thing.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-803e-a195-c2315f01f9bd" class="">Fuck yeah.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-803b-b4f0-f3665a695b01" class="">Because,When I saw it, I was like, I could code vibe something, but then when I was talking to you the other day, I was like, you already have the data, it just makes so much more sense. You&#x27;ve already started something. Mm-hmm. Also, like I have to figure out really quick, really soon, like next week, what I&#x27;m doing with all that stuff. Because we&#x27;ve fulfilled most of it, half of it anyway, on those silly lies.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8099-a61b-c60f4f59e615" class="">Which is the only way to fulfill something like that anyway. That volume, yeah, shit. That volume, yeah. It&#x27;s crazy though. Sapples back there. 20 minutes to handle 150 units. Do you have any... It&#x27;s falling like a leaf, man. Do you have any hardware right now or do you just want to make it a phone thing? Like do you have the actual scanner? Yeah. Why not? Take a picture, or just scan it with a QR code scanner?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-804f-a9f7-c65fc72ee420" class="">I&#x27;ll probably do-I&#x27;ll see if I can do something a little interesting where-Yeah, it&#x27;ll be able to do UPC, it&#x27;ll be able to do QR, it&#x27;ll be able to do... Geolocation, I think. Just an image, anything your phone can do. But I&#x27;ll probably talk over BLE. Let&#x27;s see if I can do it that way just so I really like the solid link of that. It&#x27;s almost like when you have like those Logitechs that have like the RF module. It&#x27;s like you&#x27;re not using Bluetooth, you&#x27;re not using anything that can go down or that anything else is on.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-807a-922b-de74338b5c10" class="">With those BLEs, you have your own private ID that it has to promiscuously ask and look for and go, oh, you&#x27;re there. And then it links up to it automatically. So if you&#x27;ve ever had any of those BLE devices that just do that, up And the kiosk, the whatever it&#x27;s talking to, both talk over that BLE 5.1. If I can, on both sides. I&#x27;m going to test that out a little. But it&#x27;ll have some fallbacks and I&#x27;ll look at the one you&#x27;re talking about, the Air one, and I&#x27;ll just see what their UI looks like.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8040-9cda-c4f391bc7711" class="">Because if that&#x27;s something like features and-I think I&#x27;ve heard him before, yeah. Okay But they have a standard built in. That was why I suggested to try. I also was trying Zoho inventory. That one could work as well, but it&#x27;s not really going to work with what we&#x27;re trying to do. because we Since we have all these products that are being processed from TikTok, we&#x27;re already getting the product. We&#x27;re just not linking the product to the YouTube feed. So when it comes in, we can say it&#x27;s in the system, but it&#x27;s not ready for sale yet.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f4-ab8f-c137c02ad404" class="">And until it&#x27;s been processed or gone through an intake or fulfillment, then we can scan it and hopefully it should link that product to that sort of like pending coming in and then we need a disposition like is this a whole product is this a brian product like if it&#x27;s a circuit creator like all brian stuff is separate from chris&#x27;s stuff chris is like let&#x27;s let&#x27;s sell the stuff brian&#x27;s like i don&#x27;t know i might need it because he needs stuff so we have to say like yeah this stuff&#x27;s on hold and the reason why is brian brian&#x27;s still working in it or whatnot and when brian decides we can sell his stuff and We need to be able to bend.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80db-953c-fca317bd7e0a" class="">process it off and pulled into. Yeah, so...</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ae-b874-eecb8be3c47e" class="">Oh shit. And it&#x27;s clear?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80e2-8409-f56e03f9ae79" class="">That&#x27;s cooler than cool. Yeah.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-802a-90fd-f50c6c0e6b62" class="">Logitech is on TikTok shop giving out free shit. Well, I say both keep that and then we use it for the next workstation.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-808c-b67a-f440f8f314fa" class="">I can buy it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ca-b2b8-eb9f0cb51b02" class="">Maybe, maybe.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ae-bc67-e92139698e76" class="">Let me go make them some money and I can get more free ones. And then you can sell it and you can have it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-801b-9cb7-e7969f810011" class="">I&#x27;m a huge Logitech shill, so yes.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-806f-bd4b-fb07f0337008" class="">Well, then maybe you could help me sell it.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f8-b99b-c881adbbc3b1" class="">Absolutely. Absolutely.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8055-bf19-fb1afa3d0532" class="">So the fact that you like to come here, I&#x27;m definitely going to use that. Yeah. That&#x27;s the worst case. But as long as we can sell it, then we can do it for multiple stations.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80a4-9790-eb74bc944e6d" class="">If I&#x27;m saying it&#x27;s not leaving the office, I&#x27;m saying keep or flip, keep in the office.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80cd-9147-c2d5750a8542" class="">Keep in the office and make money for Logitech.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f6-9c2f-e6e1384a2d2e" class="">Yeah, you can come and film a program or work in a fancy Logitech.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8096-9d41-e66d2873ef53" class="">That would be way more useful than me. You can have me too!</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8060-9ffe-f59ceac94364" class="">Like an idiot shaking her house. That&#x27;s my current strategy. We&#x27;ll see how well that goes. That&#x27;s probably going to sell.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-801f-8ff8-c45a5caf0a73" class="">Getting a sign off on the sales pages and I have to stay on the moon.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8042-9c10-d463da38c8e4" class="">Mechanical keyboard, unique cushions on that one.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f5-8ffd-de7648e3b94b" class="">All right, thanks man.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80de-a715-e9af20ede6f6" class="">Yeah. I&#x27;ll probably work the bin and the shelf stuff in there. I think warehouse will just have one, I&#x27;m assuming for now. Just think multi roles because there&#x27;s creators. One person&#x27;s doing the scanning. There&#x27;s an admin, creators. and then potential stock workers or whatever, because I&#x27;m not going to do this the whole time. I&#x27;m going to get someone to do this eventually once we figure this system out. And figure different dispositions for the product and its process from like a chain of when it comes in the door, we know what it is, we know it&#x27;s on hand, but it&#x27;s not inventoried yet. But it&#x27;s on like a holding period while it goes through fulfillment.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8099-9e9c-c32292f16f09" class="">Then once it&#x27;s been cleared for fulfillment, Is it something we can sell or not? Is it still going to stay on hold? Is it still connected to the creator? Because I started out with just like available, checked out.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-807b-8071-fcc22d53b9bf" class="">Yeah, checked out is a good one, definitely. Check out is really reserved.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-803b-a796-e1da3a221963" class="">It&#x27;s like it&#x27;s checked out, but who checked it out? Oh, it&#x27;ll it&#x27;ll happen. Yeah. Reserved discontinued. Is it the lowest price online currently? Is it on a fire sale? And we can of course customize any of that. That&#x27;s just all. Yeah, okay. We can add more. Oh yeah, absolutely. I&#x27;ll probably make this.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-809c-8e36-cf08a89d67e0" class="">I had some written down, but I don&#x27;t remember what they are off the top of my head.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-803b-b6aa-f295264d456f" class="">Are you just Carl at Lifepreneur?</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ce-b43e-d6bd74a8634f" class="">I am, but I don&#x27;t have access to that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8056-a045-e8d048900ce4" class="">I have an account, but I lost my login, so I have to get that figured out. Okay.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-806d-97ae-fc0a3a31c625" class="">So I&#x27;m saying I could message with you. Bankwithcarl at Gmail.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-809e-9bdb-f7913ddf2338" class="">Okay, let&#x27;s do that.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ef-a0ae-f0bf886f97eb" class="">Carl with a K.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80fe-9f05-d715bb7087ea" class="">Let me...</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8099-9f4f-f71f5c44cbba" class="">Yeah, I should have my.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80f6-a2eb-c221fad8b1ec" class="">This one has one foot tooth. Bluetooth or USB dongle. I guess it is two, my bad. They&#x27;re both blue jeans.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80ff-abcb-e50f47c6b533" class="">Well, mine is US dollar and blueSo three options. It&#x27;s just, the only one.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8077-809b-c44c3a07d970" class="">Like B-A-N-K with Carl.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-80e4-bd46-e2a33b191987" class="">B-A-N-K with Carl, yeah. At G-E-M-I. Is there just a button somewhere else though You gotta use two hands.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-8057-bc40-f9fb11c8dce4" class="">Cool. Cool. Yeah, if you want to either chat, message back and forth, we can... Mark something up. Sure. Cool. Sounds good.</p></div><div style="display:contents" dir="auto"><p id="37d04b9d-4ca9-803e-9635-e4e7c75abebe" class="">Who does this? It does what? Like, that shit&#x27;s crazy. That many samples?</p></div></div></div><div style="display:contents" dir="ltr"><figure id="38104b9d-4ca9-81d8-8679-fda17d60fb35" class="link-to-page"><a href="inventory/Screenshot%20(Jun%2016,%202026%203%2026%2035%20PM)%2038104b9d4ca981d88679fda17d60fb35.html">Screenshot (Jun 16, 2026 3:26:35 PM)</a></figure></div><div style="display:contents" dir="ltr"><figure id="38804b9d-4ca9-81e6-ad91-d4de5f6f56f2" class="link-to-page"><a href="inventory/Untitled%2038804b9d4ca981e6ad91d4de5f6f56f2.html">Untitled</a></figure></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

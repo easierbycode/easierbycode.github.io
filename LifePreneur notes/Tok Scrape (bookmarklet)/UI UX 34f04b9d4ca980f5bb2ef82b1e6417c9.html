@@ -1,0 +1,745 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>UI/UX</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="34f04b9d-4ca9-80f5-bb2e-f82b1e6417c9" class="page sans"><header><h1 class="page-title" dir="auto">UI/UX</h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-person"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/friends_gray.svg" style="width:14px;height:14px;display:block"/></span>Owner</th><td><span class="user"><img src="https://lh3.googleusercontent.com/a-/AOh14Ggy0FcyX-X6EW32d0jOd5HNUZl3VcBq7Msx_b4mPQ=s100" class="icon user-icon"/>Daniel Johnson</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>Tags</th><td></td></tr></tbody></table></header><div class="page-body"><div style="display:contents" dir="ltr"><div id="34f04b9d-4ca9-80c5-b58c-cbcd0f4dc200" class="transcription"><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Summary<br/></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-819a-b9f4-d326dba503ce" class="">Action Items</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81cb-9f8b-e2314a60401e" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Developer to set up <a href="http://lifepreneur.io">lifepreneur.io</a> version (LP0) and link functionality ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8199-b0b5-e2265ce7e3de" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Developer to gather and configure environment variables, coordinating with Daniel on secure storage solution ‣ ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81a0-a33a-d1242b26351f" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Developer to investigate TikTok developer OAuth app to enable proper user verification ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8122-bc82-f4bd75897dc3" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Developer to create detailed notes on meeting discussion ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81f3-b08f-f7f067ce9381" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Daniel to discuss first payment milestone with Chris ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81cc-a123-d8a344af6f36" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Team to scope server requirements and budget ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-814b-8222-c20a75e8010b" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Daniel to participate in upcoming partner meeting to determine equity/compensation structure ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-814b-b048-cbb651ffcbb4" class="">Development Environment Setup</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81b7-bf88-f53354a51245" class="bulleted-list"><li style="list-style-type:disc">Developer will create a version at <a href="http://lifepreneur.io">lifepreneur.io</a> (either LP0 or similar naming) to demonstrate progress ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-814d-b002-f668de4f5ced" class="bulleted-list"><li style="list-style-type:disc">This subdomain will be developer-controlled, allowing Chris, Brian, and others to review work easily ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81de-a2dd-ceccf2b3891f" class="bulleted-list"><li style="list-style-type:disc">Developer can pull from existing repository to leverage already-designed page layouts ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-8175-87a1-ce6d1c7b56a1" class="">UI/UX Collaboration Workflow</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81d7-a183-e84fc060b8a5" class="bulleted-list"><li style="list-style-type:disc">Developer will handle functionality while requesting UI/UX support for design polish as needed ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-811b-be5c-ef0c2a1684be" class="bulleted-list"><li style="list-style-type:disc">Team can provide color themes, text, and design examples for developer to implement ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81e5-8734-ddebe267fff8" class="bulleted-list"><li style="list-style-type:disc">Existing page layouts provide clear structure showing required elements (upload buttons, controls, text inputs) that can be reorganized ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-815c-85a0-f9994af6574d" class="">Authentication &amp; Environment Variables</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-819f-a188-f9198e417bc3" class="bulleted-list"><li style="list-style-type:disc"><a href="http://Lifepreneur.com">Lifepreneur.com</a> will serve as the primary authentication layer before accessing apps ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-815e-a28f-fb29a8ce0d04" class="bulleted-list"><li style="list-style-type:disc">Discussion of CORS/CSRF configuration to allow developer&#x27;s .io site to communicate with .com ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8118-8fb8-c21beff8b7f2" class="bulleted-list"><li style="list-style-type:disc">Environment variables need to be transferred - over 30 variables exist, some now marked as sensitive due to Supabase security update ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-815e-b820-dd6e29fb66b2" class="bulleted-list"><li style="list-style-type:disc">Team will establish common storage solution for shared environment variables ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-817f-b1f0-eef166f06135" class="">TikTok Integration Strategy</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-814d-804b-fc9baac4ab0b" class="bulleted-list"><li style="list-style-type:disc">Currently have three working data access methods: partner center and two seller-focused pieces (live stream functionality) ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-817c-8ce3-fd4d24ea8d60" class="bulleted-list"><li style="list-style-type:disc">Current approach uses bookmarklet from partner center and manual account addition in sandbox ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81f1-8551-cd53373a4220" class="bulleted-list"><li style="list-style-type:disc"><strong>Critical next step:</strong> Implement TikTok developer OAuth to verify authorization and match user IDs between systems ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8107-ac00-c4705f343a68" class="bulleted-list"><li style="list-style-type:disc">Developer OAuth will provide user IDs that can be cross-referenced with partner center data to confirm authorization ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-810b-b0b0-db45bb16ef46" class="bulleted-list"><li style="list-style-type:disc">JC serving as friendly test user with permissions on both sides ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-81d8-8ebc-d8c35c4d4bc6" class="">User Tiers &amp; MVP Definition</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-816b-adf3-cc6c7e7822a7" class="bulleted-list"><li style="list-style-type:disc"><strong>$99 tier (MVP):</strong> Simple form for users to submit TikTok username for manual connection via partner center ‣ ‣<div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8102-8c31-df132c94db52" class="bulleted-list"><li style="list-style-type:circle">Form includes name, TikTok username, and shop qualified checkbox ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8186-8067-e158870094da" class="bulleted-list"><li style="list-style-type:circle">48-hour response time with status updates and notifications ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8149-9abf-d24f1c816351" class="bulleted-list"><li style="list-style-type:circle">Expected to have ~5,000 users in this tier ‣</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8157-9fee-ead7d2307e70" class="bulleted-list"><li style="list-style-type:disc"><strong>$300-900 tier:</strong> Full TikTok dashboard access with automated OAuth connection ‣ ‣<div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-813e-bdde-df04261ccea5" class="bulleted-list"><li style="list-style-type:circle">Estimated 1,000 users for remainder of year, possibly into next year ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81e7-ae53-f943e11a3719" class="bulleted-list"><li style="list-style-type:circle">Focus on active live streamers ‣</li></ul></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8135-ba06-f27b2edad728" class="bulleted-list"><li style="list-style-type:disc">Potential feature for starter accounts to pre-fill qualification form that activates when they reach requirements ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-81e8-b0d1-e3cf1bf39229" class="">Target Demographics &amp; Use Cases</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8140-a5ba-f97280bb9345" class="bulleted-list"><li style="list-style-type:disc">Primary focus on video creators who can&#x27;t commit to live streaming due to 9-5 jobs ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81a4-81d1-f9b03c8035ce" class="bulleted-list"><li style="list-style-type:disc">Live streaming fastest path to shop qualification but requires significant time investment ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-811f-9e77-ffc348196458" class="bulleted-list"><li style="list-style-type:disc">Expected demographic shift to include more people in 20s-30s (college students who can dedicate time to live streaming) ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81f8-a56b-c3b0341b3b57" class="bulleted-list"><li style="list-style-type:disc">JC&#x27;s audience data showed surprisingly low 18-24 age representation (3-4%) ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-8187-b991-fa1ed3e1c690" class="">Payment Milestone Discussion</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-818e-b2f7-d9f3ea3831ac" class="bulleted-list"><li style="list-style-type:disc">Daniel recognizes developer is making significant progress ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8169-9ad1-ff2edaa63843" class="bulleted-list"><li style="list-style-type:disc">First milestone likely tied to login/connection process completion ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8147-8ed9-ebf7789f3f33" class="bulleted-list"><li style="list-style-type:disc">Need to determine what Chris and team need to see before releasing payment ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-81ea-81b5-f61f975683ad" class="">Office &amp; Equipment Needs</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-813a-9106-d9b7ab1b99ef" class="bulleted-list"><li style="list-style-type:disc">Discussion of server requirements for developer workspace ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8107-b354-e8cc397cefa6" class="bulleted-list"><li style="list-style-type:disc">Preference for servers that scale to 10,000 users over immediate replacement needs ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-811c-b0fc-c27bcded0c83" class="bulleted-list"><li style="list-style-type:disc">Budget considerations for equipment purchases ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81e3-bcd6-e1baba9916d0" class="bulleted-list"><li style="list-style-type:disc">Developer willing to work on company-provided equipment rather than personal devices ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-8108-a397-dea4eca7322b" class="">Team Dynamics &amp; Upcoming Meetings</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8187-b36d-cf0b200fa33e" class="bulleted-list"><li style="list-style-type:disc">Partner potentially visiting tomorrow - Chris and Brian to handle, though Daniel may need to participate in structure/equity discussions ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-817f-83a7-fe3027bfce68" class="bulleted-list"><li style="list-style-type:disc">Developer will work until 12:45 today, return tomorrow ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8178-b0e5-f018cb211ecd" class="bulleted-list"><li style="list-style-type:disc">Developer comfortable with middleman role between technical and business sides, drawing on military experience managing teams ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8107-87b3-e0d722eb7f13" class="bulleted-list"><li style="list-style-type:disc">Chris currently in middle of move ‣</li></ul></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Notes<br/></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8092-9421-e3ce5e189c02" class="">
+</p></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Transcript<br/></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80cd-a61a-db43940bd666" class="">to that domain.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80f7-b090-e55854f71c08" class="">Which it doesn&#x27;t sound difficult to me. I just wanna make sure that I&#x27;m not thinking it&#x27;s simple. It&#x27;s not? So essentially you would controlLifeNord.io. Uh-huh. Me, Chris, whoever will come and review it, but like all of that essentially is your running. If you need UI or UX, like-Changes to make it look pretty or whatever and you don&#x27;t want to do that or you want someone else to do it, easy enough.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8014-a5d0-c0c81182fe0f" class="">But functionality and everything else, Essentially, it also gives you An easy way to show Chris, Brian, whoever, what you&#x27;re working on, they can just go to likewonder.io. And I like the idea of still being able to pull the stuff from your existing repository because the pages you haven&#x27;t laid out are beautiful. It basically clearly says this is going to be uploading content for this and for that. You know, example of an upload button, example of the other buttons or controls or text inputs. So that level of just laying out, here&#x27;s all the things that need to be there. Obviously, it&#x27;s not going to look like that at all, but just that, everything on the table, and then we can reorganize it. That way of doing the UI for those pages that don&#x27;t exist yet, that I think you three might have a better example, that would be a perfect way to work, I think.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8089-a499-d084ed7ab31e" class="">Okay. Because I could take that and run, and you guys could throw any sort of, Just the colors, the theme, the text, the something else I saw that I think if we looked like that, it would be great. I can take that all in. And if you give me an example, I can Mona Lisa this block of stuff into that. No problem at all. Okay.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8089-a190-d27d2c5de690" class="">Cool Is there anything else that you wanted to talk about or have questions about?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8068-817a-e5bcc3db02cf" class="">All of this looks like it&#x27;s going in the right direction. Perfect. So what I can do, I can start linking stuff up. So I&#x27;ll make my version of Lifepreneur, I think I&#x27;m calling it Life, LP0, Life P, LP0. I have two different things that I&#x27;m playing with. One was our MVP and this is the current thing. So to make it real, I can give you access to Deno, or if you want to just write down or just tell me for the...</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-805f-b433-f966d66a2624" class="">environment variables.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8058-9100-e1553dee8dbf" class="">It&#x27;ll store them in there for each level we want.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8008-a801-e898c71a883c" class="">Can you just connect to her cell?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8026-a3a9-c8dc3cc6c7f8" class="">Because I have like... I think 30 plus environment variables. Some of the server cell just updated their environment variables based off of a leak that happened with yeah, super base I got the you got that email.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80eb-a9a2-f7998e81430d" class="">Yeah, so now they&#x27;re set is sensitive and I can&#x27;t go into them once I said it as I I should have I just watched them sensitive, wrote down where they were, because when I looked at the information I could remember where I got them from. Um, that&#x27;s Chris. I should&#x27;ve answered that.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-804d-9240-edac56ed0f88" class="">What I&#x27;m trying to say is I can get the information. I just might have to dig through some tabs and figure out where it is in.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-802c-a573-c4547c526ee2" class="">Don&#x27;t worry. I&#x27;ll get the stuff live and I can either give you access or we can figure out a common place to just put them to where we can both Yeah, essentially it would be easiest the way that we&#x27;re at least talking about going on doing it.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8066-a3f6-fb5693070ad7" class="">Livepreneur.com is where everything lives for authentication. It&#x27;s the first layer of authentication before we go to the apps. Um... I would keep what I have up because it works for me.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8001-8f56-ec3604c2884c" class="">It&#x27;s actually beyond yourself. And all those are rhyming variables, so I don&#x27;t know. Maybe we even just set it up to where It&#x27;s just a Coors CSRF You know, your site, IO, knowsabout.com, or whichever way. And I can say, hey, let me hand this over to you for a resend, for a post-hog, for anything that needs a key.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-801c-8160-d34edac2e648" class="">So that to all of the third-party apps that I&#x27;m using is just talking to I&#x27;m saying what should I use for this sort of stuff? So if you have preferences on that too, That&#x27;s fine. I just need to understand how it&#x27;s switching over for whatever I&#x27;m still putting my hand in.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8077-a7f6-fd11e98f15dd" class="">Anything I touch that&#x27;s been created, any page that you&#x27;ve started, if there&#x27;s anything that I&#x27;m changing on your page, I&#x27;ll walk through it with you.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-804b-b27b-fced48b2b59c" class="">The way that I like to run things is I like to have at least... A 60% level of knowledge, for one to be able to understand what you&#x27;re talking about because The difficulty in explaining stuff to people is shorthand versus trying to explain shorthand. So it&#x27;s just being able to do that sort of stuff. Uhhhh... Cool. Um. I&#x27;ll talk to Chris about that. The next thing I think we need to talk about is what do you need here?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8066-9b90-f24ed3f743ec" class="">So working in the office, what are the type of things that you need to essentially set up to to work on, &#x27;cause we don&#x27;t want you to work on your own device unless you want to. Which the server is the first thing so need to scope out what that is and figure out if it&#x27;s within our budget. If it&#x27;s like a... Works now, but needs to be replaced. I&#x27;m not a fan of that. If it works now, these are replaced in like...</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80ef-b127-f554b87a03bd" class="">Scale of 10,000 users. That would be ideal. But if it&#x27;s like you&#x27;ll never have to replace it again for like a decade. Probably not going to fly the first pitch to, I guess, me who is... Whatever that is in the company, financing, So we need to just, yeah, that&#x27;s the next sort of thing. I need to talk to Chris about what your first milestone is to pay you. I think you&#x27;re at a decent amount. From what I understand, you&#x27;re making a lot of progress. I just need to know what it is that they need to see.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-804b-9589-f60574b02d42" class="">Because once they see something and they&#x27;re comfortable, then I can just hand them the mouse hands because at that point it won&#x27;t bevery visible, like Chris said, programming is very invisible. Yes. So... Yes, I need to talk to Chris about that. Brian, with what you have as your little display, I think that will, you know... work for him, but it&#x27;s the login process is I think that&#x27;s gonna be their first milestone actually.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8094-90f8-c86d661db745" class="">So actually being able to connect their TikTok accounts. So where are we at with that? Is it still, Bookmarklet from the partner center.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80c1-9e92-fd1594d01e78" class="">Yeah, we can get their data on both sides right now. I think I have three working things, which is one, the partner center itself, and then the two focused on the two seller pieces we just looked at.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-804f-bdad-e7dd40ee227d" class="">The live stream stuff, yeah. So that works for in-house essentially, someone who&#x27;s comparable with us logging into their account. From what I understand, that gives you a lot of permission. But there&#x27;s also another thing thatJC&#x27;s done, Heather&#x27;s done, and some other people. They got a QR code.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8001-9423-cd4d14d20a92" class="">Yeah, yeah.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8044-a158-fb9bbcc1962d" class="">From the sellers. So I wonder if there&#x27;s something like that that allows us to essentially use that to log in.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-805d-84c3-ef3e5d989faa" class="">I know, so for JC, he&#x27;s a, It&#x27;s good we have him as a friendly because he&#x27;s given you permission and we can pull that from your side. Then he&#x27;s willing to play ball and even be the product owner of, hey, let me pull it from my side as well. So he&#x27;s an interesting in this case for that.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8010-bb87-cb5812d69c99" class="">As those three options, the one that I see that actually worked for me, you know, is probably bookmarked from the partner center. The login process, login, is still technically Um. Connect latency. Because Have you... You probably haven&#x27;t looked at it, the developer app, not the partner center app, which is the whole lot. Have you looked into that again since we last looked at it? Central Publicity Board, I believe you for that.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-802e-83c1-dff522012cb0" class="">No.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8071-831b-dd1048bad908" class="">So I&#x27;ll look at that because I think that&#x27;s the other thing that we&#x27;ll need. Because the way that you&#x27;re connecting accounts right now is you&#x27;re just creating contracts on mock data.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80d5-afdc-c56b3949eb59" class="">Yeah. Well, I think I&#x27;m also mixing in, like, you have the real authorization that JC hit the button for. Brian is also on your partner center from the op. And we added both of them because, remember, we&#x27;re in just sandbox. And we manually added them under sandbox.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80ce-b887-cf60977038cf" class="">But we&#x27;re looking for the next part that we&#x27;re looking for is how do we verify that we should get one of the data? That&#x27;s what the developer OAuth will give us. Essentially it will give us the new ID or some sort of information that hopefully we can also see in the partner center to just say, &quot;This is it.&quot; They can see that. That&#x27;s the background we need. That&#x27;s a great point.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-801e-9e9c-e6476fc3b82b" class="">So when JC hits that authorize your agency button, his ID is 34567. We go over here on data we get, we can see 34567 and know that it&#x27;s okay for us to funnel 34567 back to you as a viewer.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-803e-a033-feb4fa7c1a10" class="">Yeah, because there&#x27;s no way to do it manually, but it&#x27;s also another like... Anybody can find the data if someone&#x27;s not smart about it. You can get all that sort of stuff by going to your user settings, going all the way to the bottom and tap a bunch of times and a bunch of info shows up. You have to screenshot that to us. It could work for MVP, but I mean... Based off of what we&#x27;ve been working on, if we open this out to the public,Show you guys, I no longer had--We&#x27;re gonna have at least like 2,000 people within the next month.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-804f-80c7-e0357500a2ce" class="">That must be--And maybe we&#x27;ll do 2,000 people. Here you go. 400 of that were actual people with accounts, so that&#x27;s just a lot of manual processing. So I&#x27;ll look into the developer app stuff. See whatever I need to do just to publish it so we&#x27;re not in the same box because that would be the next thing for us so we can actually test it and see how it works. Because if we have that, then-As a user, my greater lack of an account I pay for whatever level Pay for whatever level gives me TikTok dashboard access, which I believe is going to be $300 to $900 a month.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80f5-a887-db863337fb82" class="">I&#x27;m able to log into the TikTok dashboard, but nothing will be there. It&#x27;ll be whatever the landing page is for someone with no accounts connected. I&#x27;m going to connect and do that. But that connection, I believe, is going to be the developer TikTok. API. So as long as we can get that and start testing it as a user, that&#x27;s all I need to do. For us on the back end, it&#x27;s then go for it, click. Well, then I have to also-well, I could be a button or whatever.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8009-9d73-e65711041f4a" class="">It would be great if they could send a request to connect with us. It looks like I have to send them a request.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80a8-b388-c5dbc67808a5" class="">So essentially We could say something about processing to make it seem like it&#x27;s not just waiting for you to look at your inbox and click.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8053-90d6-fde26c4bddac" class="">Well, the way, I think the easiest way to do it, because I have to send an invite to them through the partner center, is some sort of like... It could just be a simple contact form like I have for Contact us on the website. Name, TikTok, username, and then like... Uh... a checkbox saying that I have shop qualified. So I can only send it to shop qualified accounts. So it could be that or it could be a Google form.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8054-867a-d0aa3685211b" class="">So instead of just pending, it could also be, you know, verifying that you&#x27;re qualified. You will get a response within 48 hours, normally within 12 or whatever you want to say. But check back here and you will also get a notification. Meaning if it&#x27;s a PWA, we could throw a badge on it. If it&#x27;s installed, we could, of course, ping it from the top of the phone.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8015-a2b6-c7771f705b38" class="">you Another thing, if we give access to starters, people who are working on grading their accounts, Maybe we make for them to get qualified. and it just has that information filled out already. So that once they need it, they can just hit submit and it sends it off.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-807f-8428-f224d12d7a53" class="">You&#x27;re at 150, you need 850 to...</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-805f-a6d3-c108c165df53" class="">Yeah, &#x27;cause if it&#x27;s followers, which the TikTok connection thing that&#x27;s Reddit grabs is followers likes them. Whatever else the other one is. That&#x27;s something that we could do for that lover. That&#x27;s nice to have in my opinion. I think the easiest thing would just be Simple. Quorum field for the $99 level so that I can win some of the stuff. I think that would be the MVP. The MVP is the 99 dollar level.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-807b-a887-f21f5d0ece42" class="">videos Then it would be great for you to know my latest reader? Yeah. Yeah, so this is the MVP is this one and Then it goes like this. These people are paying, so we should get that live dashboard. We&#x27;re working with JCF, but this is going to be the biggest amount of people. This is going to be like... 5,000 people as they like go over here to like 3,000 people and this is most likely gonna be like Probably saw the thousand at least for the rest of this year, maybe all of next year.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8006-9e90-f828a58bf96a" class="">Because these are people that are like, actively trying to do the livestream thing. Because you could do this just on... You can do this based just off of videos. You don&#x27;t have to be a live streamer. It&#x27;s just the fastest way to be able to do it.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80f9-aaf9-d8b8001983c0" class="">I watched JC. He fought tooth and nail. He&#x27;s like, he&#x27;s scared of it. And when he finally embraced, he was like, &quot;Oh damn, I wish I would&#x27;ve done it earlier.&quot; Because the one feeds the other.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80a7-b45f-df6e300d2689" class="">The thing is though is JC&#x27;s in a position where he can go live. Yeah. His job, if he has another job, doesn&#x27;t affect that. The normal person who works a nine to five stuff like that live streaming is not for them. At least they can do it.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8083-a7bc-c1996a522df6" class="">They couldn&#x27;t put in the time he puts in.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8024-a51e-f2e58e8d5f34" class="">Yeah, so like they start on videos, make enough to either go to a part-time job or if their job allows them to reduce hours, then they can start and do the live streaming. Um... But honestly, we&#x27;re probably going to have An influx of like. Younger people too might change our demographic to start including people in 20s and 30s. And they don&#x27;t really have jobs. They&#x27;re like in college, so they could just jump straight into the live streamer.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8037-a0bf-dd2de5ed3f31" class="">Looking at his numbers for the first time with him, I was surprised at how little. I think he had maybe a 3 to 4 percent. We&#x27;re in his 18 to 24. And I mean we were in a small slice. I think we&#x27;re all the way down to one product, one campaign.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-801b-8979-e8286806dc77" class="">Yeah, that&#x27;s the other thing too is that Just the people who are actually viewing it. Ah I might be leaving shortly because Chris is in the middle of a move.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80aa-8639-f195543e57f3" class="">I&#x27;ll probably work on just making some good notes on what we went over right now. Maybe starting on a couple little things towards that. I&#x27;ll head out 12:45, but I&#x27;ll be back in tomorrow if you&#x27;re around.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80bc-88d1-d3f13e882c88" class="">Yeah, I&#x27;m here every single day. Tomorrow that partner might be showing up, but Chris and Brian can handle that. I might need to be in that because The way we&#x27;re structuring things, I don&#x27;t... It&#x27;s a startup. It&#x27;s Chris and Brian and then I do everything so it&#x27;s like We&#x27;re bringing this person in because he has experience doing this. It&#x27;s just, what&#x27;s that split gonna be? Yep.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8086-a5a6-c6aca4a7df87" class="">-It&#x27;s always fun to to Just be a part of it and just be able to observe that. All right, we put the two bulls in the china shop. Let&#x27;s see what happens.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8075-bf48-ead8410104a0" class="">Yeah, I know he seems like a cool dude. And I personally have a wide enough skill set that I could do whatever. If you look at the traditional c-suite the only one that I would need to learn more is finances Otherwise, I have enough to be any of the other ones. I would not. I&#x27;d like to be the technical officer because I have an understanding, but I&#x27;m not someone that should be running that.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-803a-aadc-c10c969a1657" class="">But you are the dream interface. So like the person I&#x27;ve done startups with for going on 16 years now, from my first through whatever we&#x27;re working on right now, nothing profitable, but just some background stuff. Um, He&#x27;s the guy that went to school deeply technical, able to write NOS from scratch. Him and his other buddy who now created Taser were number one and two out of Oslo from where they came from, that university.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8017-ae39-e9f5cb2e7040" class="">And he&#x27;s that guy who is just passionate about business but understands the tech enough to before we go into the business do what me and you are doing. Sit down, be it what you call that 60% level of understanding to where, You&#x27;ll ask me questions, we&#x27;ll look at the code. But you&#x27;re also thinking about that other higher level stuff that I don&#x27;t want to be involved in at all. Yeah. That ideal interface.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8063-b74a-df50c8fe44b4" class="">Yeah. And I appreciate that. That&#x27;s essentially. That It&#x27;s a role that I did not want to be a part of, but my last six years in the military, it&#x27;s exactly what I did. I ran the entire division of people and was the middleman between them and the senior chiefs and all that sort of stuff. So it&#x27;s like, I have to take this bullshit that they&#x27;re telling me, make it friendly for these people. So if they&#x27;re mad at these people, no, no, no, they&#x27;re not mad, whatever.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-801f-b617-fbd5c930c0f0" class="">So I learned how to do all that stuff and I hated it. One thing when I got out of the military, I don&#x27;t want to be HR or manage people or do any of that sort of stuff. Then I went to go work for Intel, and it was like, they have the worst like set up at all to do anything like as a technician, I was like, where do I find the information to learn how to work on this? And what do I do? Like all this stuff.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8091-bd97-c1228fc755aa" class="">So it&#x27;s like, It was just very annoying, and it&#x27;s like, the reason I left there besides wanting to work with Chris is... I need two more tower fans. Did you get two more?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8097-9568-d7b4fcbfb09b" class="">Are these me? Maybe these are Chris.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80db-8d50-c22b80c670c4" class="">I don&#x27;t know. They dropped that off during the live. I haven&#x27;t looked at them yet. You can have a good two. But essentially, he had a very, very short glass ceiling. Like I could get up to the technician three level but they did it strictly time-based and I was sold from the recruiter that is performance based. Don&#x27;t want to work here. Yep. Because I&#x27;ll put in time, but if I&#x27;m not going to be rewarded for performance, then I want to work hourly.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80eb-9e6e-e9cf386518bf" class="">just click buttons and do my job. Like perfectly fine living that lifestyle, but If I&#x27;m going to be working Whatever hours I need to and all that sort of stuff, I&#x27;m fine working salary, but I better get compensated based off of performance. I have to go help Chris, so I am going to be leaving.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8039-a9aa-fe21332e4595" class="">I just need to make sure Brian is gonna be here, &#x27;cause if he&#x27;s not, then I need to throw up a... temporary sign that says, sorry, we had to close early today. They&#x27;re like, here, here&#x27;s your fucking package. I&#x27;m like, you motherfuckers. Or they&#x27;ll put it, like I have a gate around the front.</p></div></div></div><div style="display:contents" dir="ltr"><div id="34f04b9d-4ca9-80fc-bf65-fa2eda7cb69b" class="transcription"><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Summary<br/></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-81a6-ac0e-c9a482b22343" class="">Action Items</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-814c-a072-f565de06a97f" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Explore Svelte migration using islands architecture ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-818c-a655-ed3cc43cbe25" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Trim dead code and understand every line before moving components to Svelte ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81be-b745-dfd750f0e5cc" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Build TikTok dashboard as first priority ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81e0-ae42-f1dae3a1b691" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Create content page to move content off Discord ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-811f-8dc7-fc3c8c9207e1" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Refine affiliate dashboard (lower priority after dashboard and content page)</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8113-98fd-ef1356a654d1" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Replace text initials with profile pictures in UI if feasible ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81c6-b57f-c8a4f83fcb44" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Add hover tooltips to explain dashboard metrics ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8181-9a79-d88e8fb4ecb5" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Create instructional video explaining the dashboard features ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-811a-b330-d68cf2c6af91" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Discuss domain structure with Chris: .com for main site, .io for app ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81ed-a1f0-e233f382b48a" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Set up Deno deployment with custom domain DNS records ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81f3-be39-fa43c9f603d0" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Implement single sign-on across both domains using BetterAuth ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8103-bece-f9c102f97e8f" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Explore JC&#x27;s potential role in product demos and user education ‣ ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-81ff-9e05-c8d6860f8b54" class="">Development Priorities</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81ad-a4fe-de6234007089" class="bulleted-list"><li style="list-style-type:disc"><strong>First priority:</strong> TikTok dashboard for creators - described as a major selling point since no one else is doing it ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81f9-8d7c-fa2ef46b32f5" class="bulleted-list"><li style="list-style-type:disc"><strong>Second priority:</strong> Content page to move content off Discord to a better-looking platform ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81d2-804f-d0d759f2435f" class="bulleted-list"><li style="list-style-type:disc"><strong>Third priority:</strong> Refined affiliate dashboard ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8175-8a44-ef6d3a498383" class="bulleted-list"><li style="list-style-type:disc">Team is focusing on creating new features rather than redoing existing ones, with refactoring to happen later ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-8151-906a-f9e999d1d97a" class="">Technical Architecture Decisions</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-810f-9b91-fabbfe4e5240" class="bulleted-list"><li style="list-style-type:disc"><strong>Svelte migration:</strong> Moving from React to Svelte for cleaner code structure with separate script, HTML, and style sections ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81c5-8a32-ed53d66da882" class="bulleted-list"><li style="list-style-type:disc"><strong>Domain structure:</strong> Proposal to use .com for main website and .io for the app, giving more development freedom ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8155-8ad6-e40197c6f0bb" class="bulleted-list"><li style="list-style-type:disc"><strong>Deployment:</strong> Planning to use Deno with GitHub repository connection and custom domain setup ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8172-972f-f2edfc0d2b9b" class="bulleted-list"><li style="list-style-type:disc"><strong>Authentication:</strong> Single sign-on across both domains, with BetterAuth for main site and TikTok OAuth for dashboard to support multiple account linking ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81a5-b531-f172fba44b09" class="bulleted-list"><li style="list-style-type:disc"><strong>Mobile strategy:</strong> Moving to a single codebase with build step to create mobile app, rather than maintaining separate mobile and desktop versions ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-814d-8f1c-ca31ba004159" class="">Dashboard UI/UX Review</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8100-bc65-d2c8c0c94b8f" class="bulleted-list"><li style="list-style-type:disc"><strong>Current implementation:</strong> Dashboard successfully pulls live data and displays key metrics ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81af-a3e0-ea57e91d7400" class="bulleted-list"><li style="list-style-type:disc"><strong>Trending products section:</strong> Will show what&#x27;s selling and should be promoted, with campaigns manually fed in from sources like Discord ‣ ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8135-be7e-fe131d19564b" class="bulleted-list"><li style="list-style-type:disc"><strong>Top performers display:</strong> Proposal to replace text initials with profile pictures, though size constraints may be an issue ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8104-a481-cbdec2e146b5" class="bulleted-list"><li style="list-style-type:disc"><strong>Layout improvements:</strong> Suggestion to stack GMV, views, and commissions vertically instead of showing description ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8148-880e-dd6e467cd7f1" class="bulleted-list"><li style="list-style-type:disc"><strong>Account switching:</strong> Successfully implemented with dropdown that updates dashboard data ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8186-b23d-edaae5e817c6" class="bulleted-list"><li style="list-style-type:disc"><strong>Tooltips needed:</strong> Dashboard metrics require hover explanations for non-technical users (45+ demographic) ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-8134-a63b-f8141f672da8" class="">Video vs Live Dashboard</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8122-b3f9-fbc6fc4d6b9d" class="bulleted-list"><li style="list-style-type:disc"><strong>Two dashboard types needed:</strong> Separate dashboards for video content and live streaming ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8102-bf9c-ee13e701d138" class="bulleted-list"><li style="list-style-type:disc"><strong>Navigation approach:</strong> Toggle or selector to switch between video and live dashboards, potentially using accordion-style sub-nav ‣ ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81ce-9646-c17211235d9b" class="bulleted-list"><li style="list-style-type:disc"><strong>Live dashboard data sources:</strong> Can pull from both TikTok Partner Center and Live Manager/Workbench ‣ ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8175-84f6-c756620a7ab7" class="bulleted-list"><li style="list-style-type:disc"><strong>Live token approach:</strong> For live mentors, could potentially maintain logged-in sessions in dedicated browser, but Partner Center approach preferred for most users ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-8198-87c7-fbbae2eb296c" class="">Data Integration</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8177-a6c2-ef7c3dce0bd8" class="bulleted-list"><li style="list-style-type:disc"><strong>TikTok data sources:</strong> Partner Center for standard analytics, Live Manager for live streaming data ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81ed-8935-db5556aacefe" class="bulleted-list"><li style="list-style-type:disc"><strong>Campaign data:</strong> Manually fed in from Discord and other sources where challenges are posted ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8165-af46-e3c601ce6aba" class="bulleted-list"><li style="list-style-type:disc"><strong>Video search functionality:</strong> Users like Brian name videos with campaign names (e.g., &quot;Salute&quot; or &quot;Chata&quot;) to easily find them later for reporting ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-819f-8b7f-cb31951cc43e" class="bulleted-list"><li style="list-style-type:disc"><strong>Data freshness:</strong> TikTok uploads to Partner Center assumed within 48 hours ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-8182-a3bc-fb070e9a8341" class="">User Education &amp; Onboarding</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8137-bff5-c37e498e53ef" class="bulleted-list"><li style="list-style-type:disc"><strong>User demographics:</strong> Primary users are 45+ year-old creators who need clear explanations ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8126-9e08-e081992d1ad6" class="bulleted-list"><li style="list-style-type:disc"><strong>Video tutorials needed:</strong> Plan to create videos explaining dashboard features and metrics ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81f8-9d37-d196190f54ca" class="bulleted-list"><li style="list-style-type:disc"><strong>JC&#x27;s role:</strong> Potentially taking on product owner responsibilities, eager to demonstrate features and teach users ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-812e-ae4a-e8b9572a02c5" class="bulleted-list"><li style="list-style-type:disc"><strong>Technical education opportunity:</strong> Developer willing to lead technical talks for more technically-inclined users and AI implementation discussions ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-8158-b030-f217662197c2" class="">Partnership &amp; Team Structure</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8175-b772-d264639568d2" class="bulleted-list"><li style="list-style-type:disc"><strong>New partner:</strong> Testing out someone who will likely run the agency side and interact with developer regarding data ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81e0-9967-fbbd67cc2f81" class="bulleted-list"><li style="list-style-type:disc"><strong>Live mentors:</strong> Currently about 10 people who might benefit from dedicated live dashboard features ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8140-ab62-f2d9f9800302" class="bulleted-list"><li style="list-style-type:disc"><strong>JC involvement:</strong> Active user going live who provided feedback on streamer dashboard needs ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81a9-8328-f87ae570a734" class="bulleted-list"><li style="list-style-type:disc"><strong>Discord management:</strong> Working on moving content to better platforms, though Discord permission issues persist ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="34f04b9d-4ca9-8138-88e2-c1835ecb52f5" class="">Development Workflow</h3></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8165-9ab8-ee59bf08160e" class="bulleted-list"><li style="list-style-type:disc"><strong>Version control:</strong> Using GitHub with shorthand commits for rapid iteration ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8139-8c71-c2962b808305" class="bulleted-list"><li style="list-style-type:disc"><strong>Testing approach:</strong> Running two versions side by side (port 3000 for old app, port 8000 for new pages) ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-8173-b834-c62c8873f5d3" class="bulleted-list"><li style="list-style-type:disc"><strong>Code quality:</strong> Focus on clean code practices with isolated, easily changeable components ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="34f04b9d-4ca9-81c8-a887-c015277b9c77" class="bulleted-list"><li style="list-style-type:disc"><strong>PWA approach:</strong> Building as web app rather than native mobile apps for now ‣</li></ul></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Notes<br/></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80ae-a3df-dfe39b533452" class="">
+</p></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Transcript<br/></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8032-8b1d-e3eb16edfb4e" class="">Are you not saying anything?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8080-9c6b-c9b2a146ae30" class="">No, I thought he froze for a second.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8078-9bd4-e7a4f05d427d" class="">But he sometimes just pauses and doesn&#x27;t say anything. Um... Yeah, because at that point, It would go through whatever our standard practice would be for updating the webpage and stuff like that. I just don&#x27;t know what that would be because That would allow me to come out of the programmer role and lean more into whatever manager or director or whatever we&#x27;re going to call it over that functional business.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80e9-9a02-fa82033eafb8" class="">I just need to know what that would be. So I would lean on you to come up with how I would then interact as that managing person for the The programmer. And then that way I can just follow it because I don&#x27;t want to do something and then it&#x27;s like a bunch of real work to make it work.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-805a-acd6-c85232529021" class="">Exactly. Yeah, exactly. Yeah, that&#x27;s why I wanted to look at that islands and see if I can make that work first.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80d9-980a-ee50335d8483" class="">Yeah, that&#x27;s like if you ever looked at my GitHub comments, most of it is just shorthand or like nothing. It&#x27;s just like I just need to push this to go see something.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80f2-a2a9-d296e52d7ed9" class="">Yep, exactly. So I&#x27;ll probably go through all those pieces that we plan on keeping and just go through, trim any dead code, understand every line. So those things that I&#x27;ll take, I&#x27;ll just move them over to Svelte piece by piece. But in the meantime, as we need to be creating more than redoing for For me to have the full understanding, you know, we can be creating and that stuff can be later.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80c7-a905-e01687e1366a" class="">So the, I talked to you about this last week, the things that need to be created. The primary one is this dashboard for TikTok. Then it goes to the next priority, is like back and forth between the content page and the more refined affiliate dashboard. I would say the content page is more important because We want to get that stuff off of Discord, not because it&#x27;s not a feasible place to host it, it&#x27;s just it&#x27;s not pretty.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8098-83f8-f745e467bec3" class="">So the first priority was dashboard, and then the second was content.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8029-8fbf-db119e14eef2" class="">So, because content can be handled right now in Discord. This dashboard thing is a major selling point for the community. Because no one else is doing it. So once we get that up and running and it&#x27;s kind of like just... essentially testing to try to get more data in a better way. Whatever they want is essentially the MVP. Once the MVP is done, then it shifts to essentially more of like a 20% refine on that. Now let&#x27;s get the content page up so that we can move off of Discord.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8056-9056-fbf74bc5554e" class="">And then again, 2020 and then moving on for the next stuff. Because as long as we can host it on our website, or the app. However, we end up doing that if it&#x27;s a PWA or building it actually into these marketplaces, which honestly I don&#x27;t think you have to do. In the future, maybe. But I think it works perfectly fine as a web app.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80f6-9432-c04375626a46" class="">I think so.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8070-a53a-cd7a8aba87a1" class="">And then it&#x27;ll be start voting out the other stuff.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-807b-84b8-d0158f95d326" class="">So I have a little bit more understanding.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-809a-9e0f-d4d976f37bce" class="">You&#x27;re moving stuff into Svelte because you want to understand it or is that a building? That&#x27;s like a Svelte, a different. like building practice like React.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8072-8e3e-c5390a94c0a1" class="">It&#x27;s a different structure than React. React programmers that I work with, a lot of them look at the latest things that it offers to where you can almost get to what Svelte has, which is just that cleanness. Here&#x27;s your code, your script. Here&#x27;s your blob of HTML. Here&#x27;s just a style tag.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80bc-a4a8-df860211bc19" class="">That&#x27;s just a more... streamline like clean code practice.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8018-b7c9-d8ea0252bc18" class="">Yeah for the model view controller stuff it&#x27;s just one little page with all that stuff.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80ad-96c2-d54611e3696e" class="">That&#x27;s what I was trying to do with this because Since I&#x27;m not a programmer, every time I&#x27;d be like, I need you to build this in a way that&#x27;s like, if I need to change this, it&#x27;s by itself. Like, it&#x27;s not like... 3,000 lines of code of everything at once because I did take some programming courses and that was the main issue I ran into was I wasn&#x27;t following the clean code practices of He was like...</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80b1-af5c-d22ea286df42" class="">2018, whatever they were doing at that point when I was doing Python. And I&#x27;m just like, I couldn&#x27;t find easily where, I knew what the issue was, but I couldn&#x27;t find easily in the code where it controlled that.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8074-8146-ee11772cdf33" class="">Yeah. Yeah.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-808c-8fb5-c170d1809037" class="">That&#x27;s fine, I&#x27;m fine with that. I don&#x27;t know if we&#x27;ll ever grow past fast when programming. It really depends, I guess, if we have a need for more or increased speed. So really it would just be me and you unless this goes to Something else. We have another partner that we&#x27;re... testing out but we don&#x27;t know exactly what he&#x27;s going to be doing yet. I think he&#x27;s going to be running the agency so he will be interacting with you based off of like the data and stuff.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80d4-a1d8-ed63f47b3555" class="">But I don&#x27;t know if it would be I don&#x27;t know if it would be anything more than just Like making sure you have access like I&#x27;ve been doing on that side of it.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-802a-b738-e76bb922c775" class="">Hey, if you need me to sign for something... Nah, don&#x27;t need you to sign. I just had a question about it. I didn&#x27;t see that box before. Is that where you just drop them in?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8068-933c-ddb0915a7e69" class="">Yeah, yeah. Just lift it up and drop it in. Okay, well, we&#x27;re going to bring these in that I have, though. I mean, it&#x27;s up to you, whichever way I want to do it. If we&#x27;re here, you can come in or drop them in the box. It doesn&#x27;t matter. Appreciate that. I&#x27;ll bring these in right now. All right.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8059-8623-ccf1737023d4" class="">I don&#x27;t think I even showed this to you, but this is kind of the idea of, you know, here&#x27;s the which accounts posted it, just kind of like a starting template. Okay.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8009-a02e-d848c0271109" class="">I think I have a couple that are actually pulling live data in.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8070-b77d-c37fa6b35818" class="">Have a good one. So this, I like that you essentially took exactly what he had and built it here. That would be a good, Visual thing to show him. I don&#x27;t like The layout of it, but again, I&#x27;m not actively using this. Yeah, but I will come with my like suggestions of it to them and see what they want But is this on the mobile? Size or is this just the desktop version?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-808b-8f3f-f657a7af0b7c" class="">I think I&#x27;m gonna really Move to just make a build step to create the mobile app from this. I don&#x27;t think I want to maintain two, even if it&#x27;s no matter how many common pieces, I just don&#x27;t want to maintain two things.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80e7-a17e-d85a49a80af3" class="">No, I get that. But you&#x27;re just voting it out because it&#x27;s easier this way to--Yeah, yeah.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80b8-b711-f8a76aba16ca" class="">So I took your app and left it just totally intact, built a new one just called Fresh alongside it, started pulling your pieces into it, adding brand new pieces onto it, and then-That is essentially just a straight mock-up of a general idea of what we wanted.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80e4-bbf5-c48d09b1d3d2" class="">Some of that stuff, when I was looking at it, I wouldn&#x27;t use at all because it doesn&#x27;t make sense. The profile portion of that app doesn&#x27;t make sense because we already have this. Wherever that&#x27;s going to be for the mobile version, you click on it and it does that stuff. Some of that stuff, yeah, is just going to be taken off. But the general... Uh. The general UI is nice on that, but again, it depends on It doesn&#x27;t work with what he wants, which is this as a UI.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8007-9031-fd9ad869dc29" class="">But we&#x27;ll refine it. As long as we can get the data in there, then the UI is easy to figure out. Yeah. What is this? Is this just...</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-800c-8cf3-caaad668e008" class="">So I think based on what he was talking about, based on things that are sponsored at that moment, things that you should be focusing on because there&#x27;s a campaign behind them, I guess you&#x27;d say. He wanted to kind of bring Something that surfaced Up to this dashboard.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80bf-8577-f7b859b8b7c4" class="">So is it just something that&#x27;s like trending on more than one account? The way that I read it... It makes me believe that whatever our, wherever we&#x27;re pulling data from is telling me right now, or maybe has some sort of deal going on, but is it just from us pulling data or is the ultimate goal for it to be like, semi-live data of what&#x27;s happening on TikTok right now. Is it us feeding in campaign data?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8073-a768-c85b2eccb115" class="">Or is it porn from TikTok? Because there&#x27;s multiple ways where we get campaign data from discords, from from places where they&#x27;re posting that there&#x27;s a challenge from X to Z. Is the intention that or is the intention from your data?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-804f-961a-fd8358a5a382" class="">I guess. The source, I don&#x27;t know if he specified. I think this when we were talking over the whiteboard, he specifically drilled into this example about Raby and we should promote that to the top.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80bf-8983-dbc4803864d2" class="">There&#x27;s two things that essentially he&#x27;s looking for is what is he selling that&#x27;s trending and he should make videos on right now because it&#x27;s selling. And what has campaigns that he should also be making use for? The what&#x27;s selling for him is the more like active, the what should he be selling because of campaigns is what we would feed in. Essentially, we go to goalies discord, we see that they have a posting challenge, we feed that into the dashboard so people can see what the challenge is and then create a goal.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8029-b7ee-c0441f12aa4f" class="">or call it a campaign, whatever you want to call it, essentially. Goalie June Challenge, they can click on it. Maybe just click a button that creates a goal for them automatically. So that they can see that they&#x27;re making progress towards that. There&#x27;s a bunch of little things we can add. Like for creating goals, we can add in a drop down of do you want to connect this to a challenge or blah blah blah blah like a bunch of other stuff but For that specifically, These products are pulling from how much is sold in this time frame and then this We could probably easily make it for all of these tabs, but I don&#x27;t think we should.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-809f-9727-da67847a4c4c" class="">I think we should... make it for like A specific timeframe, maybe a 30 day timeframe. I like the idea of it, I just don&#x27;t know it.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-809a-a1be-ff2f18bd7d6d" class="">Yeah, especially if it ends, like in this example, it ends today at 11.59 PT. Yeah. We should probably make it more clear that, oh, it does say today&#x27;s deal. Yeah, yeah. That&#x27;s why I was confused.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80df-969a-daeeadabfc6f" class="">But I like the idea and the location of it. It&#x27;s just... what do we want to use the space for? Yeah, exactly. So this is good, this stuff too. This I like this general layout because they don&#x27;t need to click and play the video, but it&#x27;s nice to get like the What is it called? Thumbnail? Nice to do that. This is what they want. Don&#x27;t know if we&#x27;re gonna want the description I It&#x27;s something that might be helpful to the general user, but the way that Brian and Chris use it is just the title of it. And that was because the way that they were using it was for pulling this analytics.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80f7-8711-c195f54384d6" class="">Oh, okay. So for like, Salute when they have a campaign you have to give them the link to the video So what Brian would do is he just named his video salute or chata And then when he has to go back to do it he goes into that section types of your chata It brings up all the videos that have slew door chata in the description So he makes the title and description the same for his own query. Yeah, so love it for him that wouldn&#x27;t be helpful but Maybe for the general user who&#x27;s using it in a different way, it depends if we&#x27;re going to teach to use it in a different way but right now we&#x27;ve been teaching it doesn&#x27;t matter what&#x27;s in the description.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-807d-85cc-fae90008d7ae" class="">Because we haven&#x27;t seen any benefit. It doesn&#x27;t look like TikTok&#x27;s using SEO or anything else from the description. So if we don&#x27;t go with it, then maybe we shrink it a little bit and stack it GMV views commissions on the side. Yep. I like that. I like the stuff. Top performers, you would just have to put like a hover over or like some sort of click on to explain it. Because again, most of these people are like...</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-804d-a893-ec4f751f54ea" class="">45 plus grandmas, grandpas that. We&#x27;re going to have to create a video, essentially. of explaining the dashboard. What do all these things mean? And what are the things you can do? But I like it. The thing Brian wanted Because right now you have the tax, essentially the first and second letters for the accounts. Do you think that that&#x27;s too small? to like put the profile picture? Cause it&#x27;s kind of small game.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80b6-bfe2-f68605863446" class="">Oh yeah, put a picture instead of the B6.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80c1-a434-e7d2c05e2125" class="">It&#x27;s kind of small to me, but the other thing Brian talked about because he does this is he uses the same photo. He won&#x27;t be able to tell.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-800f-8a99-f9d08cf04277" class="">Yeah, so he&#x27;s like, maybe we should just do circles.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8060-99bf-f2ab80aef21d" class="">It&#x27;s a nice you know, UX, but it&#x27;s not that. unofficial.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-806f-af85-e81c47b1f4b1" class="">And I mean his original whiteboard had like a star, a triangle.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8073-b99a-e0b6e01ef580" class="">Yeah, some sort of legend. Yeah, and I figure if we go that unique, we&#x27;ll make a legend at the bottom, you know, maybe that maps that out. With this, if you could essentially just also hover over it, so maybe this isn&#x27;t here, it&#x27;s like somewhere else. Oh yeah, see he&#x27;s trying to do something, so it&#x27;s built in to do something. Yeah, okay, yeah, that works. So... That&#x27;s all good. Um... Yeah, the standard base widget, this looks good.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8073-83f0-d7a581c5b5c9" class="">So like We could roll out with this from my understanding of what he wants. Do you have it set up where you click into a specific account and it changes the data yet? Or are you just still working on all accounts?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80f3-9541-df2662b596e7" class="">Let&#x27;s see, so right now this is all accounts. Let&#x27;s go to Black Friday Brian. Yeah, it just dropped down.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80ae-a54b-f1855cb05d28" class="">Um... That stayed the same? Yeah.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8012-b51e-d1d1633af449" class="">So is that a... Let&#x27;s play it a little.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-809c-87f1-d6fe5951fc0c" class="">Yeah, some of it&#x27;s not 100% live. That&#x27;s fine.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-800b-9046-dc638b350abd" class="">And that&#x27;s just based off of the stuff in 2, so. And then the little track goes by the colors. That&#x27;s cool. Line graphs, I don&#x27;t know if it&#x27;ll be beneficial. But again, small UI thing that we can change later. It changes there, so that&#x27;s good because if they scroll down... Does clicking on this do anything yet? Clicking into here to get more information?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8067-9d40-c9f41bc0aa56" class="">Not yet.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8016-b7e0-f2c8a649acbd" class="">I mean, this is fine here. Is there a way to... Because right now this is what, 30 days?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80f3-ab73-c52968866fbf" class="">Yeah, 30, I don&#x27;t think, I think this is all just, yeah, placeholder right now. The only other stuff I have besides this dashboard, which would be all the agency stuff we&#x27;ve already looked at, me and JC kind of played around with. He wanted access to his own data, as he was talking about this morning. So I said, okay, let&#x27;s go look at that. So we actually tested just making the same thing, bringing in his own personal data.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8072-aaa4-faff74a70922" class="">Oh, it&#x27;s on the 8000 app. So the 3000 is your app. I&#x27;m running one side by side that just has the new pages. So here&#x27;s the new pages. And I brought in Phaser 4.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80a8-a3a5-c6b79f5b9b96" class="">Obviously some of this is... So this is the live dashboard. So the other one is video, but this is live.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-807e-b519-df065e56bb04" class="">Yep, this is live stuff. Or at least that&#x27;s what it says in the top. So I think I&#x27;m still signed in as him somewhere. TikTok Streamer and TikTok eCommerce. So I just kept the same names. This one calls itself eCommerce.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80ba-b97f-d13435cecb44" class="">Yeah, so this is the live seller dashboard. So when they&#x27;re selling live, this is the dashboard that they see.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-805a-a47a-dedaf2f44e35" class="">And so I got it to where we could take this type of data and pull it in.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80f2-90f6-e4941fee1f11" class="">So essentially the live seller dashboard, unless we make a way for them to-Basically a new account.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80bc-bb25-f80a00081267" class="">And I&#x27;m like, all right, well, I&#x27;m gonna fight this. I still expect to get that account. I&#x27;m not yet, I&#x27;m still working on it. But I&#x27;m like, what can I do?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80c8-aeeb-f36d5185b96b" class="">I&#x27;m like, you know. I think that David guy just has fat fingers. Every now and again he, I&#x27;ve turned this off too. So I don&#x27;t know if you know anything about Discord, but I&#x27;ve turned off the ability to request to speak. Everywhere I can find, but people are still like, &quot;Well, do it.&quot; I don&#x27;t. I don&#x27;t understand. So I&#x27;ve just given up on it for now. Um. I don&#x27;t remember what I was saying. Oh, unless we give them the permission to actually connect to the live seller dashboard, like when he logs in, We can get that information from the partner center.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80b2-b6f6-c6886e9cb4a5" class="">It&#x27;s just whenever TikTok uploads it, I don&#x27;t know. I&#x27;m assuming 48 hours at the latest. So there&#x27;s that.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8051-a38d-f4e4e4aa6f8d" class="">Yeah. I was telling him, I don&#x27;t know what value or what interests you would have for what your goals are. Um, but he&#x27;s so excited. He&#x27;s damn near ready to be the product owner and be like, here&#x27;s what you can do. Watch me walk through it. If you have questions, ping me.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8063-9bf2-f8c3dfff9270" class="">That&#x27;s perfect. Wow. We need some. All right. We need something to teach it.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-805e-9888-d96e85cdce2f" class="">I said when it comes to the tooling, yeah, if you want to be that person over here, come in the tool shed, help me make the hammers, and then come teach people how to use them, I think that&#x27;s a fantastic idea.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80e2-9be2-ed00e607ebab" class="">Well, that&#x27;s what I was going to say is you could also do it. You don&#x27;t have to, but the person who is doing the thing is normally better at teaching it. There&#x27;s opportunities here to do that too, because you&#x27;re more of a technical person like I am. Explaining Discord is something that I&#x27;m eventually gonna have to make videos for. It&#x27;s just right now we don&#x27;t have that many people. It&#x27;s not a priority.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-809c-8a18-f3d3558d763f" class="">But there&#x27;s an opportunity there if you want to do that sort of stuff with us too. Or it can just be a programmer and then explain it to someone and they can teach it.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8010-8098-d023b23e4568" class="">I can absolutely give the tech talk. That way, I&#x27;m sure we have a few. You mentioned one that&#x27;s using AI to run his stuff.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80ea-b6a8-df776811c29e" class="">I&#x27;m sure there&#x27;s a few technical or semi.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80ae-8fce-d3ab50e2ad87" class="">He would love if we started going down the AI route. Absolutely.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8044-ae4d-f3f57da09c8b" class="">And we could offer that as, you know, if the interest is there and it makes sense, you guys think it makes sense, I&#x27;d absolutely be happy to lead that. No problem.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8057-a5b9-e83fd5d0d873" class="">But I like this, so this essentially is Brian had a toggle on his drawing. I don&#x27;t know if that&#x27;s how we&#x27;re going to want to do it, but essentially video dashboard, live dashboard. This would be cool If you could see the most recent live. So like if it, depending on how we connect to the most recent live,Yeah. you essentially were able to go into his live dashboard for him. Which is what Chris does when he shows pages live.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80b9-9d09-fea037030b0d" class="">He did exactly what you did for JC. You log in and could see his live. while he&#x27;s working essentially logging in as him those tokens stay open i mean he signed in the day before yesterday as him and i can still open these and click around and as long as you don&#x27;t if you log out then i think you&#x27;re done yeah uh so i don&#x27;t know if this will be feasible forI don&#x27;t know how that token process works.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-802f-88cf-f2fda2d956f4" class="">Yeah, you&#x27;d have to dedicate a browser. &#x27;Cause in this case, I don&#x27;t use TikTok, so it&#x27;s fine. He can be on my vanilla Chrome.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80db-925c-fd509fc95b38" class="">So maybe it&#x27;s something that we could offer if it&#x27;s more beneficial to our like live mentors, maybe. &#x27;Cause that&#x27;s not gonna be that many people. I think we&#x27;re like 10 right now. So maybe that&#x27;s something after them because it&#x27;s more, Not more up to date. We get the information faster essentially. But the other way, using the dashboard, I think is still the way that we&#x27;ll do it to the partner center.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80f6-b457-e3078bd34e95" class="">I think one is kind of his project that he sees benefit in. So I said, &quot;Alright, I don&#x27;t think it&#x27;s working against their mission, so maybe it&#x27;s in their long term.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-808f-ae5c-c9dd4b10e833" class="">We can do this on the side and see how it fits.&quot; So Brian, the video dashboard that you&#x27;re working on, he does, that&#x27;s what he does, he does videos. He doesn&#x27;t go live, he&#x27;s done lives. But JC is going live, so it&#x27;s good to get feedback from someone who&#x27;s, that&#x27;s their main goal. Absolutely.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80e1-9c28-eeee26951b17" class="">And I think I set one up for his, we&#x27;re just calling it seller and streamer right now. Just based on what titles of the pages were. So I&#x27;ll support the streamer analytics in.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8075-a485-e3aa29c7511d" class="">So this is coming from us. So this is essentially-Oh, no.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80c0-9738-c859f6175708" class="">This is straight from him. So this one is not e-commerce, but the second one. This is e-commerce. This would be this page. So these numbers here.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80cb-a4c7-e99427058fbf" class="">Oh, from his live manager. Live analytics. I thought this was coming from the partner center.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80b5-8202-dd3878f09fb7" class="">So one is coming from here, and they call it Workbench. It&#x27;s interesting because it has almost the exact same everything as what you guys see. They&#x27;ve just changed it, like two words I think they changed.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80a4-9173-d5b64ee1451d" class="">I mean, it would make sense. Because most people are never going to see the partners.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8050-96a2-cd7d69af8008" class="">Very, very similar. And then this side as well. So we&#x27;ve kind of got plugs to where we can hit a button and it&#x27;ll pull it from either one on that side for the seller.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8073-83b2-db974dd16f1e" class="">Now I wonder if we&#x27;re able to get that page because I know there&#x27;s agencies that run lives for people So I wonder if we&#x27;re able to get that page with someone that we connect to so I&#x27;ll have to look into that Yeah, but this this setup I would say is more what we would want the actual live dashboard to look like for streamers Essentially the same thing as the the video dashboard but for live streams Got it So...</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8003-b193-eaa4759d95f6" class="">They start from mobile back. So If this was just dashboard, How would they switch between these things? Have you thought about that yet? Like because the way that I have it like the way you mentioned just a toggle, you know It says either video or live because if you go back to your video one the 3000 one We could essentially Go off of Like if we kept this, we could essentially put it up here. Because There&#x27;s all accounts.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8025-8e10-c60f66cb7b57" class="">But then those accounts have lives and videos. So it&#x27;s like within that. It&#x27;s like I don&#x27;t know if it&#x27;s possible, like if you click all accounts, Um... Maybe we put a toggle in there for video or live. I don&#x27;t know if that&#x27;s more beneficial. It would be depending on the space on the screen essentially.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80b6-9c08-cf7a7ecd724d" class="">Yeah. But I think if these are all lined up, you know, the time duration selector, the account selector, and then we could have the type selector. You know, I think we could fit three.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8014-9b5c-fbb3d6a15fe0" class="">Yeah, easily on the mobile side.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8092-bfb5-ecdd7f67e752" class="">Yeah. And if anything, that becomes a drop down.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8002-bc0a-f9f90f028c3d" class="">Yep, yep. Condense that up and yeah, that would work.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80e4-bf1f-f2523a09525c" class="">Okay, so yeah dashboard comes to this and then the toggles and everything&#x27;s in there.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8083-94b1-e9952abee4c8" class="">Video, live and Is that it?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8031-81ba-fb32cf1f0d59" class="">Really? Yeah, yeah. What we&#x27;re teaching right now, yeah. Videos and lives. Um... Yeah, because if we take it out of the community tab and put it on the side, then essentially it&#x27;s its own button on the bottom down if we keep that. So the switching would have to be inside of it. Another thought process is you click into the dashboard and it changes your nav bar to videos live and I guess or go back to Go back to this dashboard.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8066-8ead-f08e16443597" class="">Yeah, like dashboard could pop out three things under it.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80cb-9cc4-d23e618f4ef9" class="">Essentially doing what I&#x27;m doing with the admin dashboard.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80f7-a3c5-dd8bb4747a74" class="">Yeah, exactly. It has a different nav or maybe instead of a different nav, it could even be a different sub-nav. We could indent three elements that pop out accordion style.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8030-b9b0-efc551f202cd" class="">Yeah, I thought about that back and forth because The way that this was going to be built was I built it based off of It becoming an app eventually, but now I&#x27;m thinking is it better to essentially have Like a landing page inside the app and then you can click on this stuff and then there&#x27;s always just an option to go back to the landing page to swap. It&#x27;s not the best UX but I think that build is more beneficial where it&#x27;s you click into the TikTok dashboard.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8085-9272-c79e1b8254b9" class="">and your nav bar that&#x27;s accessible is those dropouts, but They don&#x27;t know what is impossible unless they&#x27;re here talking about it. So keeping it as this and then having a toddler in there also works. I don&#x27;t think Chris and Brian are going to care. As long as it looks good and they can explain it to people, I don&#x27;t think they really care.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80df-9324-fef97b467b17" class="">I think with that first approach of being in the middle, it&#x27;d be more obvious. A, we don&#x27;t have to have two, three different dashboards. We don&#x27;t have to expand out the right. As we think about how tall the top is from right to bottom, branding, links, you know, account preferences. If we add a couple more, we might be pushing it depending on the smaller, an iPhone 10, iPhone 13 mini.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8034-acb9-ec4bfcc674c7" class="">Yeah, well, that&#x27;s why... And it would be a bottom nav on mobile because apparently that&#x27;s the way that apps do stuff. So it would be for Macs or some sort of pop-up. I forget what they call it. There&#x27;s essentially like some sort of like slide up.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8019-a714-ee491e800bee" class="">Oh, yeah, yeah, yeah. Drawers. Yeah, drawers. That&#x27;s the new thing now. Um. Yeah, that&#x27;s why I think you&#x27;d send me that account selector. You know, I had kind of this, you know, one way of showing it and yours was like slides up with a little icon bubble and the name from the drawer. Yeah, that&#x27;s another model.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8017-a77e-c6de4831ce1e" class="">There&#x27;s another option. that I haven&#x27;t brought up to Chris yet, but we have... Dot IO and dot com. So there&#x27;s a way to essentially make The app just on one of them. Essentially, This links to that website. That&#x27;s an option too because then that gives you essentially the freedom to do whatever essentially from scratch.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80e9-b8e2-d481dd533e15" class="">And I kind of like that idea. I do too.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-803b-8338-d774e1b77fe1" class="">I could essentially take what I have now on .io, switch it to .com, because thelifemur.com is the one that he wants to turn into What we talked about the mansion with all the rooms.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80ea-8be9-f3066615a70f" class="">Yeah, the Insta and the other things.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8090-a3d4-c84ee9bb734d" class="">Which would all be held on .io or some other sort of live-proofing thing. Most likely the app would just live on .io and make subdomains, but... That&#x27;s something I can talk to Chris about. Because onceIt&#x27;s at least next year that we&#x27;ll have a different offer, even if it&#x27;s just TikTok shop for seller instead of creator that we&#x27;re teaching right now. But I think if we move to .com for the base one and then link out to .io for the app. That&#x27;s a good idea.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8032-aadf-e1adb12d7997" class="">I could just fire it up live, you know, the starting point I have now. And that way you can have what you&#x27;re doing exactly as it is in its world. I can pull the changes because my branch links directly to your member app.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8017-802e-f77297f072c6" class="">Because that would help us essentially. I could still work on the website essentially. Because the website, I don&#x27;t think your experience is beneficial to us for you to work on a website.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80b9-b518-dbb8f89d659b" class="">Not these days. Not with the empowerment that agents and stuff give us. You can as easily go, okay, I like this gradient. I like the look of this and I envision this and spit it out in just human words as accurately as possible and maybe you might need a second or third run. You can get to where you&#x27;re trying to get. I feel so bad about people who work just in the web UI, graphic design. I want to reach out to my ideas and my people I used to have these meetups with every month to just say, what are you doing in life?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80c1-b948-ff5b31fe182d" class="">What&#x27;s...</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-804d-806c-dce57408b917" class="">Apparently the thing now is TikTok, it&#x27;s not TikTok, AI slop cleanup is like what people are joking like that.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-803f-873e-f45b45e7db9f" class="">Slop forks, slop forks and shutting down. We don&#x27;t even accept, you want to contribute to open source, which used to be, damn, I wish someone would contribute. Now it&#x27;s, damn, please stop trying to contribute. Yeah. And then they&#x27;re very...</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80b6-892d-ca1e8684266c" class="">uncultured. You know, you don&#x27;t come to another programmer&#x27;s desk, the first thing they&#x27;re going to say is, you know, &quot;Did you RTFM? Did you read the fucking manual?&quot; And you must have done that before you can come to them with this question because they&#x27;ve done that research, homework, time, you know? You&#x27;re stealing time otherwise. And that&#x27;s where this slop fork Calamity, yeah, that&#x27;s the problem.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80a0-976a-d65a19e0358e" class="">Okay, so then how would it work then what we were talking about before with Deno? So if I just swapped what I have now in GitHub over to .com and gave you essentially access to .io, how would that work in that space?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80ef-9a5c-d3e18dacdb10" class="">So I would just need to go into the repository I have now. I would need to connect that to Dino. On the Deno side, I would then need to tell it I&#x27;m hooking up a custom domain. It&#x27;s going to say here is a couple records I need you to enter.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80e7-92ec-eddcc0896a59" class="">Yeah, I understand that part. So it&#x27;s just giving you the DNS records that you need?</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8033-a7c2-dbbda229b6b7" class="">Yeah, we need to point the DNS that Dino wants us to point and we need to just tell the GitHub link, do you accept, authorize, done.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8085-90ca-eff91d89edf8" class="">Because I haven&#x27;t tried more than one domain on a GitHub repository, but I&#x27;m assuming it&#x27;s not difficult. So then how would that change us with the AWS and the server requirements? Would it still be better to have a server here? Essentially my concern is instead of them just going to one domain now, now they&#x27;re on one domain logged in and they&#x27;re just essentially going to a new domain to access all dashboards and stuff like that. So technically they&#x27;re in two places at once because we don&#x27;t want them to be kicked out of here because this gives them permission to go here.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-80d0-a981-dd152ec88b62" class="">Yeah. So we could make the single sign-on the same. So right now if we&#x27;re doing it through better off, you know, maybe we eventually move to tick tock. That&#x27;s the unifier for every account. I can make both sides just use the same off.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8090-81a2-f4e332220ee6" class="">So the BetterAuth is what I want to access the main website. And then the dashboard, the reason we want them to have the TikTok off is so they can link multiple accounts inside of that. Because what the other ones are doing is you can sign in with TikTok but it doesn&#x27;t remember it. Like it doesn&#x27;t give you all the options. So essentially this right now, not the dashboard, but the website itself would be there right now.</p></div><div style="display:contents" dir="auto"><p id="34f04b9d-4ca9-8053-baef-d1177ae33675" class="">And then once Instagram and stuff like those.</p></div></div></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

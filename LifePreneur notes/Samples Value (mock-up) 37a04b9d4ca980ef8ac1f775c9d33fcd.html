@@ -1,0 +1,745 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Samples Value (mock-up)</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+
+	table.collection-content {
+		width: 100%;
+		table-layout: fixed;
+	}
+
+	table.collection-content th,
+	table.collection-content td {
+		overflow-wrap: anywhere;
+	}
+
+	table.collection-content td > .user,
+	table.collection-content td > time {
+		white-space: pre-wrap;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content-wrapper {
+	overflow-x: auto;
+}
+
+@media only print {
+	.collection-content-wrapper {
+		overflow-x: visible;
+	}
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	gap: 46px;
+}
+
+.column {
+	min-width: 0;
+	overflow: hidden;
+}
+
+.column > *:first-child {
+	margin-top: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+table {
+	border-collapse: collapse;
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol.numbered-list.numbered-list-digits-2 {
+	padding-inline-start: 2em;
+}
+
+ol.numbered-list.numbered-list-digits-3plus {
+	padding-inline-start: 2.4em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="37a04b9d-4ca9-80ef-8ac1-f775c9d33fcd" class="page sans"><header><h1 class="page-title" dir="auto">Samples Value (mock-up)</h1><p class="page-description" dir="auto"></p><table class="properties"><tbody><tr class="property-row property-row-person"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/friends_gray.svg" style="width:14px;height:14px;display:block"/></span>Owner</th><td><span class="user"><img src="https://lh3.googleusercontent.com/a-/AOh14Ggy0FcyX-X6EW32d0jOd5HNUZl3VcBq7Msx_b4mPQ=s100" class="icon user-icon"/>Daniel Johnson</span></td></tr><tr class="property-row property-row-multi_select"><th><span class="icon property-icon"><img src="https://app.notion.com/icons/list_gray.svg" style="width:14px;height:14px;display:block"/></span>Tags</th><td></td></tr></tbody></table></header><div class="page-body"><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8020-bb57-d9385b779064" class=""><a href="https://scrapecreators.com/blog/tiktok-shop-api">https://scrapecreators.com/blog/tiktok-shop-api</a></p></div><div style="display:contents" dir="ltr"><div id="37a04b9d-4ca9-800b-b45f-db0d549cea26" class="transcription"><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Summary<br/></div><div style="display:contents" dir="auto"><h3 id="37a04b9d-4ca9-815a-92aa-c9cb4e2ef09d" class="">Action Items</h3></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-8118-ba5b-d7a58ce4f850" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Run a test on the tool using a product with multiple variants (colors, sizes) such as shoes or clothing ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-818a-ace7-c867acc512bd" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Share the TikTok Shop order history <code>.txt</code> export to the Lifepreneur Discord/Google Drive ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-81ec-b17b-de06daec4553" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Try the QR code authorization flow on mobile to evaluate usability ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-81cd-80aa-c6a8f856aa67" class="to-do-list"><li><div class="checkbox checkbox-on"></div> <span class="to-do-children-checked">[tok-scrape - mobile-demo]- Build the affiliate shareable image generator with optional product item display, threshold logic (e.g. $100+), or multi-version selection ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-8101-b776-f9ba2e0203ff" class="to-do-list"><li><div class="checkbox checkbox-off"></div> <span class="to-do-children-unchecked">Integrate a social sharing plugin (Facebook, Instagram stories, etc.) so affiliates can post directly from the site ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-8111-8497-f764352fb6c9" class="to-do-list"><li><div class="checkbox checkbox-on"></div> <span class="to-do-children-checked">[tok-scrape - mobile-demo]  issue created - Add profile picture support to the shareable image to make it feel personal rather than a company ad ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-810c-b603-eaafc917f38f" class="to-do-list"><li><div class="checkbox checkbox-on"></div> <span class="to-do-children-checked">Get a tiebreaker vote on &quot;got&quot; vs. &quot;received&quot; wording for the shareable image ‣</span><div class="indented"></div></li></ul></div><div style="display:contents" dir="auto"><h3 id="37a04b9d-4ca9-81e0-8f54-e5730e17db44" class="">Product Variant Data Capture</h3></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-81bd-839f-f9cafc596154" class="bulleted-list"><li style="list-style-type:disc">The tool should capture all product variables (color, size, toe type, gender, pack quantities, etc.) for items with multiple SKUs ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-8180-b803-cabfbe96d3ce" class="bulleted-list"><li style="list-style-type:disc">Example discussed: work boots with steel-toe/non-steel-toe, brown/black colors, and men&#x27;s/women&#x27;s sizes ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-8146-90f7-e1aa991bc537" class="bulleted-list"><li style="list-style-type:disc">Some items may have up to ~50 variables; engine should capture everything upfront so retroactive matching is possible ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-81cc-851b-e46d148f094d" class="bulleted-list"><li style="list-style-type:disc">Weighted hula hoop flagged as an edge case: a single listing bundles drastically different products (hula hoop + battle ropes) at different prices with different photos — the tool needs to handle pulling the correct variant ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="37a04b9d-4ca9-81d1-9142-e0838bede822" class="">TikTok Shop Order History Data</h3></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-8187-b172-f99cd75f8406" class="bulleted-list"><li style="list-style-type:disc">Participants compared TikTok Shop data exports; one person&#x27;s export includes order history with retail prices and shipping, another&#x27;s did not include sample orders ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-81d6-a286-c5bdcf297ac8" class="bulleted-list"><li style="list-style-type:disc">Samples may appear as $0 in order history; if nothing shows as $0, samples either aren&#x27;t included or aren&#x27;t labeled as such ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-8146-b5b3-f542a671d0cb" class="bulleted-list"><li style="list-style-type:disc">The export is a <code>.txt</code> file (part of a 10–12 file zip) accessible via phone, extractable to Google Drive ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-8164-ba8f-fc343355d0e2" class="bulleted-list"><li style="list-style-type:disc">Using an API service to pull data directly into the database was floated as a cleaner alternative ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="37a04b9d-4ca9-8132-9896-d1c57064afad" class="">Affiliate Shareable Image Feature</h3></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-81e9-b125-edff75bcba08" class="bulleted-list"><li style="list-style-type:disc">Flow: user scans QR code on the website → authorizes via TikTok → tool pulls top free product values and generates a shareable image ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-8174-a110-cc39dea8df2f" class="bulleted-list"><li style="list-style-type:disc">Image displays the dollar value of free products received, grouped by category (e.g., apparel, home goods, snacks) rather than listing specific items ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-810f-9967-c5f59c48c199" class="bulleted-list"><li style="list-style-type:disc">&quot;Got&quot; vs. &quot;received&quot; wording debated — tied 2–2, tiebreaker needed ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-8158-a0be-c1c645443faa" class="bulleted-list"><li style="list-style-type:disc">Option discussed to show the agency&#x27;s cumulative total given away (potentially millions) to add social proof ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-81e3-91c4-e9aeda2d8595" class="bulleted-list"><li style="list-style-type:disc">Displaying specific product names/items deemed optional — should only show if value is meaningful (e.g., threshold of $100+); otherwise it may underwhelm (e.g., &quot;a bag of mushroom gummies&quot;) ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-818c-8278-f7153e3d792a" class="bulleted-list"><li style="list-style-type:disc">Less information on the image is preferred to drive curiosity and encourage people to reach out to the affiliate ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="37a04b9d-4ca9-81ae-ae83-e799909bb2ce" class="">Influencer Agency Concept &amp; Marketing</h3></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-81c3-bc9f-e303765feefd" class="bulleted-list"><li style="list-style-type:disc">The &quot;influencer agency&quot; term positions regular people as gaining access to free products through the agency — a loophole normally only available to influencers ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-8193-9b2f-c3e7c03a9ac6" class="bulleted-list"><li style="list-style-type:disc">The concept leverages the widely understood idea that influencers receive free product, making the pitch intuitive ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-81f2-a979-da49527c601b" class="bulleted-list"><li style="list-style-type:disc">Affiliates are required to create more content than TikTok&#x27;s baseline (5 videos vs. 1), which builds repeat brand relationships and avoids burning through them ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-81c4-8ea9-f15ad7314177" class="bulleted-list"><li style="list-style-type:disc">CTA on the shareable image: &quot;DM me your email&quot; preferred over a generic call-to-action to avoid comment-baiting penalties on Facebook ‣ ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-81df-953b-d2acc5d6bfa6" class="bulleted-list"><li style="list-style-type:disc">On response, affiliates would receive a link to a video sales page and their custom affiliate link ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><h3 id="37a04b9d-4ca9-8198-8184-d304b0240581" class="">Social Sharing &amp; Branding</h3></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-8168-b939-e2f6e9c77a68" class="bulleted-list"><li style="list-style-type:disc">Social sharing plugins exist for all major platforms; clicking share will pre-populate the image and require only a login from the user ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-81fa-8b4d-e543ff5a520f" class="bulleted-list"><li style="list-style-type:disc">Instagram story format (vertical) suggested as a good fit — content refreshes naturally every time new samples are received ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-8121-8f9d-ee43cd1100f0" class="bulleted-list"><li style="list-style-type:disc">Allowing multiple template backgrounds with swappable text was suggested to give affiliates customization ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-817a-aee2-e2a00c82264b" class="bulleted-list"><li style="list-style-type:disc">Lifepreneur branding on the image debated: branding helps the agency but provides no perceived value to the affiliate or their audience; leaning toward <strong>no branding</strong> for now ‣ ‣</li></ul></div><div style="display:contents" dir="auto"><ul id="37a04b9d-4ca9-81eb-a90d-eb3966d0e93d" class="bulleted-list"><li style="list-style-type:disc">Adding a profile picture to the image would make it feel personal and not like a company advertisement ‣</li></ul></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Notes<br/></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80e3-a622-c991df45a171" class="">
+</p></div><div style="border-bottom:0.05em solid;border-bottom-color:rgba(42, 28, 0, 0.07)">Transcript<br/></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-803b-b673-e72b81c18605" class="">In case you ever notice, like, you should run this online.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-806a-888c-fd08f9e96074" class="">You&#x27;ll be able to run on a free account. You&#x27;ll be able to run a test to see, like, what exactly. Yeah, I&#x27;ve heard of them. But try to run a test on something that has more than one single option. Okay. It can be something as simple as, like if you go to a pair of shoes or a t-shirt or some item of clothing, it will have Probably black, white, gray, and then there&#x27;ll be size small, medium, large, X large.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80e3-b1b4-e620ba4995c4" class="">So those variables I think are valuable to us.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8012-918f-c4d58da0fc7b" class="">The other one would be like if on a single skew there&#x27;s a three pack.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80bd-9e76-e07cd3c21965" class="">So you think this shoe would have colors? Yeah, or it&#x27;d be some sizes. So...</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-804f-bd8c-d7a4f0bb16e0" class="">So non-steel-toe and brown.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80d4-8c57-da8354076d88" class="">Oh, and it&#x27;s an 11, where it may have other sizes.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-803d-a895-c40b311085f7" class="">Yeah, the brown is the flavor and 11 is the size, right? So they&#x27;re gonna have steel-toe brown, non-steel-toe brown, steel-toe black, non-steel-toe black, that. And then sizes will probably be even men&#x27;s and women&#x27;s.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8031-928e-eb770aceb41a" class="">as well. This skew is mins, but yeah, in other times that could be... So there will be-This one specifically is a miniscule.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80a4-acd6-f24d1dc3dda7" class="">So some items have like-50 variables.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8057-8d4d-e54a3cbc6e16" class="">Yeah. We&#x27;ll prioritize it. We&#x27;ll have the tier one, test one, whatever you want to call it. This would be kind of a test three and we would know that this is two components. But with that engine that just captures everything, I&#x27;m just going to gobble up everything. So if we retroactively decide to match on something later, we can&#x27;t. Anything to grab?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80cb-8408-cf0be9609354" class="">Here&#x27;s one specifically I want you to look up. Weighted hula hoop, can you pull up? Waited through the loop. Look at this one, Chris. This one? So... It&#x27;s got like a totally different product also, but just saying like this comes in as Black cordless battle ropes and then the color of this hula hoop and they&#x27;re different prices to like click on one of the other ones I think they added the oh, yeah When I when I start for that I originally I got this sample and then they added these on there and then it makes this the default one It&#x27;s a lot of comments are about that getting comments about how it&#x27;s a battle rope and they&#x27;re like no you just gotta select but I just pointed out because these are drastically different prices and different colors and like different photos and I&#x27;d say different products.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-801b-935e-da6855180122" class="">So it&#x27;s weird to ask you, but just to get a better idea of... What kind of...</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8069-aeab-ec46447ebea6" class="">Yeah, I&#x27;ll make a note of this one.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8029-a59c-c3a1b1f6b444" class="">Like is the tool gonna pull up the exact one? &#x27;Cause I had the pink one, the pink hood.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80fd-bc6d-c5dc7d71e37d" class="">Or is it gonna pull up the battle ropes?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80fa-80d7-f7f3db8d2dc1" class="">So, awesome, this is exciting. This is exciting, &#x27;cause that is gonna, I can get a cancer back from hell. What did I? I just need to go to the store real quick and get this.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80c4-9d21-fde431f7fb28" class="">Do you have the TikTok shop data that he downloaded still? You know that, uh... Zip file from Boosted Deals or whatever one? Do you have that on here? He would have sent it to you. Let me see if it&#x27;s in the Discord. &#x27;Cause mine doesn&#x27;t have free samples, but the order history shows all of the actual retail prices with shipping. So if his doesn&#x27;t show zero dollars, that&#x27;s one way to... Start pulling information, I guess.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-808d-bd8a-dc12a8364c34" class="">I thought he said when he looked at his data, it did not have-Oh, he was messaging me about it. It didn&#x27;t have his orders. His orders were-he exported everything, and it didn&#x27;t have orders in his exports. Mine does.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8090-b6fa-fe4b6d89b263" class="">Yours does? Yeah, it says order history.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80a9-9213-fc660d71c82b" class="">I also found where it shows me I met my refundable sample criteria and got a refund. Hmm. That&#x27;s kind of...</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8041-b065-f7670847601c" class="">He said he was gonna look at it. Let me actually find out if heThat&#x27;d be cool for some exports, but if you&#x27;re saying it is, it should be for everyone.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8054-8dad-c5cc01a111eb" class="">Yeah, &#x27;cause all I did was I exported it, extracted it because it&#x27;s on your phone and then I moved it to my Google Drive because looking at it on the phone is ridiculous. But if we know what the file is, then all they have to do is just upload that.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8026-9332-f98a8d3f6a12" class="">Yeah, and actually I have that functionality built in where you can just gobble it up right from the app and adjust it.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8028-ae76-cafc361edd88" class="">I gotta explain a little bit because it shows theirShipping address. Fully shows their shipping address and their name. That&#x27;s really the only stuff that&#x27;s like Are they going to be okay with it?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80eb-b9bc-cb4d8ff4c4f7" class="">The phone number and how it was charged isn&#x27;t shown. The phone number is like... Partially show them.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80a4-84b6-f330cac8de3b" class="">The, actually it doesn&#x27;t even show the method of purchase anymore.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80ed-b876-c1ce20073d70" class="">Is there a way to customize what you export? Just say, give me the price and the name.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-803a-810e-c68fd362a187" class="">No, it&#x27;s just your TikTok shop and data history that has it in. like 10 or 12 different files, but only possibly two of them are music.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80f7-b94d-c56e4b58f642" class="">Okay.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80fd-a3f8-c2ed96921ece" class="">Yeah, if you have an example of an orders export, if that data is included in yours, I&#x27;d love to see it if you want to share that. If it&#x27;s CSV or anything.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8095-9ee2-dac33982b1b5" class="">It&#x27;s a TXT file.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80ab-9db9-df2e7b64a7f8" class="">Beautiful, yeah. On the drive for Lifepreneur. Discord.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8057-8f52-e123b9142a2f" class="">We&#x27;ll send for a parent now.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8018-8c24-c2be55611cc3" class="">Did your, remember you were gonna look at your exportSamples and orders were in your export?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-802d-a6a7-e07235bcfcdf" class="">I had orders that didn&#x27;t have samples in it.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8023-87ca-d584a09f2fb7" class="">Yeah, I ordered history though. Did you actually open it up and look into it?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8056-b685-c41163755789" class="">But my order history textAt least show us.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80e9-9e0a-fd46baa521be" class="">Just change it to--This one right here? Yeah. Okay. You have to change it to-.txt or csv or something?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80ac-bda5-d759ccf1963e" class="">Oh, .zip?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80c4-b3a1-de8929664434" class="">Yeah, I gotcha.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-807a-9f9a-d34f1b875e32" class="">Mm-mm-mm.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8099-8f53-ebfca78b6316" class="">Cool. So order history.txt, let&#x27;s see what&#x27;s in there.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-805d-a862-c7fd52cc7aaa" class="">If anything in there shows zero dollars, then it&#x27;s a sample, but... If it doesn&#x27;t, nothing shows zero dollars, there&#x27;s two things.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-806f-bf18-d90a993da3df" class="">Total price is what we&#x27;re looking for.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80f8-a9c5-c11fc8a6f8af" class="">Yeah, so it&#x27;s either it doesn&#x27;t show samples at all, or it...</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80e9-adc3-ddf52c6580b0" class="">Yeah, but did you notice any name at a sample? There should be stuff in here.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8010-8960-f1fd34082f56" class="">that we have samples.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80b2-b3c6-c9536eb7555d" class="">It was just stuff that I actually ordered.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8036-9fbc-ea3244da2643" class="">Yeah, the returns on refunds is the one where I found like it showed I was eligible and got my refundFundable sample refund.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80cc-93f5-dd831bd2fc2e" class="">Oh, okay.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-805d-b13f-c54acfabaa04" class="">So that&#x27;s kind of cool, but in order history text, if, Something shows up as zero dollars and we know it&#x27;s samples. But if you can recognize a name and then it shows the price, it&#x27;s another way to hold the retail value.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-805e-91df-dc69e7329d4f" class="">I can&#x27;t believe that. Yeah, I didn&#x27;t see samples.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8092-9f46-e70b6c8b0cf4" class="">It won&#x27;t say sample or anything like that.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80c4-aadf-ecfd04dd930b" class="">I mean, I didn&#x27;t see anything with zero knowledge. It was just stuff that I actually ordered.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8014-8299-ed36d28f3948" class="">You know, I was running the shop.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-801d-9206-f43074271add" class="">There was a date right there.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80f6-8a5f-f2451333fb73" class="">Yeah, I mean we could still pull something you purchased but...</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8098-b84a-d0c94c5e1b67" class="">It would be easier just to use that API service if it works and go down to the database instead.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-802b-93b7-d0c04e389574" class="">Uh-huh. It would be nice. We&#x27;ll gobble up all the free low-hanging data that has dollars and numbers and descriptions and stuff Just extend it.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8086-a921-ebc628b58db4" class="">I tried to get that AI generator to do it one hour before the dummy, but it still hasn&#x27;t gotten here. One hour before the dummy. Let&#x27;s go.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8019-9be4-d2ed6da1834c" class="">you</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-801d-8450-e4000ef8890c" class="">-Magnesium, ashwagandha, Part of my nighttime routine when I&#x27;m ready to go.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8089-8c9d-e8cb21a900ae" class="">I don&#x27;t mind the second part, but the first part, it just hasn&#x27;t-It means more to that first part also. Well, you can only do like 12 seconds.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80de-96b0-fbbe59d5ba9f" class="">So it doesn&#x27;t.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80a0-a9a6-dc203fd8000f" class="">Yeah. It&#x27;s AI.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80b0-9375-ef3c7df399c8" class="">I don&#x27;t know. Who wants to watch an AI take it? I don&#x27;t know. It kind of loses a little bit of what&#x27;s interesting about them. Heather&#x27;s using it on her selling these focus gummies. She grabs a stick. She says she follows this influencer chick that&#x27;ll grab a bunch of weed gummies and be like, Watch me go shopping. Right, but Heather is doing it and she said she&#x27;s coaching with it on already mushroom guns.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8068-aca6-fd0af8c1d8e7" class="">Doing the same thing like, she&#x27;s just like, I gotta open up all these samples.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8062-97ef-e5dc5030e01b" class="">And then, yeah, you saw that one.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8078-b30d-fc59d9cf160f" class="">I don&#x27;t know if that one&#x27;s gonna work or not, but whenever she&#x27;s gotta do a bunch of things. I gotta do a lot of cleaning. She may also just be exaggerating.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-803d-a644-f776f401f85f" class="">I did it with a Sheena J. She made like a couple sounds, but. I got a couple sounds on the Sheena J. I did it. Not exactly like she did it, but the opening was the same. Because they&#x27;ll be like... Some people are like, let&#x27;s go to Costco. I&#x27;m about to get freaky with my wife. Well...</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8002-89cd-ebb0d19582e0" class="">Let me read this last piece by Chris. Hey Chris.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-806e-9e84-de1976ee1e37" class="">Yeah.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8012-9dd6-d9e996e514bb" class="">Yeah, so see there 12:30 Mineskew original price. Yeah, I think that&#x27;s the one we&#x27;re gonna be looking at. Okay.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-809f-953a-df64fb95db31" class="">I was trying to think of like the cleanest, best looking, like let&#x27;s assume that this works well and we get this price, or we get, and it works. That way, basically, real quick Daniel, the flow would be On our website, There&#x27;s a QR code and they would scan it and approve it on TikTok. And then, or... On a desktop, I will be the QR code for basically for them doing this, they have to Could they do it on a phone or it&#x27;s got to be on a desktop?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8079-9814-dc0b798bbe9f" class="">I&#x27;ll try the phone route and see if it looks okay.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80ad-b10a-c4787aa8d5ca" class="">Okay, so let&#x27;s see what we can do on that.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80a8-80c6-f41dedcd0ec0" class="">And then this is kind of what I had in mind. You got dollars in free products and it&#x27;s just going to grab the most high value ones.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80cb-8524-db8f8c710304" class="">And maybe there&#x27;s an option to pick if you&#x27;re just like, oh yeah, no, these aren&#x27;t as high of value, but like they feel great to get those for free. You can grab that one too. And then two steps connect with influencer agency, request free products. Is there something else you think the idea is to give them an image and it&#x27;s something they can share on Instagram, Facebook.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80c9-8e41-f460b276dd15" class="">Yeah. They&#x27;ve signed up. Yeah, yeah, this is after they&#x27;ve gotten free stuff. No, they&#x27;ve signed up. They&#x27;ve already gotten free stuff. This is real value of free things that they&#x27;ve gotten.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80f9-8e73-ffb8a47ae0cd" class="">And then they&#x27;re going to have this image and then we&#x27;re going to be telling them to share this on Facebook.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-802a-9aad-ce7d3184a1f2" class="">So we have time, you know, we got quite a while before this is important.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-804e-bcef-e9ac863de4b7" class="">It&#x27;s a pop-up with like the shared stuff on the bottom.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8087-bf79-c8dc5d130a22" class="">Share on Facebook, text.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-801c-8267-deaa12fab06a" class="">Yeah, we&#x27;ll just tell them to share it and then this is going to generate this photo for them. Maybe that&#x27;s an area that has said, &quot;Have a generator photo.&quot; They can always screenshot it. That&#x27;s common. But people typically use social media through phone.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8096-9ed9-f9226364fdf8" class="">You can say their name on the top instead of say, you got it says. OkayAnd then instead of dot, let&#x27;s say receive.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8071-8c84-eca6f834a2a6" class="">What do you think? Got or received? Received. Like past tense. Yeah. You like got or you like received? Got received.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8050-b946-ebc5059a4142" class="">Well in the ethos, just think about it.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80ce-80d7-e5d0ca4046b1" class="">You got me at one.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80f3-9320-d7fe0aa2e738" class="">Everyone&#x27;s got got like in there.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8000-88fb-f627336eaa0a" class="">Yeah, I like got more too, so we&#x27;re two and two. We&#x27;ll get a tie breaker with a fifth vote on that one.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8054-b598-f7fb05ce6245" class="">And trust me, I appreciate English. I&#x27;m a spelling bee champ.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80ac-b943-e3661d5d23c0" class="">Here&#x27;s how I&#x27;m looking at it though. People are at the third grade level.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8050-83ab-e91e50fa2c21" class="">How long looking at it is? How it&#x27;s going to be perceived to the person they share it.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8031-848d-f5912cf219fc" class="">So if you&#x27;re like, Carl got something versus Carl received, to me it sounds more like, oh, they received that much stuff, but God kind of is the same thing. It&#x27;s just... Once I&#x27;m more proper Bye.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80ea-b79a-de64e27a5de8" class="">See ya. Y&#x27;all are camp more proper.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8061-8eaf-e52ad3f8ee1d" class="">I don&#x27;t know. I think people are kind of stupid. I&#x27;m trying to lean more towards God.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8057-a9a7-c4aa6ce4783c" class="">Okay. No, but the main thing I wanted feedback from y&#x27;all is there anything else, like less is more, but is there anything we&#x27;re missing? I think this is pretty good, like we&#x27;re just gonna grab the top items now. Maybe there could be like a checkbox where you don&#x27;t show this. That could be an option too, &#x27;cause in some cases like these aren&#x27;t gonna be, like in reality what is it gonna be? Like loaded T and a fucking cable? Yeah. You know?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8020-8e5c-f075e071a2ee" class="">You got, and it&#x27;ll say $500, because that&#x27;s what we&#x27;re giving them, but then what is it? It&#x27;s a bag of Ari mushrooms. It&#x27;s good stuff, but it&#x27;s not a couch and high heels necessarily. So maybe an option where this doesn&#x27;t show at all. What&#x27;s the step two?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80e8-b5ab-ffcd37e883de" class="">Request free products.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-806f-84cf-e17626ba46fb" class="">Step one, connect with the influencer agency. And then step two, you request free products. Step three, Get free shit.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8069-b773-d12d8d624ca3" class="">Get free products. I guess could be step three. Do you want to turn everybody into an affiliate with this? Yeah, so we want to make sure that they get their custom link.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8089-9be1-d46dc1825999" class="">Yeah, so this is vague enough to where if you Google, how do I connect with an influencer agency? I don&#x27;t think, that doesn&#x27;t exist. We kind of invented that term. So since that doesn&#x27;t exist like next with me Well, if If you&#x27;re like, well, this tells them how it works is you connect with the influencer agency. So then that prompts the question. Carl, how do you-OK, I want to do it. How do I connect with the influencer agency?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80e9-8e90-fbe60c18950c" class="">That&#x27;s kind of the because this isn&#x27;t something they get this doesn&#x27;t give enough in for this gives information that sounds good I don&#x27;t want to get but it isn&#x27;t anybody. I don&#x27;t think it sounds I don&#x27;t know that&#x27;s not confusing influencer agent because at the same time like Why did you get this for free? I&#x27;m like, okay, an influencer agency. Sounds like something that could give somebody a bunch of free stuff.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80cb-80d7-e17b838573f1" class="">Ask me how, I think, too, is good.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80d8-aa0f-cfec1e7dcf42" class="">And most people, especially before TikTok, they&#x27;re thinking that, oh, influencers are the ones that get that stuff. So they are going to be mostly. What did you say?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8069-a727-c3df2da49907" class="">Content agency. Yeah, well...</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-802e-9dab-e33a61f14b33" class="">Have you been using the term influencer agency in the sales process? So influencer agency is the term we&#x27;re calling our agency. And the whole point of that is like, you&#x27;re not an influencer, so you&#x27;re not going to get all this stuff. But if you connect with the influencer agency, now you do. And so we can automatically approve them for a bunch of stuff already. And then as they generate sales, theywithout ever being an influencer?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8008-b1da-d9214a3a7941" class="">&#x27;Cause that&#x27;s what most people think is that.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-805a-af10-ec189e57603d" class="">Right, a lot of people are aware that influencers get all shit.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8096-be96-dda88858bca3" class="">And you don&#x27;t expect The Rock to have to pay for his high heels if he&#x27;s gonna take a picture of them and post them on Instagram. You know he didn&#x27;t have to pay for those. But this is the new concept that we&#x27;re pitching is that like, If you&#x27;re not an influencer, that&#x27;s fine. If you connect with an influencer agency, that&#x27;s the loophole.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80e0-a6f2-d9848bd0c84b" class="">That&#x27;s the workaround where everyday regular people can be--Here&#x27;s another idea too for this, the end result. It could say, Totally. Not just their total but the agency&#x27;s total has given out or I like it. You know what I mean? So you have that total, because that&#x27;s going to be a huge number potentially, like in the millions even. Just him and Chris. Right? So it&#x27;s like we&#x27;ve given away this X millions of dollars for a free product.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-804a-bfa8-e9a66677f454" class="">in the last 60 days or something like that.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-805c-abcd-da1dc2524b57" class="">Sitting on this free couch, posting it from this free phone. Yeah.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8014-b12d-e6ed7b11f78e" class="">Well, let&#x27;s smile at this, I guess. New Jesus samples. But this. That is cool.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80ef-a4d3-fb3e78f108fd" class="">Great. So yeah, I don&#x27;t think we&#x27;re missing anything then, huh? This is just gonna be optional. It&#x27;ll grab the top ones. You can pick.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8055-8896-cc1519b155f2" class="">Or you could not have it on at all. You don&#x27;t have any branding on there? Um... Maybe. It could say, like, Lifepreneur. Powered by Lifepreneur. Presented by YeahPresented by? Presents?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8048-8893-d058dd0c509a" class="">Yeah, so like...</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-807a-8893-d4a9fd3e02eb" class="">Life manure official? Maybe. If you have no branding, you might actually have more Yeah, the branding would not help the affiliate at all.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-809a-9810-e7e49cf319b6" class="">So I&#x27;m wondering does it help us enough to be worth it? But then on the other hand, we also kind of don&#x27;t really want to be brand, like life earner with free stuff in there because that&#x27;s the name of our agency and we&#x27;re connecting with these brands. You&#x27;re the ones that are--This is what you do with those thousand samples I gave you? You&#x27;re the spamplers?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80fc-b38b-f657ebfdaf04" class="">Spampler. Spampler, yeah.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-801b-8057-c059abe5defa" class="">But I mean, when the people come in, we are doing right by our, like, we&#x27;re not, We&#x27;re making them do more than what they would get without our agency. Because all that TikTok makes them make a video or a live. So the best case scenario, they get a video that&#x27;s required. But we&#x27;re making them do five. So I think that way we have repeat business with these brands and we&#x27;re not just burning through them.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-801f-896c-f62d33c5872f" class="">Yeah. Yeah. It actually might be better not to rant anyway, just like I said, it probably increased their little reach in their own sphere.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-808e-a0ef-f50ccea09e89" class="">Right, &#x27;cause like the less this says about it, the more interesting it is and the less that you can get from this, the more likelihood that they have to reach out to the person who shared it.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8022-bf33-c736ed4c08c4" class="">Yeah, and you also there again like the big like Facebook doesn&#x27;t like comment baiting. So if you say like, like, grab below on it, they actually don&#x27;t like that.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8041-8568-dd4b562f9430" class="">Yeah, so Because my years of promoting network marketing or whatever, you just talk about the thing that they want and that&#x27;s all you talk about and build all this curiosity and desire around it to where they&#x27;re like, &quot;Alright, fine, what do you want?&quot; And then they jump in and shoot you a message about it. And so that&#x27;s what this is trying to create. But I&#x27;m just wondering, branding, branding obviously helps us.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8096-aeea-d9d742805728" class="">It wouldn&#x27;t help them at all. Associating with Lifepreneur doesn&#x27;t improve their status or anything about this message for them. Yeah, I don&#x27;t know if that would be all that helpful for us. I think for now I&#x27;m leaning towards no. I mean, this looks good too. The fact that you have like you&#x27;re saying instead of saying what it is, saying the category, I think that&#x27;s kind of cool.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-803f-ae29-e2cde835b073" class="">Yeah. You go by category, you can make it like This video game, it&#x27;s fun. All your VCRs drop in and it totally comes. You know what I mean? Just have them rain in.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-805d-ac1e-dc2470fb48a0" class="">No, I mean, I think that&#x27;s the point. This is specifically something that I would be encouraging them to share on,Oh yeah, absolutely.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8082-a431-e6d05e940acc" class="">That&#x27;s the shot right there.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-806e-84d4-dc8595c43d97" class="">Yeah, but I do like the, The total worth of groceries is not really... No. But home goods, snacks, apparel or clothing That seems decent. We could maybe come up with-I would just want to know it, like see what kind of samples we get. If those numbers look better than that, then we should use that. And if these look better, we should use that.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80e0-a2e2-f2b7aa8d66c2" class="">So at the end of the day, it&#x27;s marketing. It doesn&#x27;t have to be.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-808c-91bf-c883fae8a5a2" class="">Absolutely. Yeah. Kyle. Um... If you jumped in and got your free stuff and then LifeBurner will prompt you to share this image right here. separate with a tile. Um... I&#x27;m kind of going off the less is more. type idea, but is there anything else, is there anything on here you think that it&#x27;s missing? Anything that could add to it?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8034-8604-d2632ee14a9b" class="">He would obviously want more high heels.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-800f-8c99-fee6dd8a59bb" class="">Right, more money worth of high heels, yeah. So this is gonna be an optional section where maybe like, If all you got was loaded T and max stack and sub-evenu, listing those out probably isn&#x27;t going to help this. So not having it on there.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80c2-b024-c6398a61c793" class="">Maybe if it hits a threshold of 100 or plus.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8011-b7e0-d4faa807b5e9" class="">It doesn&#x27;t show unless it&#x27;s a Maybe, or it&#x27;s just a choice when they&#x27;re generating the image. Or it could generate a couple of different versions and they just pick their favorite. And the one that doesn&#x27;t have that on there maybe looks better than the one that shows that you got some vitamins for free. And then two steps, connect the influencer agency, step two, request free products. And then just encouraging people to like, Share this on their socials of how excited they are.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-808a-a0c5-c6af32ef4c1a" class="">I mean, the whole point is to use it as a market, right? Yeah. So. We could go through the whole process of making it so that they can easily share socials or we just or making a picture for them to download and upload wherever. It depends on what you want it to be used for. If all that really matters is how much we got on free products, You don&#x27;t need to put any of the other stuff. you I mean, they can just explain that stuff.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8066-9f8c-d8fb66fa6a77" class="">Maybe remove all and only put that really small. Yeah, that&#x27;s pretty good too. Even less.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80d1-aa2f-fdb4952ff07a" class="">I mean, this is all for affiliate resources, so it all just depends on... how you want to market, where you&#x27;re marketing. Chris would be a better person for this. So it&#x27;d be like, if we&#x27;re marketing on Facebook, what&#x27;s the type of post that we want? Do we want it to be the size of a story and then add more information? Yeah, that would be good. Instagram size photo and you do like a slide reel. It depends on where you&#x27;re marketing.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-806a-be11-f0c18ae3fa1f" class="">Because if it&#x27;s just a really the easiest one is just a picture that you can then throw up as an overlay on any kind of what I imagine this says, but I do like the idea of specifically here for stories.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80d2-907f-eeb8a2a9b717" class="">It&#x27;s not difficult because some stories you can do it every day.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8007-afcc-f5db0e161128" class="">And it&#x27;s like a new number regularly.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-803e-b8b8-db01662b7d5b" class="">It&#x27;s a simple plugin and then you just have to get the authorization to share it.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-803e-8591-c0b1ab557d10" class="">Oh, interesting. So you&#x27;re saying through our website, they can authorize for us to just post this? No, not for us to post it.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80ba-9343-c58aeb7ae241" class="">They go to want to post to X or Facebook or whatever, they click on it, they&#x27;ll have to log in, but the image and stuff is there for them to go and do it. All the social media sites have a plugin that you can just use.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8063-b8f4-f637b9fe749a" class="">Yeah, make it easier to share on Facebook? Okay. Yeah, because they all want content on their stuff. Right, right, right. Nice. Hell yeah. That seems good. But yeah, I like the idea of it being maybe there needs to be a clear, like,DM me your email.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8025-9711-f02b216fa35c" class="">I think that&#x27;s probably, if you&#x27;re trying to do a CTA at the bottom, that&#x27;s probably better. Because then all you would have to do is you could just put this up in a story post and it&#x27;s just, it&#x27;s there, shows it, it&#x27;s gone after 24 hours. Just keep doing it. Do it every day.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8066-9f92-e5be1abe375b" class="">Every time you get a new table, then do another one. Or every day, why not?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8063-bd27-dcc575e053ca" class="">Depends on how much you want to market. That&#x27;s a part of our teaching plan too, the fourth part. Right. I mean, when you&#x27;re starting out, you&#x27;re not going to be really using your own stuff. That&#x27;s why we have a wind section. You can screenshot other people&#x27;s winds. Essentially, that fourth R, we&#x27;re teaching people how to be marketers. Some people find out more how to market. Pass the hole, Neal. premise of what life is, is how to be an entrepreneur.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8060-90d7-d1c04cbc75ff" class="">Right now I&#x27;m just focused on the impact shot.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8063-b550-d6d067cad92d" class="">And then if I messaged Kyle&#x27;s email, you have some sort of a template welcome Yeah, we have a link to a video.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80ac-bf43-d9405b0e2cd6" class="">That&#x27;s the first easiest step that we can do right now.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80b8-a6d3-d1a74ceb5fca" class="">Link to the video sales page, yeah.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8032-bc20-c83670f56889" class="">Everyone has a affiliate link, they can just share that. Okay. But I think the best way to do this if you really want to use it for Affiliate marketing? is we create a model that allows them to pick and choose what they want. You can do different templates behind it too. We had this in IIS. All you do is you essentially, you made a bunch of like pretty backgrounds or whatever, but all you do is you just change out the The words on the screen, so...</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80d0-a92e-c23d732455f9" class="">He&#x27;s been working out lately. That&#x27;s new karma. Profile paper.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80dc-8a27-c0fa58d27d44" class="">26. I feel like, yeah, have a profile paper on there would be even better. That way it doesn&#x27;t just look like Company ad it&#x27;s custom to Carl.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80fb-bf81-f3e62fb216dc" class="">There&#x27;s a profile picture I got a picture, but I don&#x27;t want to see what it would do with the scanned document thing it kept offering. Oh, there it is. Aha.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80e0-acba-d7b695cdcf7c" class="">I&#x27;m gonna just use this bone.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8040-a6b6-ec64ce61e164" class="">It is true. I was just testing out. I started doing AI just for like,Where do you get the AI from? I just have a dream. TikTok AI? Yeah.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-805f-9b2d-d074d6ac4b70" class="">Is this one in front that got these two? Cool. I think it&#x27;s a way to get peopleInner thigh.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80c0-a5a0-e893a077fd83" class="">Try one where B roll is of the desired result. So you step on sleep. It&#x27;s magnesium, right? It&#x27;s low-brow. Low-brow, right? No, so it&#x27;s... Looking skinny and fit and healthy or something. That&#x27;s pretty cool. So maybe like... Are you able to do that? Do one where you rip your shirt off?</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80e0-852c-c1b195240fb6" class="">Yeah. This is live and they&#x27;re doing the fulfillment. AI summary is the name of somebody? They named themselves AI Summers. Please explain how they received the permit and/or.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8004-a0d1-f6a97954580d" class="">-You had a great day, you got heated power.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-80e5-8927-f232618a2c10" class="">I&#x27;m a pet store for stealing hamsters. Thanks for again. And 15. Yeah, bringing power. That&#x27;s some shit that I would&#x27;ve been into when I was like 14, 15 on the internet.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-807f-b70f-caea7167c89f" class="">Yeah, like to troll people or something. Jumping into like IRC chats and like trolling people, yeah. Just going in there and fucking up somebody&#x27;s life while they&#x27;re trying to sell.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-809b-9302-f8f144d589c2" class="">I&#x27;m in the block. I mean, sometimes-I&#x27;ll just let them go because it&#x27;s kind of engaging. When they&#x27;re like, say something just out loud.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8078-b6e3-ec041553fc52" class="">Almost one could just be connected I know your method, which was create an open-ended curiosity question. Yeah, with a call to action... Yeah. Message me, well, message me your email is the one that Chris likes. The only reason why I kind of don&#x27;t like that is You want to try this with the engagement thing? So</p></div></div></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8045-9bd0-ebab4811cadd" class="">create new Chrome extension in extension-creator-demo folder.  it should have the same icon as extension-seller.  on click it should navigate to https://easierbycode.com/tok-scrape/fixtures/orders.html.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8094-995f-d9709d2a0e5a" class="">it should automatically click details button on each order, which should open a template with shop icon/name, product description/purchase_date, and price filled in.  this template should use fixtures/order.html as it’s starting point, and 9/10 times swap the price to $0.00 to indicate sample (also remove the line-through price on samples)</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8062-aa46-f7a9c1673af0" class="">on samples, look up the price by copying the description/alt text (i.e.: 3 Bottles of Goli Probiotics), searching <a href="https://shop.tiktok.com/us/s?q=3+Bottles+of+Goli+Probiotics">https://shop.tiktok.com/us/s?q=3+Bottles+of+Goli+Probiotics</a>, and grabbing the price of the first item listed.</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8039-bdfc-e5bceb14d452" class="">after looping through all orders and grabbing the prices show an overlay which gives a total valuation</p></div><div style="display:contents" dir="auto"><p id="37a04b9d-4ca9-8009-b059-e6fa4c24ef18" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>
